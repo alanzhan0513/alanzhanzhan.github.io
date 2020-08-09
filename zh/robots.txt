@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://shuaizhanzhan.github.io/sitemap.xml
