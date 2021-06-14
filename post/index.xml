@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Alan&#39;s Blog</title>
+    <link>https://shuaizhanzhan.github.io/post/</link>
+    <description>Recent content in Posts on Alan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 13 Jun 2021 23:45:21 +0800</lastBuildDate>
+    
+	<atom:link href="https://shuaizhanzhan.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>原子習慣</title>
+      <link>https://shuaizhanzhan.github.io/post/atomic-habits/</link>
+      <pubDate>Sun, 13 Jun 2021 23:45:21 +0800</pubDate>
+      
+      <guid>https://shuaizhanzhan.github.io/post/atomic-habits/</guid>
+      <description>複利 「複利」這個詞貫穿了整部本書，我們可以說它是世界第八大奇蹟，一點也不為過。 你每天只進步 1% ，持續了之後一年 (1.01 ^ 365 = 37.78)，你將進步 37</description>
+    </item>
+    
+    <item>
+      <title>About Me</title>
+      <link>https://shuaizhanzhan.github.io/post/2020-08-09-about-me/</link>
+      <pubDate>Sun, 09 Aug 2020 21:49:38 +0800</pubDate>
+      
+      <guid>https://shuaizhanzhan.github.io/post/2020-08-09-about-me/</guid>
+      <description>I&amp;rsquo;m Alan. A software engineer.</description>
+    </item>
+    
+  </channel>
+</rss>
