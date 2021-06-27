@@ -3,48 +3,55 @@
   
   <url>
     <loc>https://shuaizhanzhan.github.io/</loc>
-    <lastmod>2021-06-13T23:45:21+08:00</lastmod>
+    <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhanzhan.github.io/categories/</loc>
-    <lastmod>2021-06-13T23:45:21+08:00</lastmod>
+    <lastmod>2021-06-26T18:46:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://shuaizhanzhan.github.io/post/2021-06-26-emotional-blackmail/</loc>
+    <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhanzhan.github.io/post/</loc>
-    <lastmod>2021-06-13T23:45:21+08:00</lastmod>
+    <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhanzhan.github.io/tags/reflection/</loc>
-    <lastmod>2021-06-13T23:45:21+08:00</lastmod>
+    <lastmod>2021-06-26T18:46:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://shuaizhanzhan.github.io/categories/reflection/</loc>
+    <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhanzhan.github.io/tags/</loc>
-    <lastmod>2021-06-13T23:45:21+08:00</lastmod>
+    <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/post/atomic-habits/</loc>
-    <lastmod>2021-06-13T23:45:21+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://shuaizhanzhan.github.io/categories/%E9%96%B1%E8%AE%80%E5%BF%83%E5%BE%97/</loc>
+    <loc>https://shuaizhanzhan.github.io/post/2021-06-13-atomic-habits/</loc>
     <lastmod>2021-06-13T23:45:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
