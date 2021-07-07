@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Alan&#39;s Blog</title>
-    <link>https://shuaizhanzhan.github.io/tags/</link>
+    <link>https://shuaizhan.dev/tags/</link>
     <description>Recent content in Tags on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-tw</language>
+    <language>en</language>
     <lastBuildDate>Tue, 06 Jul 2021 23:56:58 +0800</lastBuildDate>
     
-	<atom:link href="https://shuaizhanzhan.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://shuaizhan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>algorithm</title>
-      <link>https://shuaizhanzhan.github.io/tags/algorithm/</link>
+      <link>https://shuaizhan.dev/tags/algorithm/</link>
       <pubDate>Tue, 06 Jul 2021 23:56:58 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/tags/algorithm/</guid>
+      <guid>https://shuaizhan.dev/tags/algorithm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>reflection</title>
-      <link>https://shuaizhanzhan.github.io/tags/reflection/</link>
+      <link>https://shuaizhan.dev/tags/reflection/</link>
       <pubDate>Sat, 26 Jun 2021 18:46:52 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/tags/reflection/</guid>
+      <guid>https://shuaizhan.dev/tags/reflection/</guid>
       <description></description>
     </item>
     
     <item>
       <title>me</title>
-      <link>https://shuaizhanzhan.github.io/tags/me/</link>
+      <link>https://shuaizhan.dev/tags/me/</link>
       <pubDate>Thu, 13 May 1993 00:00:00 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/tags/me/</guid>
+      <guid>https://shuaizhan.dev/tags/me/</guid>
       <description></description>
     </item>
     

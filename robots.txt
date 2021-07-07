@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://shuaizhanzhan.github.io/sitemap.xml
+Sitemap: https://shuaizhan.dev/sitemap.xml

@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Alan&#39;s Blog</title>
-    <link>https://shuaizhanzhan.github.io/categories/</link>
+    <link>https://shuaizhan.dev/categories/</link>
     <description>Recent content in Categories on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-tw</language>
+    <language>en</language>
     <lastBuildDate>Tue, 06 Jul 2021 23:56:58 +0800</lastBuildDate>
     
-	<atom:link href="https://shuaizhanzhan.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://shuaizhan.dev/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Algorithm</title>
-      <link>https://shuaizhanzhan.github.io/categories/algorithm/</link>
+      <link>https://shuaizhan.dev/categories/algorithm/</link>
       <pubDate>Tue, 06 Jul 2021 23:56:58 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/categories/algorithm/</guid>
+      <guid>https://shuaizhan.dev/categories/algorithm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Reflection</title>
-      <link>https://shuaizhanzhan.github.io/categories/reflection/</link>
+      <link>https://shuaizhan.dev/categories/reflection/</link>
       <pubDate>Sat, 26 Jun 2021 18:46:52 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/categories/reflection/</guid>
+      <guid>https://shuaizhan.dev/categories/reflection/</guid>
       <description></description>
     </item>
     

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Alan Zhan" /><meta name="description" content="同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間) 空間複雜度 (花的記憶體)" /><meta name="keywords" content="Zhan, Alan, Shuai, Blog" />
+<meta name="author" content="Alan Zhan" /><meta name="description" content="如何選擇演算法來解決問題 同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間)" /><meta name="keywords" content="Zhan, Alan, Shuai, Blog" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
-<link rel="canonical" href="https://shuaizhanzhan.github.io/post/2021-07-06-big-o-notation/" />
+<link rel="canonical" href="https://shuaizhan.dev/post/2021-07-06-big-o-notation/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -40,22 +40,22 @@
 
 
 <meta property="og:title" content="Big O Notation" />
-<meta property="og:description" content="同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間) 空間複雜度 (花的記憶體)" />
+<meta property="og:description" content="如何選擇演算法來解決問題 同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間)" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://shuaizhanzhan.github.io/post/2021-07-06-big-o-notation/" />
+<meta property="og:url" content="https://shuaizhan.dev/post/2021-07-06-big-o-notation/" />
 <meta property="article:published_time" content="2021-07-06T23:56:58+08:00" />
 <meta property="article:modified_time" content="2021-07-06T23:56:58+08:00" />
 <meta itemprop="name" content="Big O Notation">
-<meta itemprop="description" content="同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間) 空間複雜度 (花的記憶體)">
+<meta itemprop="description" content="如何選擇演算法來解決問題 同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間)">
 <meta itemprop="datePublished" content="2021-07-06T23:56:58&#43;08:00" />
 <meta itemprop="dateModified" content="2021-07-06T23:56:58&#43;08:00" />
-<meta itemprop="wordCount" content="480">
+<meta itemprop="wordCount" content="501">
 
 
 
 <meta itemprop="keywords" content="algorithm," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Big O Notation"/>
-<meta name="twitter:description" content="同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間) 空間複雜度 (花的記憶體)"/>
+<meta name="twitter:description" content="如何選擇演算法來解決問題 同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間)"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -90,6 +90,8 @@
         <li class="mobile-menu-item">Categories</li>
       </a><a href="/post/1993-05-13-about-me">
         <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
       </a>
   </ul>
 </nav>
@@ -111,6 +113,8 @@
         <a class="menu-item-link" href="/categories">Categories</a>
       </li><li class="menu-item">
         <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
       </li>
   </ul>
 </nav>
@@ -129,8 +133,6 @@
         <div class="post-category">
             <a href="/categories/algorithm/"> Algorithm </a>
             </div>
-          <span class="more-meta"> 480 words </span>
-          <span class="more-meta"> 1 mins read </span>
         
       </div>
     </header>
@@ -138,11 +140,17 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">Contents</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#如何選擇演算法來解決問題">如何選擇演算法來解決問題</a></li>
+    <li><a href="#big-o-notation-當作衡量標準">Big O Notation 當作衡量標準</a></li>
+  </ul>
+</nav>
   </div>
 </div>
     <div class="post-content">
-      <p>同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞：</p>
+      <h1 id="如何選擇演算法來解決問題">如何選擇演算法來解決問題</h1>
+<p>同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞：</p>
 <ul>
 <li>時間複雜度 (花的時間)</li>
 <li>空間複雜度 (花的記憶體)</li>
@@ -153,6 +161,7 @@
 <li>最差情況：考慮演算法所需要執行得<code>最多</code>執行步數。</li>
 <li>平均情況：考慮演算法所需要執行的<code>平均</code>執行步數。</li>
 </ul>
+<h1 id="big-o-notation-當作衡量標準">Big O Notation 當作衡量標準</h1>
 <p>但是通常我們只會專注找出最差情況，而且也通常會使用 <code>Big O notation</code> (大 O 符號) ，他是一種評估演算法效益的方法，通常是用來表示演算法的執行速度，通常也會代表是最差的執行時間。</p>
 <p>那麼我們要怎樣表示呢？</p>
 <ul>
@@ -215,7 +224,7 @@
       <a href="https://www.facebook.com/Zhan.Zhan.Shuai" class="iconfont icon-facebook" title="facebook"></a>
       <a href="https://www.linkedin.com/in/shuaizhan/" class="iconfont icon-linkedin" title="linkedin"></a>
       <a href="https://github.com/shuaizhanzhan/" class="iconfont icon-github" title="github"></a>
-  <a href="https://shuaizhanzhan.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+  <a href="https://shuaizhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 
 <div class="copyright">

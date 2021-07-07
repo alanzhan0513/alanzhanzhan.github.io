@@ -2,49 +2,49 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Alan&#39;s Blog</title>
-    <link>https://shuaizhanzhan.github.io/</link>
+    <link>https://shuaizhan.dev/</link>
     <description>Recent content on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-tw</language>
+    <language>en</language>
     <lastBuildDate>Tue, 06 Jul 2021 23:56:58 +0800</lastBuildDate>
     
-	<atom:link href="https://shuaizhanzhan.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://shuaizhan.dev/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Big O Notation</title>
-      <link>https://shuaizhanzhan.github.io/post/2021-07-06-big-o-notation/</link>
+      <link>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</link>
       <pubDate>Tue, 06 Jul 2021 23:56:58 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/post/2021-07-06-big-o-notation/</guid>
-      <description>同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間) 空間複雜度 (花的記憶體)</description>
+      <guid>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</guid>
+      <description>如何選擇演算法來解決問題 同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間)</description>
     </item>
     
     <item>
       <title>Emotional Blackmail - 情緒勒索</title>
-      <link>https://shuaizhanzhan.github.io/post/2021-06-26-emotional-blackmail/</link>
+      <link>https://shuaizhan.dev/post/2021-06-26-emotional-blackmail/</link>
       <pubDate>Sat, 26 Jun 2021 18:46:52 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/post/2021-06-26-emotional-blackmail/</guid>
+      <guid>https://shuaizhan.dev/post/2021-06-26-emotional-blackmail/</guid>
       <description>什麼是情緒勒索？ 在探討情緒勒索之前，我們得先搞清楚什麼是情緒勒索？ 情緒勒索者可能在有意識或者無意識當中，使用要求、威脅、施壓、沉默等間接或直</description>
     </item>
     
     <item>
       <title>Atomic Habits - 原子習慣</title>
-      <link>https://shuaizhanzhan.github.io/post/2021-06-13-atomic-habits/</link>
+      <link>https://shuaizhan.dev/post/2021-06-13-atomic-habits/</link>
       <pubDate>Sun, 13 Jun 2021 23:45:21 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/post/2021-06-13-atomic-habits/</guid>
+      <guid>https://shuaizhan.dev/post/2021-06-13-atomic-habits/</guid>
       <description>複利 「複利」這個詞貫穿了整部本書，我們可以說它是世界第八大奇蹟，一點也不為過。 你每天只進步 1% ，持續了之後一年 (1.01 ^ 365 = 37.78)，你將進步 37</description>
     </item>
     
     <item>
       <title>About Me</title>
-      <link>https://shuaizhanzhan.github.io/post/1993-05-13-about-me/</link>
+      <link>https://shuaizhan.dev/post/1993-05-13-about-me/</link>
       <pubDate>Thu, 13 May 1993 00:00:00 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/post/1993-05-13-about-me/</guid>
-      <description>Hello, I&amp;rsquo;m Alan. I have around 4 years of experience as a software engineer and focus on back-end. In my free time, I passionately love learning new knowledge which can make me think better and comprehensively to solve problems or create value. I hope that my passion can create more products that users love and use.
+      <guid>https://shuaizhan.dev/post/1993-05-13-about-me/</guid>
+      <description>I have 4-year experience as a software engineer and focus on back-end. In my spare time, I like to gain new knowledge which can improve my critical thinking and the knowledge can help me solve problems or create value for my work. I hope that my passion can create more products that users love and use.
 Experience  Higgs • Full Stack Enginner • Apr. 2018 ~ Present ISCOM Online International Information Inc • Software Engineer • Sep.</description>
     </item>
     

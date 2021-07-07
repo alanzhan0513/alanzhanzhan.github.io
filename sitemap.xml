@@ -1,92 +1,92 @@
-<?xml-stylesheet type="text/xsl" href="https://shuaizhanzhan.github.io/sitemap.xsl"?>
+<?xml-stylesheet type="text/xsl" href="https://shuaizhan.dev/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/</loc>
+    <loc>https://shuaizhan.dev/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/categories/algorithm/</loc>
+    <loc>https://shuaizhan.dev/categories/algorithm/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/tags/algorithm/</loc>
+    <loc>https://shuaizhan.dev/tags/algorithm/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/post/2021-07-06-big-o-notation/</loc>
+    <loc>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/categories/</loc>
+    <loc>https://shuaizhan.dev/categories/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/post/</loc>
+    <loc>https://shuaizhan.dev/post/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/tags/</loc>
+    <loc>https://shuaizhan.dev/tags/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/post/2021-06-26-emotional-blackmail/</loc>
+    <loc>https://shuaizhan.dev/post/2021-06-26-emotional-blackmail/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/categories/reflection/</loc>
+    <loc>https://shuaizhan.dev/categories/reflection/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/tags/reflection/</loc>
+    <loc>https://shuaizhan.dev/tags/reflection/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/post/2021-06-13-atomic-habits/</loc>
+    <loc>https://shuaizhan.dev/post/2021-06-13-atomic-habits/</loc>
     <lastmod>2021-06-13T23:45:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/post/1993-05-13-about-me/</loc>
+    <loc>https://shuaizhan.dev/post/1993-05-13-about-me/</loc>
     <lastmod>1993-05-13T00:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhanzhan.github.io/tags/me/</loc>
+    <loc>https://shuaizhan.dev/tags/me/</loc>
     <lastmod>1993-05-13T00:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

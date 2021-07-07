@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Algorithm on Alan&#39;s Blog</title>
-    <link>https://shuaizhanzhan.github.io/categories/algorithm/</link>
+    <link>https://shuaizhan.dev/categories/algorithm/</link>
     <description>Recent content in Algorithm on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-tw</language>
+    <language>en</language>
     <lastBuildDate>Tue, 06 Jul 2021 23:56:58 +0800</lastBuildDate>
     
-	<atom:link href="https://shuaizhanzhan.github.io/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://shuaizhan.dev/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Big O Notation</title>
-      <link>https://shuaizhanzhan.github.io/post/2021-07-06-big-o-notation/</link>
+      <link>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</link>
       <pubDate>Tue, 06 Jul 2021 23:56:58 +0800</pubDate>
       
-      <guid>https://shuaizhanzhan.github.io/post/2021-07-06-big-o-notation/</guid>
-      <description>同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間) 空間複雜度 (花的記憶體)</description>
+      <guid>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</guid>
+      <description>如何選擇演算法來解決問題 同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間)</description>
     </item>
     
   </channel>
