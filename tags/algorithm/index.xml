@@ -6,10 +6,19 @@
     <description>Recent content in algorithm on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 06 Jul 2021 23:56:58 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 07 Jul 2021 23:56:34 +0800</lastBuildDate>
     
 	<atom:link href="https://shuaizhan.dev/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Divide and Conquer</title>
+      <link>https://shuaizhan.dev/post/2021-07-07-divide-and-conquer/</link>
+      <pubDate>Wed, 07 Jul 2021 23:56:34 +0800</pubDate>
+      
+      <guid>https://shuaizhan.dev/post/2021-07-07-divide-and-conquer/</guid>
+      <description>分而治之 從字面上看起來，就是把一個複雜的問題分解成兩個或者很多個相同或者相似的問題，讓小問題可以被解決，再將最終結果合併求出問題的答案。 優點</description>
+    </item>
     
     <item>
       <title>Big O Notation</title>

@@ -3,48 +3,55 @@
   
   <url>
     <loc>https://shuaizhan.dev/</loc>
-    <lastmod>2021-07-06T23:56:58+08:00</lastmod>
+    <lastmod>2021-07-07T23:56:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/categories/algorithm/</loc>
-    <lastmod>2021-07-06T23:56:58+08:00</lastmod>
+    <lastmod>2021-07-07T23:56:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/tags/algorithm/</loc>
-    <lastmod>2021-07-06T23:56:58+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</loc>
-    <lastmod>2021-07-06T23:56:58+08:00</lastmod>
+    <lastmod>2021-07-07T23:56:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/categories/</loc>
-    <lastmod>2021-07-06T23:56:58+08:00</lastmod>
+    <lastmod>2021-07-07T23:56:34+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://shuaizhan.dev/post/2021-07-07-divide-and-conquer/</loc>
+    <lastmod>2021-07-07T23:56:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/post/</loc>
-    <lastmod>2021-07-06T23:56:58+08:00</lastmod>
+    <lastmod>2021-07-07T23:56:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/tags/</loc>
+    <lastmod>2021-07-07T23:56:34+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
