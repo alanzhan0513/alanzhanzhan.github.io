@@ -6,10 +6,19 @@
     <description>Recent content in algorithm on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 07 Jul 2021 23:56:34 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 10 Jul 2021 18:50:40 +0800</lastBuildDate>
     
 	<atom:link href="https://shuaizhan.dev/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linear Search Algorithm</title>
+      <link>https://shuaizhan.dev/post/2021-07-10-linear-search/</link>
+      <pubDate>Sat, 10 Jul 2021 18:50:40 +0800</pubDate>
+      
+      <guid>https://shuaizhan.dev/post/2021-07-10-linear-search/</guid>
+      <description>Linear Search Alogrithm 在查找一個元素是否存在的時候，我們最常使用的方式是甚麼呢？答案是 for 或者是 while 迴圈，恭喜你！已經學習完 Linear Search 了！ 概念 線性搜尋 (Linear Search)</description>
+    </item>
     
     <item>
       <title>Divide and Conquer</title>
