@@ -6,18 +6,27 @@
     <description>Recent content on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 10 Jul 2021 18:50:40 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 10 Jul 2021 22:57:37 +0800</lastBuildDate>
     
 	<atom:link href="https://shuaizhan.dev/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Binary Search Algorithm</title>
+      <link>https://shuaizhan.dev/post/2021-07-10-binary-search-algorithm/</link>
+      <pubDate>Sat, 10 Jul 2021 22:57:37 +0800</pubDate>
+      
+      <guid>https://shuaizhan.dev/post/2021-07-10-binary-search-algorithm/</guid>
+      <description>我們來玩猜數字遊戲，1 ~ 100 中的整數，你必須猜中我腦海中的數字，而且我們必須在最少的布數內猜到答案，那麼你會怎麼猜呢？ 答案很簡單，你一定會從 50</description>
+    </item>
+    
+    <item>
       <title>Linear Search Algorithm</title>
-      <link>https://shuaizhan.dev/post/2021-07-10-linear-search/</link>
+      <link>https://shuaizhan.dev/post/2021-07-10-linear-search-algorithm/</link>
       <pubDate>Sat, 10 Jul 2021 18:50:40 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/post/2021-07-10-linear-search/</guid>
-      <description>Linear Search Alogrithm 在查找一個元素是否存在的時候，我們最常使用的方式是甚麼呢？答案是 for 或者是 while 迴圈，恭喜你！已經學習完 Linear Search 了！ 概念 線性搜尋 (Linear Search)</description>
+      <guid>https://shuaizhan.dev/post/2021-07-10-linear-search-algorithm/</guid>
+      <description>在查找一個元素是否存在的時候，我們最常使用的方式是甚麼呢？答案是 for 或者是 while 迴圈，恭喜你！已經學習完 Linear Search 了！ 概念 線性搜尋 (Linear Search)：這個</description>
     </item>
     
     <item>
