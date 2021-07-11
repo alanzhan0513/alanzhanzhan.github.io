@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>Jump Search Algorithm</title>
+      <title>Jump Search Algorithm - 跳躍搜尋法</title>
       <link>https://shuaizhan.dev/post/2021-07-11-jump-search-alogrithm/</link>
       <pubDate>Sun, 11 Jul 2021 14:48:35 +0800</pubDate>
       
@@ -21,7 +21,7 @@
     </item>
     
     <item>
-      <title>Binary Search Algorithm</title>
+      <title>Binary Search Algorithm - 二元搜尋法</title>
       <link>https://shuaizhan.dev/post/2021-07-10-binary-search-algorithm/</link>
       <pubDate>Sat, 10 Jul 2021 22:57:37 +0800</pubDate>
       
@@ -30,7 +30,7 @@
     </item>
     
     <item>
-      <title>Linear Search Algorithm</title>
+      <title>Linear Search Algorithm - 線性搜尋法</title>
       <link>https://shuaizhan.dev/post/2021-07-10-linear-search-algorithm/</link>
       <pubDate>Sat, 10 Jul 2021 18:50:40 +0800</pubDate>
       
@@ -39,7 +39,7 @@
     </item>
     
     <item>
-      <title>Divide and Conquer</title>
+      <title>Divide and Conquer - 分而治之</title>
       <link>https://shuaizhan.dev/post/2021-07-07-divide-and-conquer/</link>
       <pubDate>Wed, 07 Jul 2021 23:56:34 +0800</pubDate>
       
@@ -48,7 +48,7 @@
     </item>
     
     <item>
-      <title>Big O Notation</title>
+      <title>Big O Notation - Big O 符號</title>
       <link>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</link>
       <pubDate>Tue, 06 Jul 2021 23:56:58 +0800</pubDate>
       
