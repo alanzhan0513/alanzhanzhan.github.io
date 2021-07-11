@@ -3,48 +3,55 @@
   
   <url>
     <loc>https://shuaizhan.dev/</loc>
-    <lastmod>2021-07-10T22:57:37+08:00</lastmod>
+    <lastmod>2021-07-11T14:48:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/categories/algorithm/</loc>
-    <lastmod>2021-07-10T22:57:37+08:00</lastmod>
+    <lastmod>2021-07-11T14:48:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/tags/algorithm/</loc>
-    <lastmod>2021-07-10T22:57:37+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://shuaizhan.dev/post/2021-07-10-binary-search-algorithm/</loc>
-    <lastmod>2021-07-10T22:57:37+08:00</lastmod>
+    <lastmod>2021-07-11T14:48:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/categories/</loc>
-    <lastmod>2021-07-10T22:57:37+08:00</lastmod>
+    <lastmod>2021-07-11T14:48:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://shuaizhan.dev/post/2021-07-11-jump-search-alogrithm/</loc>
+    <lastmod>2021-07-11T14:48:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/post/</loc>
-    <lastmod>2021-07-10T22:57:37+08:00</lastmod>
+    <lastmod>2021-07-11T14:48:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://shuaizhan.dev/tags/</loc>
+    <lastmod>2021-07-11T14:48:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://shuaizhan.dev/post/2021-07-10-binary-search-algorithm/</loc>
     <lastmod>2021-07-10T22:57:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
