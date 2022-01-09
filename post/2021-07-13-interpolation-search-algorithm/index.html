@@ -142,16 +142,12 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#概念">概念</a></li>
+    <li><a href="#複雜度">複雜度</a></li>
+    <li><a href="#範例">範例</a>
       <ul>
-        <li><a href="#概念">概念</a></li>
-        <li><a href="#複雜度">複雜度</a></li>
-        <li><a href="#範例">範例</a>
-          <ul>
-            <li><a href="#go">Go</a></li>
-            <li><a href="#c">C#</a></li>
-          </ul>
-        </li>
+        <li><a href="#go">Go</a></li>
+        <li><a href="#c">C#</a></li>
       </ul>
     </li>
   </ul>
@@ -160,7 +156,7 @@
 </div>
     <div class="post-content">
       <p>繼續使用猜數字當範例， 1 ~ 100 的數字，但是這次你已經知道結果了，你如果還是繼續使用二元搜尋法，那麼效率不會那麼好，那我們該用甚麼方式解決呢？</p>
-<h2 id="概念">概念</h2>
+<h1 id="概念">概念</h1>
 <p>插補搜尋法 (Interpolation Search)：是一個基於二元搜尋法的演算法，<code>被搜尋的清單是需要事先先被排序過的</code>，而且資料的分布狀態最好是呈現<code>線性</code>的，如果不是呈現線性分布，那麼在搜尋的過程中，將有可能會得到 O(n) 的結果，可能會比二元搜尋法還更耗時。</p>
 <p>公式： lowIndex + (target - array[lowIndex]) * (highIndex-lowIndex) / (array[highIndex] - array[lowIndex])</p>
 <ul>
@@ -168,13 +164,13 @@
 <li>highIndex: 高位索引</li>
 <li>target: 要查找的目標數值</li>
 </ul>
-<h2 id="複雜度">複雜度</h2>
+<h1 id="複雜度">複雜度</h1>
 <ul>
 <li>時間複雜度： O(n)</li>
 <li>空間複雜度： O(1)</li>
 </ul>
-<h2 id="範例">範例</h2>
-<h3 id="go">Go</h3>
+<h1 id="範例">範例</h1>
+<h2 id="go">Go</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -243,7 +239,7 @@
 </span><span class="c1"></span><span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="c">C#</h3>
+</div><h2 id="c">C#</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1

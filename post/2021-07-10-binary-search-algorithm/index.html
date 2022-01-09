@@ -142,16 +142,12 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#概念">概念</a></li>
+    <li><a href="#複雜度">複雜度</a></li>
+    <li><a href="#範例">範例</a>
       <ul>
-        <li><a href="#概念">概念</a></li>
-        <li><a href="#複雜度">複雜度</a></li>
-        <li><a href="#範例">範例</a>
-          <ul>
-            <li><a href="#go">Go</a></li>
-            <li><a href="#c">C#</a></li>
-          </ul>
-        </li>
+        <li><a href="#go">Go</a></li>
+        <li><a href="#c">C#</a></li>
       </ul>
     </li>
   </ul>
@@ -161,15 +157,15 @@
     <div class="post-content">
       <p>我們來玩猜數字遊戲，1 ~ 100 中的整數，你必須猜中我腦海中的數字，而且我們必須在最少的布數內猜到答案，那麼你會怎麼猜呢？</p>
 <p>答案很簡單，你一定會從 50 開始猜，如果沒猜中的話，太高你就會從 25 開始猜，太低你就會從 75 開始猜，以此類推，你每次操作的過程，你都會從中剖一半來猜測，其實你所使用的就是 Binary Search。</p>
-<h2 id="概念">概念</h2>
+<h1 id="概念">概念</h1>
 <p>二元搜尋 (Binary Search)：使用者個演算法之前，<code>被搜尋的清單是需要先被排序過的</code>，如果你要找的元素在清單內的話，二元搜尋會返回你該元素得位置編號，否則會回傳 -1 。</p>
-<h2 id="複雜度">複雜度</h2>
+<h1 id="複雜度">複雜度</h1>
 <ul>
 <li>時間複雜度： O(log n)</li>
 <li>空間複雜度： O(1)</li>
 </ul>
-<h2 id="範例">範例</h2>
-<h3 id="go">Go</h3>
+<h1 id="範例">範例</h1>
+<h2 id="go">Go</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -224,7 +220,7 @@
 </span><span class="c1"></span><span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="c">C#</h3>
+</div><h2 id="c">C#</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1

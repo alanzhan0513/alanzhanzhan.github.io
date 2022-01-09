@@ -142,16 +142,12 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#概念">概念</a></li>
+    <li><a href="#複雜度">複雜度</a></li>
+    <li><a href="#範例">範例</a>
       <ul>
-        <li><a href="#概念">概念</a></li>
-        <li><a href="#複雜度">複雜度</a></li>
-        <li><a href="#範例">範例</a>
-          <ul>
-            <li><a href="#go">Go</a></li>
-            <li><a href="#c">C#</a></li>
-          </ul>
-        </li>
+        <li><a href="#go">Go</a></li>
+        <li><a href="#c">C#</a></li>
       </ul>
     </li>
   </ul>
@@ -161,7 +157,7 @@
     <div class="post-content">
       <p>延續猜數字遊戲，1 ~ 100 我們是不是可以換個猜法呢？</p>
 <p>如果我們從一開始，只要每次沒猜中，我們就往後面 +10 繼續猜，直到最大值範圍值變成我們所猜的數值後，往回開始找值，這樣做，在數值較小的時候，將會更有效率。</p>
-<h2 id="概念">概念</h2>
+<h1 id="概念">概念</h1>
 <p>跳躍搜尋 (Jump Search)： 這個演算法很像二元搜尋法，<code>被搜尋的清單也是需要事先，先被排序過的</code>，但是在每次查找的過程，如果找不到值，就用一個基值快速地跳到下一個區段查找，直到最大值被變小，再往回開始找值，如果有找到就會回傳元素索引值，否則就會回傳 -1。</p>
 <p>上面的敘述可能會有點複雜，以數猜數字為例，假設現在要查找的數值是 30：</p>
 <ul>
@@ -171,13 +167,13 @@
 <li>Step 4: index = 31，目標數值並不等於 31，但是發現要找數值比 31 還小，所以要開始往回找，將索引 -1。</li>
 <li>Step 5: index = 30，發現目標索引為 30，回傳索引值。</li>
 </ul>
-<h2 id="複雜度">複雜度</h2>
+<h1 id="複雜度">複雜度</h1>
 <ul>
 <li>時間複雜度： O(√n)</li>
 <li>空間複雜度： O(1)</li>
 </ul>
-<h2 id="範例">範例</h2>
-<h3 id="go">Go</h3>
+<h1 id="範例">範例</h1>
+<h2 id="go">Go</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -256,7 +252,7 @@
 </span><span class="c1"></span><span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="c">C#</h3>
+</div><h2 id="c">C#</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
