@@ -1,127 +1,148 @@
-<?xml-stylesheet type="text/xsl" href="https://shuaizhan.dev/sitemap.xsl"?>
+<?xml-stylesheet type="text/xsl" href="https://alanzhan.dev/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://shuaizhan.dev/</loc>
+    <loc>https://alanzhan.dev/</loc>
+    <lastmod>2022-01-09T14:58:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/</loc>
+    <lastmod>2022-01-09T14:58:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/2022-01-09-github-pages-custom-domain/</loc>
+    <lastmod>2022-01-09T14:58:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/others/</loc>
+    <lastmod>2022-01-09T14:58:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/others/</loc>
+    <lastmod>2022-01-09T14:58:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/</loc>
+    <lastmod>2022-01-09T14:58:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/</loc>
+    <lastmod>2022-01-09T14:58:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/algorithm/</loc>
     <lastmod>2021-07-13T21:51:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/categories/algorithm/</loc>
+    <loc>https://alanzhan.dev/tags/algorithm/</loc>
     <lastmod>2021-07-13T21:51:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/tags/algorithm/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/</loc>
     <lastmod>2021-07-13T21:51:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/categories/</loc>
-    <lastmod>2021-07-13T21:51:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://shuaizhan.dev/post/2021-07-13-interpolation-search-algorithm/</loc>
-    <lastmod>2021-07-13T21:51:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://shuaizhan.dev/post/</loc>
-    <lastmod>2021-07-13T21:51:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://shuaizhan.dev/tags/</loc>
-    <lastmod>2021-07-13T21:51:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://shuaizhan.dev/post/2021-07-11-jump-search-alogrithm/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/</loc>
     <lastmod>2021-07-11T14:48:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/post/2021-07-10-binary-search-algorithm/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/</loc>
     <lastmod>2021-07-10T22:57:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/post/2021-07-10-linear-search-algorithm/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/</loc>
     <lastmod>2021-07-10T18:50:40+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/post/2021-07-07-divide-and-conquer/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-07-divide-and-conquer/</loc>
     <lastmod>2021-07-07T23:56:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-06-big-o-notation/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/post/2021-06-26-emotional-blackmail/</loc>
+    <loc>https://alanzhan.dev/post/2021-06-26-emotional-blackmail/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/categories/reflection/</loc>
+    <loc>https://alanzhan.dev/categories/reflection/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/tags/reflection/</loc>
+    <loc>https://alanzhan.dev/tags/reflection/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/post/2021-06-13-atomic-habits/</loc>
+    <loc>https://alanzhan.dev/post/2021-06-13-atomic-habits/</loc>
     <lastmod>2021-06-13T23:45:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/post/1993-05-13-about-me/</loc>
+    <loc>https://alanzhan.dev/post/1993-05-13-about-me/</loc>
     <lastmod>1993-05-13T00:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://shuaizhan.dev/tags/me/</loc>
+    <loc>https://alanzhan.dev/tags/me/</loc>
     <lastmod>1993-05-13T00:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://shuaizhan.dev/sitemap.xml
+Sitemap: https://alanzhan.dev/sitemap.xml

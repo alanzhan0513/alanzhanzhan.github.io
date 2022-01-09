@@ -2,39 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Alan&#39;s Blog</title>
-    <link>https://shuaizhan.dev/tags/</link>
+    <link>https://alanzhan.dev/tags/</link>
     <description>Recent content in Tags on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 13 Jul 2021 21:51:30 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 09 Jan 2022 14:58:58 +0800</lastBuildDate>
     
-	<atom:link href="https://shuaizhan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alanzhan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>others</title>
+      <link>https://alanzhan.dev/tags/others/</link>
+      <pubDate>Sun, 09 Jan 2022 14:58:58 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/tags/others/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>algorithm</title>
-      <link>https://shuaizhan.dev/tags/algorithm/</link>
+      <link>https://alanzhan.dev/tags/algorithm/</link>
       <pubDate>Tue, 13 Jul 2021 21:51:30 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/tags/algorithm/</guid>
+      <guid>https://alanzhan.dev/tags/algorithm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>reflection</title>
-      <link>https://shuaizhan.dev/tags/reflection/</link>
+      <link>https://alanzhan.dev/tags/reflection/</link>
       <pubDate>Sat, 26 Jun 2021 18:46:52 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/tags/reflection/</guid>
+      <guid>https://alanzhan.dev/tags/reflection/</guid>
       <description></description>
     </item>
     
     <item>
       <title>me</title>
-      <link>https://shuaizhan.dev/tags/me/</link>
+      <link>https://alanzhan.dev/tags/me/</link>
       <pubDate>Thu, 13 May 1993 00:00:00 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/tags/me/</guid>
+      <guid>https://alanzhan.dev/tags/me/</guid>
       <description></description>
     </item>
     

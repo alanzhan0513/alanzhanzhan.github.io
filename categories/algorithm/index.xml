@@ -2,66 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Algorithm on Alan&#39;s Blog</title>
-    <link>https://shuaizhan.dev/categories/algorithm/</link>
+    <link>https://alanzhan.dev/categories/algorithm/</link>
     <description>Recent content in Algorithm on Alan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Tue, 13 Jul 2021 21:51:30 +0800</lastBuildDate>
     
-	<atom:link href="https://shuaizhan.dev/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alanzhan.dev/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Interpolation Search Algorithm - 插補搜尋法</title>
-      <link>https://shuaizhan.dev/post/2021-07-13-interpolation-search-algorithm/</link>
+      <link>https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/</link>
       <pubDate>Tue, 13 Jul 2021 21:51:30 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/post/2021-07-13-interpolation-search-algorithm/</guid>
+      <guid>https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/</guid>
       <description>繼續使用猜數字當範例， 1 ~ 100 的數字，但是這次你已經知道結果了，你如果還是繼續使用二元搜尋法，那麼效率不會那麼好，那我們該用甚麼方式解決呢？ 概</description>
     </item>
     
     <item>
       <title>Jump Search Algorithm - 跳躍搜尋法</title>
-      <link>https://shuaizhan.dev/post/2021-07-11-jump-search-alogrithm/</link>
+      <link>https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/</link>
       <pubDate>Sun, 11 Jul 2021 14:48:35 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/post/2021-07-11-jump-search-alogrithm/</guid>
+      <guid>https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/</guid>
       <description>延續猜數字遊戲，1 ~ 100 我們是不是可以換個猜法呢？ 如果我們從一開始，只要每次沒猜中，我們就往後面 +10 繼續猜，直到最大值範圍值變成我們所猜的數值後</description>
     </item>
     
     <item>
       <title>Binary Search Algorithm - 二元搜尋法</title>
-      <link>https://shuaizhan.dev/post/2021-07-10-binary-search-algorithm/</link>
+      <link>https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/</link>
       <pubDate>Sat, 10 Jul 2021 22:57:37 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/post/2021-07-10-binary-search-algorithm/</guid>
+      <guid>https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/</guid>
       <description>我們來玩猜數字遊戲，1 ~ 100 中的整數，你必須猜中我腦海中的數字，而且我們必須在最少的布數內猜到答案，那麼你會怎麼猜呢？ 答案很簡單，你一定會從 50</description>
     </item>
     
     <item>
       <title>Linear Search Algorithm - 線性搜尋法</title>
-      <link>https://shuaizhan.dev/post/2021-07-10-linear-search-algorithm/</link>
+      <link>https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/</link>
       <pubDate>Sat, 10 Jul 2021 18:50:40 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/post/2021-07-10-linear-search-algorithm/</guid>
+      <guid>https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/</guid>
       <description>在查找一個元素是否存在的時候，我們最常使用的方式是甚麼呢？答案是 for 或者是 while 迴圈，恭喜你！已經學習完 Linear Search 了！ 概念 線性搜尋 (Linear Search)：這個</description>
     </item>
     
     <item>
       <title>Divide and Conquer - 分而治之</title>
-      <link>https://shuaizhan.dev/post/2021-07-07-divide-and-conquer/</link>
+      <link>https://alanzhan.dev/post/2021-07-07-divide-and-conquer/</link>
       <pubDate>Wed, 07 Jul 2021 23:56:34 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/post/2021-07-07-divide-and-conquer/</guid>
+      <guid>https://alanzhan.dev/post/2021-07-07-divide-and-conquer/</guid>
       <description>分而治之 從字面上看起來，就是把一個複雜的問題分解成兩個或者很多個相同或者相似的問題，讓小問題可以被解決，再將最終結果合併求出問題的答案。 優點</description>
     </item>
     
     <item>
       <title>Big O Notation - Big O 符號</title>
-      <link>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</link>
+      <link>https://alanzhan.dev/post/2021-07-06-big-o-notation/</link>
       <pubDate>Tue, 06 Jul 2021 23:56:58 +0800</pubDate>
       
-      <guid>https://shuaizhan.dev/post/2021-07-06-big-o-notation/</guid>
+      <guid>https://alanzhan.dev/post/2021-07-06-big-o-notation/</guid>
       <description>如何選擇演算法來解決問題 同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞： 時間複雜度 (花的時間)</description>
     </item>
     
