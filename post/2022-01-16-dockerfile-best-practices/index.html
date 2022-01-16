@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>10 個 Dockerfile 的最佳實踐 - Alan Zhan | 陪伴著你一起成長進步</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。" /><meta name="keywords" content="Alan, Zhan, Blog, docker, dockerfile, best, practices, 最佳, 實踐, 十個" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="10 個 Dockerfile 的最佳實踐" />
+<meta property="og:description" content="最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/" />
+<meta property="article:published_time" content="2022-01-16T16:55:15+08:00" />
+<meta property="article:modified_time" content="2022-01-16T16:55:15+08:00" />
+<meta itemprop="name" content="10 個 Dockerfile 的最佳實踐">
+<meta itemprop="description" content="最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。">
+<meta itemprop="datePublished" content="2022-01-16T16:55:15&#43;08:00" />
+<meta itemprop="dateModified" content="2022-01-16T16:55:15&#43;08:00" />
+<meta itemprop="wordCount" content="1461">
+
+
+
+<meta itemprop="keywords" content="docker,dockerfile," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="10 個 Dockerfile 的最佳實踐"/>
+<meta name="twitter:description" content="最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">陪伴著你一起成長進步</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">陪伴著你一起成長進步</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">10 個 Dockerfile 的最佳實踐</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 16 Jan 22 16:55 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/docker/"> Docker </a>
+            </div>
+          <span class="more-meta"> 1461 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#容器應該是短暫的">容器應該是短暫的</a></li>
+    <li><a href="#了解-build-context-構建的上下文">了解 Build Context (構建的上下文)</a></li>
+    <li><a href="#使用-dockerignore-文件">使用 .dockerignore 文件</a></li>
+    <li><a href="#借助-stdin-管道傳輸-dockerfile">借助 stdin 管道傳輸 dockerfile</a></li>
+    <li><a href="#使用多階段建構">使用多階段建構</a></li>
+    <li><a href="#減少安裝不必要的包">減少安裝不必要的包</a></li>
+    <li><a href="#一個容器指運行一個進程">一個容器指運行一個進程</a></li>
+    <li><a href="#鏡像層數盡可能減少">鏡像層數盡可能減少</a></li>
+    <li><a href="#將多行參數排序">將多行參數排序</a></li>
+    <li><a href="#利用建構緩存">利用建構緩存</a></li>
+    <li><a href="#參考">參考</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。</p>
+<h1 id="容器應該是短暫的">容器應該是短暫的</h1>
+<p>通過 <code>Dockerfile</code> 構建的鏡像所啟動的容器，應該盡可能的短暫，這邊的短暫意思是：很快速的啟動，並且很快速的終止。</p>
+<h1 id="了解-build-context-構建的上下文">了解 Build Context (構建的上下文)</h1>
+<p>建構包含建構鏡像不需要的文件會導致更大的建構上下文與更大的鏡像。這樣會增加建構的時間以及 pull 和 push 鏡像的時間和運行容器時的大小。</p>
+<ul>
+<li>建構時需要注意 context 的目錄，通常為 <code>.</code>，目前位置。</li>
+<li>善用 .dockerignore，會在下面再做詳細介紹。</li>
+</ul>
+<h1 id="使用-dockerignore-文件">使用 .dockerignore 文件</h1>
+<p>用法和 git 中的 .gitignore 很像，以 git 來說，是為了避免無意義的文件被提交到 git 鍊上，而 .dockerignore 是為了確保 context 越小越好。</p>
+<h1 id="借助-stdin-管道傳輸-dockerfile">借助 stdin 管道傳輸 dockerfile</h1>
+<p>如果你的鏡像只是臨時性的話，你又懶得撰寫 Dockerfile，你可以通過 stdin 管道，建構鏡像。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> -e <span class="s1">&#39;FROM busybox\nRUN echo &#34;hello world&#34;&#39;</span> <span class="p">|</span> docker build -
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker build -<span class="s">&lt;&lt;EOF
+</span><span class="s">FROM busybox
+</span><span class="s">RUN echo &#34;hello world&#34;
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="使用多階段建構">使用多階段建構</h1>
+<p>使用多階段建構，能夠大幅度減少你最終的鏡像大小，而且你就可以不需要考慮優化非最終鏡像的 dockerfile 內的聲明語句。</p>
+<p>以下依 golang 為例，在建構的過程中，我們需要 SDK 的鏡像來協助我們打包成二進位文件，而打包完畢之後，我們只需要把文件放到一個極度輕量的鏡像即可，這樣就可以確保最終鏡像是很輕量的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="c"># build stage</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> golang:alpine AS build</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> apk --no-cache add build-base git bzr mercurial gcc<span class="err">
+</span><span class="err"></span><span class="k">ADD</span> . /src<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> <span class="nb">cd</span> /src <span class="o">&amp;&amp;</span> go build -o main<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c"># final stage</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> alpine</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /app</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>build /src/main /app/<span class="err">
+</span><span class="err"></span><span class="k">ENTRYPOINT</span> ./main<span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><h1 id="減少安裝不必要的包">減少安裝不必要的包</h1>
+<p>為了降低複雜性、依賴關係、文件大小與建構時間，在非必要情況下，應避免安裝不必要的軟件包。</p>
+<h1 id="一個容器指運行一個進程">一個容器指運行一個進程</h1>
+<p>每個容器應該只有一個關注點，所以容器中最好是只有一個進程，盡可能地把其他應用程序解耦到其他容器中。</p>
+<p>但是事情往往沒有那麼簡單，就是有機會用一個容器內會跑起多個進程，那麼這邊會推薦你以下的進程管理工具，這邊列舉了幾個比較有名氣的管理工具：</p>
+<ul>
+<li>supervisord: 輕易使用的進程管理工具</li>
+<li>tini: Docker 默認的進程管理工具</li>
+<li>systemd: 大而全的解決方案，但是相對的有點笨重</li>
+<li>s6: 非常著名的進程管理工具</li>
+</ul>
+<h1 id="鏡像層數盡可能減少">鏡像層數盡可能減少</h1>
+<p>在舊版的 Docker 中，盡量減少鏡像中的層數，以確保他們的性能非常重要：</p>
+<ul>
+<li>只有指令 RUN 、 COPY 、 ADD 創建層，其他指令創建臨時中間鏡像，並不會增加建構大小。</li>
+<li>在可以的情況下，善用多階段建構，可以參考上方 <code>使用多階段建構</code></li>
+</ul>
+<h1 id="將多行參數排序">將多行參數排序</h1>
+<p>將多行參數按照字母排序，譬如：要安裝多個包時。可以避免重複安裝到同一個包，更新包列表時也更容易維護。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y <span class="se">\
+</span><span class="se"></span>  bzr <span class="se">\
+</span><span class="se"></span>  cvs <span class="se">\
+</span><span class="se"></span>  git <span class="se">\
+</span><span class="se"></span>  mercurial <span class="se">\
+</span><span class="se"></span>  subversion <span class="se">\
+</span><span class="se"></span>  <span class="o">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*<span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><h1 id="利用建構緩存">利用建構緩存</h1>
+<p>在鏡像的建構過中，Docker 會遍歷 Dockerfile 文堅中的指令，然後按照順序執行。每條指令在執行前， Docker 都會在緩存中尋找是否已經存在可用的重複鏡像，如果有就使用現有的鏡像，不重覆創建。</p>
+<blockquote>
+<p>可以在 <code>docker build</code> 命令中，使用 <code>--no-cache=true</code> 選項來禁止使用緩存。</p>
+</blockquote>
+<ul>
+<li>從已經存在緩存中的父鏡像開始，將下一條指令與該父鏡像的所有子鏡像進行比較，檢查這蠍子鏡像，在被創建時的指令是否和被檢查的指令完全一樣。如果不是，則緩存無效。
+<ul>
+<li>補充：越是不容易被改動的文件或指令，應該優先執行，這樣就可以最大程度的保證快取被重複執行。</li>
+</ul>
+</li>
+<li>在大多數的情況下，只需要簡單的比對 <code>Dockefile</code> 中的指令與子鏡像。</li>
+<li>對於 <code>ADD</code> 與 <code>COPY</code> 指令，鏡像中對應文件的內容也會被檢查，每隔文件都會計算出一個較驗和 (但是最後修改時間與最後訪問時間不會被納入較驗)。在緩存尋找的過程中，會將這些較驗和與已存在的鏡像中的文件較驗和進行比較，如果文件有改變，則緩存無效。</li>
+<li>除了 <code>ADD</code> 與 <code>COPY</code> 指令，緩存匹配過程，不會查看臨時容器的文件來決定緩存是否匹配。譬如：當執行 <code>RUN apt-get -y update</code> 指令後，容器的一些文件會被更新，但是 Docker 不會去檢查這些文件，而是紀錄這些指令字串，來匹配緩存。</li>
+</ul>
+<h1 id="參考">參考</h1>
+<p><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile Best Practices</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        16 Jan 22 16:55 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">docker</a>
+          <a href="/tags/dockerfile/">dockerfile</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-01-09-github-pages-custom-domain/">
+            <span class="next-text nav-default">Github Pages Custom Domain - Github Blog 自訂域名</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on Alan Zhan | 陪伴著你一起成長進步</title>
+    <link>https://alanzhan.dev/tags/docker/</link>
+    <description>Recent content in docker on Alan Zhan | 陪伴著你一起成長進步</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 16 Jan 2022 16:55:15 +0800</lastBuildDate>
+    
+	<atom:link href="https://alanzhan.dev/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>10 個 Dockerfile 的最佳實踐</title>
+      <link>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</link>
+      <pubDate>Sun, 16 Jan 2022 16:55:15 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</guid>
+      <description>最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。</description>
+    </item>
+    
+  </channel>
+</rss>
