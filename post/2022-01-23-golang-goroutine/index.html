@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Golang Goroutine 與 GMP 原理全面分析 - Alan Zhan | 陪伴著你一起成長進步</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能" /><meta name="keywords" content="alan, zhan, blog, k8s, kubernetes, go, golang, gmp, 原理, 全面, 分析, 詳解, 模型, goroutine, 協程, 線程, 內核態, 用戶態" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-01-23-golang-goroutine/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Golang Goroutine 與 GMP 原理全面分析" />
+<meta property="og:description" content="最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-01-23-golang-goroutine/" />
+<meta property="article:published_time" content="2022-01-24T20:24:58+08:00" />
+<meta property="article:modified_time" content="2022-01-24T20:24:58+08:00" />
+<meta itemprop="name" content="Golang Goroutine 與 GMP 原理全面分析">
+<meta itemprop="description" content="最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能">
+<meta itemprop="datePublished" content="2022-01-24T20:24:58&#43;08:00" />
+<meta itemprop="dateModified" content="2022-01-24T20:24:58&#43;08:00" />
+<meta itemprop="wordCount" content="2598">
+
+
+
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang Goroutine 與 GMP 原理全面分析"/>
+<meta name="twitter:description" content="最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">陪伴著你一起成長進步</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">陪伴著你一起成長進步</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Golang Goroutine 與 GMP 原理全面分析</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 24 Jan 22 20:24 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/golang/"> Golang </a>
+            </div>
+          <span class="more-meta"> 2598 words </span>
+          <span class="more-meta"> 6 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#golang-調度器的由來">Golang 調度器的由來</a>
+      <ul>
+        <li><a href="#單進程時代">單進程時代</a></li>
+        <li><a href="#多進程--多線程時代">多進程 / 多線程時代</a>
+          <ul>
+            <li><a href="#進程切換開銷">進程切換開銷</a></li>
+          </ul>
+        </li>
+        <li><a href="#協程來提高-cpu-利用率">協程來提高 CPU 利用率</a></li>
+        <li><a href="#goroutine">Goroutine</a>
+          <ul>
+            <li><a href="#mpg-的對應關係">MPG 的對應關係</a></li>
+            <li><a href="#gmp-模型細節">GMP 模型細節</a></li>
+            <li><a href="#調度器行為">調度器行為</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#參考">參考</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能要先來認識一下歷史，這樣我們才能更全面的認識 goroutine 的原理與設計思想。</p>
+<h1 id="golang-調度器的由來">Golang 調度器的由來</h1>
+<h2 id="單進程時代">單進程時代</h2>
+<p>我們都知道軟體是跑在操作系統之上的，真正來計算的人是 CPU，早期的操作系統每個程序就是一個進程，直到一個程序運行完畢之後，才能運行下一個進程。</p>
+<p>假設有三個進程，分別為 A 、 B 與 C ，那麼在 CPU 上的調度就是依照執行順序執行。</p>
+<p><code>Example: A -&gt; B -&gt; C</code></p>
+<p>但是在這樣的單進程操作系統時代，會面臨以下的問題：</p>
+<ol>
+<li>每次只能執行一個進程，計算機只能一個任務一個任務的執行。</li>
+<li>若進程發生了 IO 操作堵塞時，容易造成 CPU 資源的浪費。</li>
+</ol>
+<p>於是就誕生了多進程 / 多線程 的操作系統。</p>
+<h2 id="多進程--多線程時代">多進程 / 多線程時代</h2>
+<p>在多進程 / 多線程德操作系統中，就解決掉了阻塞的問題，因為一個進程阻塞 CPU 就可以立刻切換到其他進程中去執行，而且調度 CPU 的算法可以保證運行的進程，都可以分配到 CPU 的運行分片，從宏觀的角度來看，似乎多個進程是同時在運行的，相信會有同學不清楚 CPU 的調度原理不清楚的話，可以查看一下 <a href="https://bbs.huaweicloud.com/blogs/288296">CPU 調度原理</a>。</p>
+<p>多個進程在分配 CPU 的運行時間片的時候，一切看起來沒問題的，但是工程師們又發現了新的問題，進程在創建、切換、銷毀，都會占用很長得時間，CPU 的利用率雖然起來了，但是進程過多時，CPU 會有很大一部分的時間都會被用來運行切換進程。</p>
+<p>那麼進程在切換的時候，會造成那些開銷呢？</p>
+<h3 id="進程切換開銷">進程切換開銷</h3>
+<ul>
+<li>直接開銷
+<ul>
+<li>切換頁表全域性目錄 (PGD)</li>
+<li>切換 Kernel 堆疊</li>
+<li>切換硬體上下文 (進程恢復之前，必須裝入戰存器的資料，統稱為硬體上下文)</li>
+<li>重新整理 TLB</li>
+<li>系統調度器的代碼執行</li>
+</ul>
+</li>
+<li>間接開銷
+<ul>
+<li>CPU 緩存失效導致進程需要用到內存直接訪問的 IO 操作變多</li>
+</ul>
+</li>
+</ul>
+<p>所以我們該如何才能提高 CPU 的利用率呢？</p>
+<h2 id="協程來提高-cpu-利用率">協程來提高 CPU 利用率</h2>
+<p>聰明的工程師們就發現，其實線程分為內核態線程 (Kernel Thread) 與用戶態線程 (User Thread)，而一個「用戶態線程」必須綁定一個「用戶態線程」，但是 CPU 不會知道有「用戶態線程」的存在，他只知道他運行的是一個「用戶態線程」 (Linux PCB 進程控制塊)。</p>
+<p>那麼我們能不能在用戶態創建維護一個輕量級的協程 (co-routine)，讓多個輕量級的線程綁定到同一個內核態線程上？如果一個內核態線程分到一個運行的時間片之後，那我是不是能在有效的時間內，把用戶態堆積的所有協程都執行完成呢？然後再把 CPU 交出去，那這樣是不是整個執行效率會高很多呢？</p>
+<p>所以這就是 Go 語言線程調度遵循的一些原則，那我們來看看 Goroutine。</p>
+<h2 id="goroutine">Goroutine</h2>
+<p>Goroutine 就是 Go 語言的協程概念，Go 語言基於 GMP 模型實現用戶態線程</p>
+<ul>
+<li>Goroutine： 表示 goroutine ，每個 goroutine 都有自已的 stack 空間、定時器，初始化的 stack 大小在 2k 左右，空間會隨著需求增長。</li>
+<li>Machine： 抽象化代表內核線程，紀錄內核線程 stack 信息，當 goroutine 調度到線程時候，使用該 goroutine 自己的 stack 信息。</li>
+<li>Process： 表示調度器，負責調度 goroutine ，維護一個本地 goroutine 對列，並且把對列跟 M 綁定，讓 M 從 P 上獲得 goroutine 並執行，同時還負責部分記憶體管理。</li>
+</ul>
+<p><img src="/2022-01-24-gmp.jpg" alt="golang  GMP"></p>
+<h3 id="mpg-的對應關係">MPG 的對應關係</h3>
+<ul>
+<li>KSE: Kernel Scheduling Entity</li>
+<li>M 我們可以理解跟 Kernel Task 一對一對應</li>
+<li>一個 P 上面可以有多個 G，P 會去識當前狀態來決定要跟哪個 M 來綁定，比如說一個 M 已經陷入到內核態，而 P 就有可能換主，去找其他 M 執行。</li>
+</ul>
+<p><img src="/2022-01-24-mpg.jpg" alt="golang MPG"></p>
+<h3 id="gmp-模型細節">GMP 模型細節</h3>
+<p><img src="/2022-01-24-gmp-detail.jpg" alt="golang GMP Model"></p>
+<ul>
+<li>LRQ： local run queue</li>
+<li>GRQ： global run queue</li>
+<li>sudog： 阻塞 queue</li>
+<li>gFree： 全局自由 G 列表</li>
+<li>pidle： 全局空閒 P 列表</li>
+</ul>
+<p>以下真的上圖的一些細節展開贅述：</p>
+<ul>
+<li>假設 go 語言在主程序，起了多個 goroutine ，那麼在啟動的過程中，會有一個參數可以設定， go 可以運行多少個併發的現程，一般而言，會看你的節點上有多少個 CPU 併發數就是多少，所以在初始化的過程中，就會按照你的設定數量去初始化 P 。</li>
+<li>當 go 語言開始執行了，那其實 go 語言的 main 方法，本身也是一個 goroutine ，所以他就會被落到一個 P 上，那麼這個 main 方法又起了很多個 goroutine ，那麼他就會在當前的 P 上掛載多個 G ，所以在這一刻， P 上會有一堆排隊的 G ，這時候，還沒充分的利用多核心的優勢，因為 G 都掛載在同一個 P 上，但是其他的 P 不可能空手啥事都不幹，這樣未免也太浪費 CPU 了吧！</li>
+<li>如果 P 已經空手了，那麼他就會去看 GRQ ，如果還是沒有，他就會去看看其他的 P 是不是有 G 可以執行，假設他發現第一個 P 有正在對列的 G ，那麼他就會拿取一半的 G 過來運行，但是所有的 P 都有這個機制，所以很快的堆積的 G 就被消化完畢。</li>
+<li>但是會不會有一種狀況發生，我創建了一堆 G ，超出了 LRQ 的長度 (默認 256)，那麼這個 G 就會放到 GRQ 內。</li>
+<li>如果 M 陷入內核態了，那麼 P 就會跟 M 段開綁定關係， P 就會取找說 哪個 M 是空閒的，並且跟他綁定在一起。</li>
+<li>如果一個 G 產生了阻塞，那處於 wait 狀態的 G ，就會被丟到 sudog 阻塞對列裡，他不跟任何的 P 產生綁定關係。</li>
+<li>如果 G 已經完成運行後，他會把自己放到 gFree 去，這樣就可以重複使用 G ，減少開銷。</li>
+</ul>
+<h4 id="p-的狀態">P 的狀態</h4>
+<p><img src="/2022-01-24-p-state-machine.jpg" alt="golang GMP P state machine"></p>
+<ul>
+<li>_Pidle： 處理器沒有運行用戶代碼或者調度器，被空閒對列或者改變其狀態的結構持有，運行對列為空。</li>
+<li>_Prunning： 被線程 M 持有，並且正在執行用戶代碼或者調度器。</li>
+<li>_Psyscall： 沒有執行用戶代碼，當前線程陷入系統調用。</li>
+<li>_Pgcstop： 被線程 M 持有，當前處理器於垃圾回收被停止。</li>
+<li>_Pdead： 當前處理器已經不被使用。</li>
+</ul>
+<h4 id="g-的狀態">G 的狀態</h4>
+<p><img src="/2022-01-24-p-state-machine.jpg" alt="golang GMP G state machine"></p>
+<ul>
+<li>_Gidle： 剛剛被分配，並且還沒被初始化，值為 0 ，為創建 goroutine 後的默認值。</li>
+<li>_Grunnable： 沒有執行代碼，沒有 stack 的所有權，存儲在運行對列中，可能在某個 P 的本地對列或者全局對列中。</li>
+<li>_Grunning： 正在執行代碼的 goroutine，擁有 stack 的所有權。</li>
+<li>_Gsyscall： 正在執行系統調用，擁有 stack 的所有權，與 P 脫離，但是與某個 M 綁定，會在調用結束後，被分配到運行對列。</li>
+<li>_Gwaiting： 被阻塞的 goroutine，阻塞在某個 channel 的發送或者接收對列。</li>
+<li>_Gdead： 當前 goroutine 未被使用，沒有執行代碼，可能有分配的 stack ，分布在空閒列表，可能是一個剛初始化 goroutine ，也可能是執行 goexit 退出的 goroutine。</li>
+<li>_Gcopystac： stack 正在被拷貝，沒有執行代碼，不在運行對列上，執行權在。</li>
+<li>_Gscan： GC 正在掃描 stack 空間，沒有執行代碼，可以與其他狀態同時存在。</li>
+</ul>
+<h3 id="調度器行為">調度器行為</h3>
+<ul>
+<li>為了保證公平，當 GRQ 中有待執行的 G 時候，通過 schedtick 保證有一定的機率 (1/61)，會從 GRQ 中查找 G</li>
+<li>從 P 的 LRQ 中查找待處理的 G</li>
+<li>如果前面兩種都沒找到 G，會通過 runtime.findrunnable 進行阻塞查找 G
+<ul>
+<li>從 LRQ 、 GRQ 中查找</li>
+<li>從網路輪詢器中查找是否有 G 等待運行</li>
+<li>通過 runtime.runqsteal 嘗試從其他隨機的 P 中竊取一半的 G</li>
+</ul>
+</li>
+</ul>
+<h1 id="參考">參考</h1>
+<p><a href="https://github.com/aceld/golang/blob/main/2%E3%80%81Golang%E7%9A%84%E5%8D%8F%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8%E5%8E%9F%E7%90%86%E5%8F%8AGMP%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%EF%BC%9F.md">Golang的协程调度器原理及GMP设计思想？</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        24 Jan 22 20:24 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">golang</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-01-16-dockerfile-best-practices/">
+            <span class="next-text nav-default">10 個 Dockerfile 的最佳實踐</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

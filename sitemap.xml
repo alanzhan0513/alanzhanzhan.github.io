@@ -2,21 +2,56 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</loc>
-    <lastmod>2022-01-16T16:55:15+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://alanzhan.dev/</loc>
-    <lastmod>2022-01-16T16:55:15+08:00</lastmod>
+    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/categories/</loc>
+    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/golang/</loc>
+    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/golang/</loc>
+    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/2022-01-23-golang-goroutine/</loc>
+    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/</loc>
+    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/</loc>
+    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</loc>
     <lastmod>2022-01-16T16:55:15+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -38,20 +73,6 @@
   
   <url>
     <loc>https://alanzhan.dev/tags/dockerfile/</loc>
-    <lastmod>2022-01-16T16:55:15+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/post/</loc>
-    <lastmod>2022-01-16T16:55:15+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/</loc>
     <lastmod>2022-01-16T16:55:15+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -142,14 +163,14 @@
   </url>
   
   <url>
-    <loc>https://alanzhan.dev/categories/reflection/</loc>
+    <loc>https://alanzhan.dev/categories/reading/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://alanzhan.dev/tags/reflection/</loc>
+    <loc>https://alanzhan.dev/tags/reading/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
