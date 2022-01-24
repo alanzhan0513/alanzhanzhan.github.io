@@ -13,10 +13,10 @@
     
     <item>
       <title>Golang Goroutine 與 GMP 原理全面分析</title>
-      <link>https://alanzhan.dev/post/2022-01-23-golang-goroutine/</link>
+      <link>https://alanzhan.dev/post/2022-01-24-golang-goroutine/</link>
       <pubDate>Mon, 24 Jan 2022 20:24:58 +0800</pubDate>
       
-      <guid>https://alanzhan.dev/post/2022-01-23-golang-goroutine/</guid>
+      <guid>https://alanzhan.dev/post/2022-01-24-golang-goroutine/</guid>
       <description>最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能</description>
     </item>
     
