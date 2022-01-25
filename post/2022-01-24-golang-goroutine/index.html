@@ -49,7 +49,7 @@
 <meta itemprop="description" content="最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能">
 <meta itemprop="datePublished" content="2022-01-24T20:24:58&#43;08:00" />
 <meta itemprop="dateModified" content="2022-01-24T20:24:58&#43;08:00" />
-<meta itemprop="wordCount" content="2598">
+<meta itemprop="wordCount" content="2685">
 
 
 
@@ -133,7 +133,7 @@
         <div class="post-category">
             <a href="/categories/golang/"> Golang </a>
             </div>
-          <span class="more-meta"> 2598 words </span>
+          <span class="more-meta"> 2685 words </span>
           <span class="more-meta"> 6 mins read </span>
         
       </div>
@@ -162,7 +162,11 @@
         </li>
       </ul>
     </li>
-    <li><a href="#參考">參考</a></li>
+    <li><a href="#總結">總結</a>
+      <ul>
+        <li><a href="#參考">參考</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </div>
@@ -263,17 +267,19 @@
 </ul>
 <h3 id="調度器行為">調度器行為</h3>
 <ul>
-<li>為了保證公平，當 GRQ 中有待執行的 G 時候，通過 schedtick 保證有一定的機率 (1/61)，會從 GRQ 中查找 G</li>
-<li>從 P 的 LRQ 中查找待處理的 G</li>
-<li>如果前面兩種都沒找到 G，會通過 runtime.findrunnable 進行阻塞查找 G
+<li>為了保證公平，當 GRQ 中有待執行的 G 時候，通過 schedtick 保證有一定的機率 (1/61)，會從 GRQ 中查找 G。</li>
+<li>從 P 的 LRQ 中查找待處理的 G。</li>
+<li>如果前面兩種都沒找到 G，會通過 runtime.findrunnable 進行阻塞查找 G。
 <ul>
-<li>從 LRQ 、 GRQ 中查找</li>
-<li>從網路輪詢器中查找是否有 G 等待運行</li>
-<li>通過 runtime.runqsteal 嘗試從其他隨機的 P 中竊取一半的 G</li>
+<li>從 LRQ 、 GRQ 中查找。</li>
+<li>從網路輪詢器中查找是否有 G 等待運行。</li>
+<li>通過 runtime.runqsteal 嘗試從其他隨機的 P 中竊取一半的 G。</li>
 </ul>
 </li>
 </ul>
-<h1 id="參考">參考</h1>
+<h1 id="總結">總結</h1>
+<p>好久沒看那麼硬的知識了，但我總覺得我今天會消化不良，我需要反反覆覆在看個好幾次，看完之後你的心得如何呢？歡迎到我的 <a href="https://www.facebook.com/alanzhan0513">Facebook</a> 留言，可以的話順手給個讚吧！感謝你的閱讀。</p>
+<h2 id="參考">參考</h2>
 <p><a href="https://github.com/aceld/golang/blob/main/2%E3%80%81Golang%E7%9A%84%E5%8D%8F%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8%E5%8E%9F%E7%90%86%E5%8F%8AGMP%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%EF%BC%9F.md">Golang的协程调度器原理及GMP设计思想？</a></p>
 
     </div>
