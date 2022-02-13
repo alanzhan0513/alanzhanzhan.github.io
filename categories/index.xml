@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Alan Zhan | 陪伴著你一起成長進步</title>
+    <title>Categories on Alan Zhan | 讓我們一起學習成為更好的自己</title>
     <link>https://alanzhan.dev/categories/</link>
-    <description>Recent content in Categories on Alan Zhan | 陪伴著你一起成長進步</description>
+    <description>Recent content in Categories on Alan Zhan | 讓我們一起學習成為更好的自己</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 24 Jan 2022 20:24:58 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 13 Feb 2022 14:42:09 +0800</lastBuildDate>
     
 	<atom:link href="https://alanzhan.dev/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Golang</title>
       <link>https://alanzhan.dev/categories/golang/</link>
-      <pubDate>Mon, 24 Jan 2022 20:24:58 +0800</pubDate>
+      <pubDate>Sun, 13 Feb 2022 14:42:09 +0800</pubDate>
       
       <guid>https://alanzhan.dev/categories/golang/</guid>
       <description></description>

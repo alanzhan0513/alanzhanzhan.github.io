@@ -3,48 +3,62 @@
   
   <url>
     <loc>https://alanzhan.dev/</loc>
-    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/categories/</loc>
-    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <lastmod>2022-02-13T14:42:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/gc/</loc>
+    <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/categories/golang/</loc>
-    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/tags/golang/</loc>
-    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://alanzhan.dev/post/2022-01-24-golang-goroutine/</loc>
-    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <loc>https://alanzhan.dev/post/2022-02-13-golang-memory-management/</loc>
+    <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/post/</loc>
-    <lastmod>2022-01-24T20:24:58+08:00</lastmod>
+    <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/tags/</loc>
+    <lastmod>2022-02-13T14:42:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/2022-01-24-golang-goroutine/</loc>
     <lastmod>2022-01-24T20:24:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
