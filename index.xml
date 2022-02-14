@@ -6,10 +6,19 @@
     <description>Recent content on Alan Zhan | 讓我們一起學習成為更好的自己</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 13 Feb 2022 14:42:09 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 14 Feb 2022 21:48:40 +0800</lastBuildDate>
     
 	<atom:link href="https://alanzhan.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kubernetes 基礎介紹</title>
+      <link>https://alanzhan.dev/post/2022-02-14-kubernetes-introduction/</link>
+      <pubDate>Mon, 14 Feb 2022 21:48:40 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-02-14-kubernetes-introduction/</guid>
+      <description>終於要來好好深入探討 Kubernetes ，因為 Kubernetes 是基於 golang 這門語言開發的，所以在稍早已經先針對 golang 深度研究了，不過對於 Docker 與 container 技術有經有深入研究過了，小弟就就不針對</description>
+    </item>
     
     <item>
       <title>Golang 記憶體管理 GC 全面解析</title>
