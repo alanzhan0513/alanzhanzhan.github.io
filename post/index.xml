@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Alan Zhan | 讓我們一起學習成為更好的自己</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 14 Feb 2022 21:48:40 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 Feb 2022 15:04:19 +0800</lastBuildDate>
     
 	<atom:link href="https://alanzhan.dev/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>安裝兩次的 Kubernetes Kubeadm</title>
+      <link>https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/</link>
+      <pubDate>Sun, 20 Feb 2022 15:04:19 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/</guid>
+      <description>想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但</description>
+    </item>
     
     <item>
       <title>Kubernetes 基礎介紹</title>
