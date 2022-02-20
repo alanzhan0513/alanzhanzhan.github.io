@@ -58,20 +58,6 @@
   </url>
   
   <url>
-    <loc>https://alanzhan.dev/tags/kubernets/</loc>
-    <lastmod>2022-02-14T21:48:40+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/categories/kubernets/</loc>
-    <lastmod>2022-02-14T21:48:40+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://alanzhan.dev/tags/gc/</loc>
     <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
