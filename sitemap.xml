@@ -3,42 +3,49 @@
   
   <url>
     <loc>https://alanzhan.dev/</loc>
-    <lastmod>2022-02-20T15:04:19+08:00</lastmod>
+    <lastmod>2022-02-28T15:58:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/categories/</loc>
-    <lastmod>2022-02-20T15:04:19+08:00</lastmod>
+    <lastmod>2022-02-28T15:58:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/tags/kubernetes/</loc>
-    <lastmod>2022-02-20T15:04:19+08:00</lastmod>
+    <lastmod>2022-02-28T15:58:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/categories/kubernetes/</loc>
-    <lastmod>2022-02-20T15:04:19+08:00</lastmod>
+    <lastmod>2022-02-28T15:58:47+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/</loc>
+    <lastmod>2022-02-28T15:58:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/post/</loc>
-    <lastmod>2022-02-20T15:04:19+08:00</lastmod>
+    <lastmod>2022-02-28T15:58:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/tags/</loc>
-    <lastmod>2022-02-20T15:04:19+08:00</lastmod>
+    <lastmod>2022-02-28T15:58:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

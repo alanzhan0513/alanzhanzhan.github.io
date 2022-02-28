@@ -6,10 +6,19 @@
     <description>Recent content in kubernetes on Alan Zhan | 讓我們一起學習成為更好的自己</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 20 Feb 2022 15:04:19 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 28 Feb 2022 15:58:47 +0800</lastBuildDate>
     
 	<atom:link href="https://alanzhan.dev/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kubernetes 核心介紹 Etcd 篇</title>
+      <link>https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/</link>
+      <pubDate>Mon, 28 Feb 2022 15:58:47 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/</guid>
+      <description>在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！ 什麼是 etcd 呢 etcd 是 CoreOs 基於 Raft 算法開發的分散式</description>
+    </item>
     
     <item>
       <title>安裝兩次的 Kubernetes Kubeadm</title>

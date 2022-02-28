@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kubernetes 核心介紹 Etcd 篇 - Alan Zhan | 讓我們一起學習成為更好的自己</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！ 什麼是 etcd 呢 etcd 是 CoreOs 基於 Raft 算法開發的分散式" /><meta name="keywords" content="alan, zhan, blog, kubernetes, etcd, raft, leader, follower, candidate" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kubernetes 核心介紹 Etcd 篇" />
+<meta property="og:description" content="在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！ 什麼是 etcd 呢 etcd 是 CoreOs 基於 Raft 算法開發的分散式" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/" />
+<meta property="article:published_time" content="2022-02-28T15:58:47+08:00" />
+<meta property="article:modified_time" content="2022-02-28T15:58:47+08:00" />
+<meta itemprop="name" content="Kubernetes 核心介紹 Etcd 篇">
+<meta itemprop="description" content="在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！ 什麼是 etcd 呢 etcd 是 CoreOs 基於 Raft 算法開發的分散式">
+<meta itemprop="datePublished" content="2022-02-28T15:58:47&#43;08:00" />
+<meta itemprop="dateModified" content="2022-02-28T15:58:47&#43;08:00" />
+<meta itemprop="wordCount" content="2467">
+
+
+
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes 核心介紹 Etcd 篇"/>
+<meta name="twitter:description" content="在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！ 什麼是 etcd 呢 etcd 是 CoreOs 基於 Raft 算法開發的分散式"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kubernetes 核心介紹 Etcd 篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 28 Feb 22 15:58 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+          <span class="more-meta"> 2467 words </span>
+          <span class="more-meta"> 5 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#什麼是-etcd-呢">什麼是 etcd 呢</a>
+      <ul>
+        <li><a href="#etcd-特點">etcd 特點</a></li>
+        <li><a href="#etcd-名詞">etcd 名詞</a></li>
+      </ul>
+    </li>
+    <li><a href="#etcd-應用場景">etcd 應用場景</a>
+      <ul>
+        <li><a href="#key-value-存儲">Key Value 存儲</a></li>
+        <li><a href="#服務註冊與發現">服務註冊與發現</a></li>
+        <li><a href="#消息發布與訂閱">消息發布與訂閱</a></li>
+      </ul>
+    </li>
+    <li><a href="#etcd-架構">etcd 架構</a></li>
+    <li><a href="#etcd-基於-raft-的一致性">etcd 基於 Raft 的一致性</a>
+      <ul>
+        <li><a href="#選舉方法">選舉方法</a></li>
+        <li><a href="#日誌複製">日誌複製</a></li>
+        <li><a href="#安全性">安全性</a></li>
+        <li><a href="#wal-日誌-write-ahead-log">wal 日誌 (write ahead log)</a></li>
+      </ul>
+    </li>
+    <li><a href="#總結">總結</a>
+      <ul>
+        <li><a href="#參考">參考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！</p>
+<h1 id="什麼是-etcd-呢">什麼是 etcd 呢</h1>
+<p>etcd 是 CoreOs 基於 Raft 算法開發的分散式 key-value 儲存，可用於服務發現、共享配置以及一致性保障 (如資料庫選主、分散式鎖等)。</p>
+<p>在分散式系統中，如何管理節點間的狀態一直是個難題， etcd 像是專門為集群環境的服務發現和註冊而設計，它提供了資料 TTL 失效、資料改變監控、多值、目錄監聽、分散式鎖原子操作等功能，可以方便的跟蹤並管理集群節點的狀態。</p>
+<h2 id="etcd-特點">etcd 特點</h2>
+<ul>
+<li>簡單 : curl 可訪問的用戶 API 。</li>
+<li>安全 : 可選的 SSL 客戶端證書認證。</li>
+<li>快速 : 單個實例每秒 1000 次寫操作， 2000+ 次讀操作。</li>
+<li>可靠 : 使用 Raft 算法保證一致性。</li>
+</ul>
+<h2 id="etcd-名詞">etcd 名詞</h2>
+<ul>
+<li>Raft : 強一致性的算法。</li>
+<li>Node : 一個 Raft State Machine 實例。</li>
+<li>Member : 一個 etcd 實例。它管理著一個 Node，並且可以為客戶端請求提供服務。</li>
+<li>Peer : 對同一個 etcd 集群中另外一個 Member 的稱呼。</li>
+<li>WAL : 預寫式日誌，etcd 用於持久化儲存的日誌格式。</li>
+<li>snapshot : etcd防止WAL文件過多而設置的快照，儲存 etcd 資料狀態。</li>
+<li>Proxy : etcd 的一種模式，為 etcd 集群提供反向代理服務。</li>
+<li>Leader : Raft 算法中通過競選而產生的處理所有資料提交的節點。</li>
+<li>Follower : 競選失敗的節點作為 Raft 中的附屬節點，為算法提供強一致性保證。</li>
+<li>Candidate : 當 Follower 超過一定時間接收不到 Leader 的心跳時轉變為 Candidate 並且開始競選 Leader。</li>
+<li>Term : 某個節點成為 Leader 到下一次競選時間，稱為一個 Term，可以理解為一個任期。</li>
+<li>Index : 資料編號。 Raft 中通過 Term 和 Index 來定位資料。</li>
+</ul>
+<h1 id="etcd-應用場景">etcd 應用場景</h1>
+<h2 id="key-value-存儲">Key Value 存儲</h2>
+<p>etcd 是一個基於 key value 儲存的資料庫，其他的應用都是基於 key value 的功能延展開來的。</p>
+<ul>
+<li>採用 key value 的形式存儲，一般情況下會比關聯是資料庫來的快許多。</li>
+<li>支援動態儲存 (RAM) 以及靜態儲存 (Disk)。</li>
+<li>分散式儲存，可以集結成為多個 Nodes 的 Cluster。</li>
+<li>儲存的方式類似於結構目錄 (B+tree)。</li>
+</ul>
+<h2 id="服務註冊與發現">服務註冊與發現</h2>
+<ul>
+<li>強一致性、高可用的服務存儲目錄。
+<ul>
+<li>基於 Raft 算法的 etcd 天生就是這樣一個強一致性、高可用的服務存儲目錄。</li>
+</ul>
+</li>
+<li>一種註冊服務和服務健康狀況的機制。
+<ul>
+<li>用戶可以在 etcd 中註冊服務，並對註冊的服務配置 key TTL，定時保持服務的心跳以達到監控健康狀態的效果。</li>
+</ul>
+</li>
+</ul>
+<h2 id="消息發布與訂閱">消息發布與訂閱</h2>
+<ul>
+<li>在分散式系統中，最適用的一種原件間通信方式就是消息發布與訂閱。</li>
+<li>構建一個配置共享中心，資料提供者在這個配置中心發布消息，而消息使用者則訂閱他們關心的主題，一旦主題有消息發布，就會即時通知訂閱者。</li>
+<li>通過這種方式可以做到分散式系統配置的集中式管理與動態更新。</li>
+<li>應用中用到的一些配置信息放到 etcd 上進行集中管理。</li>
+<li>應用在啟動的時候主動從 etcd 獲取一次配置信息，同時在etcd節點上註冊一個 Watcher 並等待，以後每次配置有更新的時候，etcd 都會即時通知訂閱者，以此達到獲取最新配置信息的目的。</li>
+</ul>
+<h1 id="etcd-架構">etcd 架構</h1>
+<p><img src="/2022-02-28-kubetnetes-etcd/2022-02-28-etcd-architecture.jpg" alt="etcd architecture"></p>
+<ul>
+<li>HTTP Server : 提供 API ，並且提供資料讀寫功能，完成節點之間的通信。</li>
+<li>Raft : Raft 強一致性算法實現。</li>
+<li>Sotre : 用於處理 etcd 支持的各類功能的事務，包括資料索引、節點狀態變更、監控與反饋、事件處理與執行等等，是 etcd 對用戶提供的大多數 API 功能的具體實現。</li>
+<li>WAL : Write Ahead Log（預寫式日誌），是 etcd 的資料存儲方式。除了在內存中存有所有資料的狀態以及節點的索引以外，etcd 就通過 WAL 進行持久化存儲。 WAL 中，所有的資料提交前都會事先記錄日誌。</li>
+<li>Snapshot :  是為了防止資料過多而進行的狀態快照；</li>
+<li>Entry : 表示存儲的具體日誌內容。</li>
+</ul>
+<h1 id="etcd-基於-raft-的一致性">etcd 基於 Raft 的一致性</h1>
+<p>Raft 協議是基於 quorum 機制，即大多數同意原則，任何得更變都需要超過半數的成員確認。</p>
+<p>如果對於 Raft 不了解的話 ，可以參考一下 <a href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a> 。</p>
+<h2 id="選舉方法">選舉方法</h2>
+<ul>
+<li>初始啟動時，節點處於 Follower 狀態並且會被設定一個 election timeout ，如果在這一個時間周期內妹有收到 Leader 的 heartbeat ，節點將會發起選舉，將自己切換為 candidate 之後，並向集群中其他 Follower 節點發送，詢問其是否選舉自己為 Leader 。</li>
+<li>當收到來自集群中超過半數節點的接受頭票後，節點成為 Leader ，開始接收保存 client 的數據，並向其他的 Follower 節點同步日誌。如果沒有達成一致，則 candidate 隨機選擇等待間隔 (150ms ~ 300ms) 再次發起投票，得到集群中的半數以上 Follower 接受的 candidate 將成為 Leader 。</li>
+<li>Leader 節點依靠定時向 Follower 發送 heartbeat 來保持其地位。</li>
+<li>任何時候如果其他 Follower 在 election timeout 期間都沒有收到來自 Leader 的 heartbeat，同樣會將自己的狀態切換為 candidate 並發起選舉。每成功選舉一次，新 Leader 的任期 (Term) 都會比之前 Leader 的任期大 1。</li>
+</ul>
+<h2 id="日誌複製">日誌複製</h2>
+<p>當 Leader 接收到客戶端的日誌 (事務請求) 後，先把該日誌追加到本地的 Log 中，然後通過 heartbeat 把該 Entry 同步給其他的 Follower， Follower 接收到日誌後記錄日誌，然後向 Leader 發送 ACK ， 當 Leader 收到大多數 (n/2+1) 的 Follower ACK 後，將日誌設為已提交，並追加到本地瓷盤中，通知客戶端並在下一個 heartbeat 中 Leader 將通知所以的 Follower 將該日誌存儲在自己的硬碟中。</p>
+<h2 id="安全性">安全性</h2>
+<ul>
+<li>安全性 ： 是用於保證每個節點都執行相同序列的安全機制。
+如果當某個 Follower 在當前 Leader commit Log 時，變得不可用了，稍後可能該 Follower 又會被選舉為 Leader，這時新 Leader 可能會用新的 Log 覆蓋先前已 committed 的 Log，這就會導致節點執行不同序列。Safety 就是用於保證選舉出來的 Leader 一定會包含先前 commited Log 的機制。</li>
+<li>選舉安全性 (Election Safety) ： 每個任期 (Term) 只選出一個 Leader。</li>
+<li>Leader 完整性 (Leader Completeness) ： 指 Leader 日誌的完整性，當 Log 在任期 Term1 被 commit 後，那麼以後的任期，Leader 都必須包含該 Log ，Raft 在選舉階段就使用 Term 的判斷用於保證完整性，當請求投票的該 Candidate 的 Term 較大或 Term 相同 Index 較大則投票，否則拒絕該請求。</li>
+</ul>
+<h2 id="wal-日誌-write-ahead-log">wal 日誌 (write ahead log)</h2>
+<p><img src="/2022-02-28-kubetnetes-etcd/2022-02-28-etcd-wal.jpg" alt="etcd wal log"></p>
+<ul>
+<li>wal 日誌是二進位，解析出來後是以上數據結構 LogEntry。
+<ul>
+<li>第一個 field 是 type ， 0 表示Ｎormal ， 1 表示 ConfChange，意思是 etcd 本身的配置變更同步，譬如有新的節點加入。</li>
+<li>term ， 每個 term 代表一個 Leader 的任期，每次 Leader 變更， term 就會加一。</li>
+<li>index，這個序號是嚴格有序的遞增的，代表變更序號。</li>
+<li>二進位 data，將 raft request 對象 pb 結構整個保存下來。</li>
+</ul>
+</li>
+<li>etcd 原始碼下面有個 tools/etcd-dump-logs ，可以將 wal 日誌 dump 成文本查看，可以協助分析 Raft 協議。</li>
+<li>Raft 協議本身並不關心應用數據，也就是 data 的部分，一致性都通過同步 wal 日誌來實現，每個節點將從 Leader 收到的 data apply 到本地的存儲， Raft 只關心日誌同步的狀況，如果本地存儲有 bug，有可能會導致數據不一致。</li>
+</ul>
+<h1 id="總結">總結</h1>
+<p>終於對 kubernetes 核心之一的原件有了初步的認識，接下來會陸陸續續分享核心的原件給大家的。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan Zhan 讓我們一起學習成為更好的自己</a> 留言，可以的話順手給個讚吧！感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="參考">參考</h2>
+<p><a href="https://raft.github.io/raft.pdf">了解 Raft</a>
+<a href="http://thesecretlivesofdata.com/raft/">動畫了解 Raft 算法</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        28 Feb 22 15:58 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-02-20-reinstall-kubernetes-kubeadm/">
+            <span class="next-text nav-default">安裝兩次的 Kubernetes Kubeadm</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -464,6 +464,20 @@ sudo apt-mark hold kubelet kubeadm kubectl
 </code></pre></td></tr></table>
 </div>
 </div></li>
+<li>複製 kubeconfig
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p <span class="nv">$HOME</span>/.kube
+sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+</code></pre></td></tr></table>
+</div>
+</div></li>
 <li>設定 CNI 。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -483,20 +497,6 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>複製 kubeconfig
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p <span class="nv">$HOME</span>/.kube
-sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
-sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
 </code></pre></td></tr></table>
 </div>
 </div></li>
@@ -552,7 +552,11 @@ k8s-02   Ready    &lt;none&gt;                 25h   v1.23.4
           <a href="/tags/kubernetes/">kubernetes</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/2022-02-28-kubetnetes-etcd/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Kubernetes 核心介紹 Etcd 篇</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         <a class="next" href="/post/2022-02-14-kubernetes-introduction/">
             <span class="next-text nav-default">Kubernetes 基礎介紹</span>
             <span class="next-text nav-mobile">Next</span>
