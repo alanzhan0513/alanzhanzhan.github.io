@@ -207,7 +207,7 @@
 </ul>
 <p>所以我們該如何才能提高 CPU 的利用率呢？</p>
 <h2 id="協程來提高-cpu-利用率">協程來提高 CPU 利用率</h2>
-<p>聰明的工程師們就發現，其實線程分為內核態線程 (Kernel Thread) 與用戶態線程 (User Thread)，而一個「用戶態線程」必須綁定一個「用戶態線程」，但是 CPU 不會知道有「用戶態線程」的存在，他只知道他運行的是一個「用戶態線程」 (Linux PCB 進程控制塊)。</p>
+<p>聰明的工程師們就發現，其實線程分為內核態線程 (Kernel Thread) 與用戶態線程 (User Thread)，而一個「用戶態線程」必須綁定一個「內核態線程」，但是 CPU 不會知道有「用戶態線程」的存在，他只知道他運行的是一個「內核態線程」 (Linux PCB 進程控制塊)。</p>
 <p>那麼我們能不能在用戶態創建維護一個輕量級的協程 (co-routine)，讓多個輕量級的線程綁定到同一個內核態線程上？如果一個內核態線程分到一個運行的時間片之後，那我是不是能在有效的時間內，把用戶態堆積的所有協程都執行完成呢？然後再把 CPU 交出去，那這樣是不是整個執行效率會高很多呢？</p>
 <p>所以這就是 Go 語言線程調度遵循的一些原則，那我們來看看 Goroutine。</p>
 <h2 id="goroutine">Goroutine</h2>
@@ -217,16 +217,16 @@
 <li>Machine ： 抽象化代表內核線程，紀錄內核線程 stack 信息，當 goroutine 調度到線程時候，使用該 goroutine 自己的 stack 信息。</li>
 <li>Process ： 表示調度器，負責調度 goroutine ，維護一個本地 goroutine 對列，並且把對列跟 M 綁定，讓 M 從 P 上獲得 goroutine 並執行，同時還負責部分記憶體管理。</li>
 </ul>
-<p><img src="/2022-01-24-gmp.jpg" alt="golang GMP"></p>
+<p><img src="/2022-01-24-golang-goroutine/2022-01-24-gmp.jpg" alt="golang GMP"></p>
 <h3 id="mpg-的對應關係">MPG 的對應關係</h3>
 <ul>
 <li>KSE: Kernel Scheduling Entity</li>
 <li>M 我們可以理解跟 Kernel Task 一對一對應</li>
 <li>一個 P 上面可以有多個 G，P 會去識當前狀態來決定要跟哪個 M 來綁定，比如說一個 M 已經陷入到內核態，而 P 就有可能換主，去找其他 M 執行。</li>
 </ul>
-<p><img src="/2022-01-24-mpg.jpg" alt="golang MPG"></p>
+<p><img src="/2022-01-24-golang-goroutine/2022-01-24-mpg.jpg" alt="golang MPG"></p>
 <h3 id="gmp-模型細節">GMP 模型細節</h3>
-<p><img src="/2022-01-24-gmp-detail.jpg" alt="golang GMP Model"></p>
+<p><img src="/2022-01-24-golang-goroutine/2022-01-24-gmp-detail.jpg" alt="golang GMP Model"></p>
 <ul>
 <li>LRQ： local run queue</li>
 <li>GRQ： global run queue</li>
@@ -240,12 +240,12 @@
 <li>當 go 語言開始執行了，那其實 go 語言的 main 方法，本身也是一個 goroutine ，所以他就會被落到一個 P 上，那麼這個 main 方法又起了很多個 goroutine ，那麼他就會在當前的 P 上掛載多個 G ，所以在這一刻， P 上會有一堆排隊的 G ，這時候，還沒充分的利用多核心的優勢，因為 G 都掛載在同一個 P 上，但是其他的 P 不可能空手啥事都不幹，這樣未免也太浪費 CPU 了吧！</li>
 <li>如果 P 已經空手了，那麼他就會去看 GRQ ，如果還是沒有，他就會去看看其他的 P 是不是有 G 可以執行，假設他發現第一個 P 有正在對列的 G ，那麼他就會拿取一半的 G 過來運行，但是所有的 P 都有這個機制，所以很快的堆積的 G 就被消化完畢。</li>
 <li>但是會不會有一種狀況發生，我創建了一堆 G ，超出了 LRQ 的長度 (默認 256)，那麼這個 G 就會放到 GRQ 內。</li>
-<li>如果 M 陷入內核態了，那麼 P 就會跟 M 段開綁定關係， P 就會取找說 哪個 M 是空閒的，並且跟他綁定在一起。</li>
+<li>如果 M 陷入內核態了，那麼 P 就會跟 M 斷開綁定關係， P 就會取找說 哪個 M 是空閒的，並且跟他綁定在一起。</li>
 <li>如果一個 G 產生了阻塞，那處於 wait 狀態的 G ，就會被丟到 sudog 阻塞對列裡，他不跟任何的 P 產生綁定關係。</li>
 <li>如果 G 已經完成運行後，他會把自己放到 gFree 去，這樣就可以重複使用 G ，減少開銷。</li>
 </ul>
 <h4 id="p-的狀態">P 的狀態</h4>
-<p><img src="/2022-01-24-p-state-machine.jpg" alt="golang GMP P state machine"></p>
+<p><img src="/2022-01-24-golang-goroutine/2022-01-24-p-state-machine.jpg" alt="golang GMP P state machine"></p>
 <ul>
 <li>_Pidle： 處理器沒有運行用戶代碼或者調度器，被空閒對列或者改變其狀態的結構持有，運行對列為空。</li>
 <li>_Prunning： 被線程 M 持有，並且正在執行用戶代碼或者調度器。</li>
@@ -254,7 +254,7 @@
 <li>_Pdead： 當前處理器已經不被使用。</li>
 </ul>
 <h4 id="g-的狀態">G 的狀態</h4>
-<p><img src="/2022-01-24-p-state-machine.jpg" alt="golang GMP G state machine"></p>
+<p><img src="/2022-01-24-golang-goroutine/2022-01-24-g-state-machine.jpg" alt="golang GMP G state machine"></p>
 <ul>
 <li>_Gidle： 剛剛被分配，並且還沒被初始化，值為 0 ，為創建 goroutine 後的默認值。</li>
 <li>_Grunnable： 沒有執行代碼，沒有 stack 的所有權，存儲在運行對列中，可能在某個 P 的本地對列或者全局對列中。</li>
