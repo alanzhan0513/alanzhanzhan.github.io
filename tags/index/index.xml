@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>index on Alan Zhan | 讓我們一起學習成為更好的自己</title>
+    <link>https://alanzhan.dev/tags/index/</link>
+    <description>Recent content in index on Alan Zhan | 讓我們一起學習成為更好的自己</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 20 Mar 2022 15:11:15 +0800</lastBuildDate>
+    
+	<atom:link href="https://alanzhan.dev/tags/index/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MongoDB Index (一)</title>
+      <link>https://alanzhan.dev/post/2022-03-20-mongodb-index/</link>
+      <pubDate>Sun, 20 Mar 2022 15:11:15 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-03-20-mongodb-index/</guid>
+      <description>這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::</description>
+    </item>
+    
+  </channel>
+</rss>

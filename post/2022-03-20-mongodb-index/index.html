@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MongoDB Index (一) - Alan Zhan | 讓我們一起學習成為更好的自己</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::" /><meta name="keywords" content="alan, zhan, blog, mongo, mongodb, index, btree" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-03-20-mongodb-index/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MongoDB Index (一)" />
+<meta property="og:description" content="這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-03-20-mongodb-index/" />
+<meta property="article:published_time" content="2022-03-20T15:11:15+08:00" />
+<meta property="article:modified_time" content="2022-03-20T15:11:15+08:00" />
+<meta itemprop="name" content="MongoDB Index (一)">
+<meta itemprop="description" content="這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::">
+<meta itemprop="datePublished" content="2022-03-20T15:11:15&#43;08:00" />
+<meta itemprop="dateModified" content="2022-03-20T15:11:15&#43;08:00" />
+<meta itemprop="wordCount" content="1211">
+
+
+
+<meta itemprop="keywords" content="mongodb,index," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MongoDB Index (一)"/>
+<meta name="twitter:description" content="這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MongoDB Index (一)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 20 Mar 22 15:11 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/mongodb/"> mongodb </a>
+            </div>
+          <span class="more-meta"> 1211 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#什麼是-mongodb-index-呢">什麼是 MongoDB Index 呢？</a></li>
+    <li><a href="#mongodb-index-種類">MongoDB Index 種類</a></li>
+    <li><a href="#oom-sort-operation">OOM Sort Operation</a>
+      <ul>
+        <li><a href="#增加排序可用的記憶體空間">增加排序可用的記憶體空間</a></li>
+        <li><a href="#使用-disk-當作記憶體">使用 Disk 當作記憶體</a></li>
+        <li><a href="#新增-index">新增 index</a></li>
+      </ul>
+    </li>
+    <li><a href="#總結">總結</a>
+      <ul>
+        <li><a href="#參考">參考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下：</p>
+<p>MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by :: Executor error during find command :: caused by :: Sort operation used more than the maximum 33554432 bytes of RAM.</p>
+<p>好吧！問題都發生了，我們先來解決問題，所以我們就先加了 index 上去應急，至於甚麼是 mongoDB 的 index 呢？</p>
+<h1 id="什麼是-mongodb-index-呢">什麼是 MongoDB Index 呢？</h1>
+<p>如果你剛好是 DB 的設計者，你會怎麼找資料返回你的 Client 呢？</p>
+<p>這個問題不是很簡單嘛！我就一條一條一條資料過濾，然後再一口氣一起排序，再把你需要的資料返回給你。這個在資料量很小的狀態下，在使用的體驗上是不會有任何感覺的，會覺得資料很快速就拿到了，然而只要資料量一大起來，這樣的查找資料的方式，是不是很低效呢？</p>
+<p>在一般正常狀況下，如果你的資料量越大，那麼你的資料量與查詢效率是呈正比的，所以這時候我們就需要 index 來幫助我們解決資料查詢會造成的查詢效率低落的問題，那甚麼是 index 呢？</p>
+<p>Index 是用來解決查詢效率低落的問題，同時它也是把雙面刃，在添增 index 的同時，它會有額外的開銷，所以在使用上我們還是要理性的添加 index ：</p>
+<ul>
+<li>Pros
+<ol>
+<li>加速查詢效率。</li>
+<li>可利用 index 的唯一性來控制資料重複的問題。</li>
+<li>使用 index 可以在排序時，加速的排序時間與減少記憶體花費。</li>
+</ol>
+</li>
+<li>Cons
+<ol>
+<li>Index 會讓資料寫入時的速度降低。</li>
+<li>Index 會需要額外的空間儲存。</li>
+</ol>
+</li>
+</ul>
+<p>了解完畢 index 後，我們來看看官方對於 index 怎麼說， <a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manaul Index</a> 。</p>
+<p><img src="/2022-03-20-mongodb-index/mongodb-index-btree.jpg" alt="mongodb index btree"></p>
+<p>原來你是使用 Btree 來設計的啊，簡單來說 Btree 時間複雜度是不固定的，與 key 在樹中的哪個位置有關，但最好的情況是 O(1) 。那 MongoDB 有哪些 Index 種類呢？</p>
+<h1 id="mongodb-index-種類">MongoDB Index 種類</h1>
+<ul>
+<li>Unique Index : 唯一 index ，可以確保某個 field 的唯一性。在默認的情況下， MongoDB 在創建 collection 的時候，為 _id 欄位增加的唯一 index 。</li>
+<li>Single Field Index : 單一欄位的 index 。</li>
+<li>Compound Index : 多個欄位的 index 。在日常中，我們比較常會使用這個類型，來建立索引，因為你在查找資料的過程，不太可能只有下一個條件。</li>
+<li>Multikey Index : 有點類似於 single filed index ，不過差別是在 array 的 field 或者是在 array 內的 object 上的 field 建立 index。</li>
+<li>Text Index : 有點類似於 Elasticsearch 上的檢索功能，不過分詞功能沒有想是 Elasticsearch 那麼完善。</li>
+<li>etc</li>
+</ul>
+<p>這邊就先總結比較常用的，當然 MongoDB 也是有推出像是 geo 等等方便的 index，細節可以上官方文件觀看， <a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manaul Index</a> 。</p>
+<h1 id="oom-sort-operation">OOM Sort Operation</h1>
+<p>稍微了解一下 index 之後，那麼為什麼會發生 OOM Sort 呢？</p>
+<p>我們試著想一下，如果你把所有的資料從 disk 讀取到記憶體中做排序，那麼會發生甚麼是呢？所以 MongoDB 官方會做出這種決定是很正常的。</p>
+<p>那我們總得要解決問題吧？我們又該如何解決呢？</p>
+<h2 id="增加排序可用的記憶體空間">增加排序可用的記憶體空間</h2>
+<p>我們可以增加可用的記憶體空間，這邊的範例是改成 100 MB。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">db.adminCommand({ setParameter: 1, internalQueryExecMaxBlockingSortBytes: 104857600 })
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用-disk-當作記憶體">使用 Disk 當作記憶體</h2>
+<p>如果你使用 aggregation pipeline 的話，你可以使用 <code>allowDiskUse: true</code> 來突破記憶體限制，讓 disk 來幫助你！</p>
+<h2 id="新增-index">新增 index</h2>
+<p>上面兩個方法可以幫你快速解決問題，不過建議還是會使用 index 來解決，<code>記得把 background 設置為 true</code>，不然你在 production 建立 index 的時候，因為資料量過多造成寫入鎖死。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">db.Foo.createIndex({ &#34;Bar&#34;: 1 }, { background: true })
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="總結">總結</h1>
+<p>至於 index 要怎麼設計規劃呢？讓我賣賣關子，下幾篇會再給大家好好的解釋清楚。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan Zhan 讓我們一起學習成為更好的自己</a> 留言，可以的話順手給個讚吧！感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="參考">參考</h2>
+<ul>
+<li><a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manaul Index</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        20 Mar 22 15:11 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mongodb/">mongodb</a>
+          <a href="/tags/index/">index</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-02-28-kubetnetes-etcd/">
+            <span class="next-text nav-default">Kubernetes 核心介紹 Etcd 篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

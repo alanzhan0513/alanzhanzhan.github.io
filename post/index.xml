@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Alan Zhan | 讓我們一起學習成為更好的自己</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 28 Feb 2022 15:58:47 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 Mar 2022 15:11:15 +0800</lastBuildDate>
     
 	<atom:link href="https://alanzhan.dev/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MongoDB Index (一)</title>
+      <link>https://alanzhan.dev/post/2022-03-20-mongodb-index/</link>
+      <pubDate>Sun, 20 Mar 2022 15:11:15 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-03-20-mongodb-index/</guid>
+      <description>這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::</description>
+    </item>
     
     <item>
       <title>Kubernetes 核心介紹 Etcd 篇</title>
