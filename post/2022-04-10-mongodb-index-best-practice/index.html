@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Mongodb Index 最佳實踐 - Alan Zhan | 讓我們一起學習成為更好的自己</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重" /><meta name="keywords" content="alan, zhan, blog, mongo, mongodb, index, design, 設計, 使用, 指南, best, practice, esr, rule, 實踐" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Mongodb Index 最佳實踐" />
+<meta property="og:description" content="自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/" />
+<meta property="article:published_time" content="2022-04-10T16:19:10+08:00" />
+<meta property="article:modified_time" content="2022-04-10T16:19:10+08:00" />
+<meta itemprop="name" content="Mongodb Index 最佳實踐">
+<meta itemprop="description" content="自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重">
+<meta itemprop="datePublished" content="2022-04-10T16:19:10&#43;08:00" />
+<meta itemprop="dateModified" content="2022-04-10T16:19:10&#43;08:00" />
+<meta itemprop="wordCount" content="1498">
+
+
+
+<meta itemprop="keywords" content="mongodb,Index," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mongodb Index 最佳實踐"/>
+<meta name="twitter:description" content="自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Mongodb Index 最佳實踐</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 10 Apr 22 16:19 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/mongodb/"> mongodb </a>
+            </div>
+          <span class="more-meta"> 1498 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#什麼情況建議使用-index">什麼情況建議使用 Index</a></li>
+    <li><a href="#什麼情況下不建議使用-index">什麼情況下不建議使用 Index</a></li>
+    <li><a href="#index-該如何設計與使用">Index 該如何設計與使用</a>
+      <ul>
+        <li><a href="#使用-compound-index-取代-single-field-index">使用 Compound Index 取代 Single Field Index</a></li>
+        <li><a href="#遵循-esr-規則">遵循 ESR 規則</a></li>
+        <li><a href="#讓-index-覆蓋查詢">讓 Index 覆蓋查詢</a></li>
+        <li><a href="#在-low-cardinality-fields-上要小心進行-index">在 Low-Cardinality Fields 上要小心進行 Index</a></li>
+        <li><a href="#移除不必要的-index">移除不必要的 Index</a></li>
+        <li><a href="#不要使用通配符-index-來代替">不要使用通配符 Index 來代替</a></li>
+        <li><a href="#使用-partial-index">使用 Partial Index</a></li>
+        <li><a href="#為排序建立合適的-index">為排序建立合適的 Index</a></li>
+        <li><a href="#小心以下操作符的使用">小心以下操作符的使用</a></li>
+        <li><a href="#不要在頻繁寫入的-field-上建立-index">不要在頻繁寫入的 Field 上建立 Index</a></li>
+      </ul>
+    </li>
+    <li><a href="#自動化-index-建議">自動化 Index 建議</a></li>
+    <li><a href="#總結">總結</a>
+      <ul>
+        <li><a href="#參考">參考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重點在上一篇，可以到上一篇複習一下 <a href="/post/2022-03-20-mongodb-sorted-operation-oom">MongoDB Sorted Operation OOM</a>。</p>
+<h1 id="什麼情況建議使用-index">什麼情況建議使用 Index</h1>
+<ul>
+<li>如果你有需要排序的場景，當記憶體排序超過 32 MB 的時候。</li>
+<li>特定欄位有 unique 的需求。</li>
+<li>Document 數量較大時。</li>
+<li>針對 High-Cardinality Field 建立 Index。</li>
+</ul>
+<h1 id="什麼情況下不建議使用-index">什麼情況下不建議使用 Index</h1>
+<ul>
+<li>Index 不能夠有效的過濾數據時，不建議使用 Index。</li>
+<li>會頻繁更新的 Field ，不要設置 Index 。</li>
+</ul>
+<h1 id="index-該如何設計與使用">Index 該如何設計與使用</h1>
+<h2 id="使用-compound-index-取代-single-field-index">使用 Compound Index 取代 Single Field Index</h2>
+<p>在 MongoDB 內，使用 find 查詢資料時，一次只能使用一個 Index (在大部分場景下)，所以如果你的使用場景經常是針對多個 field 做過濾條件的話，可以使用 Compound Index 是由許多不同 Field 組合而成，來匹配你的查詢條件。</p>
+<h2 id="遵循-esr-規則">遵循 ESR 規則</h2>
+<p>ESR 分別代表 Equality 、 Sort 、 Range ， 也就是說 Index 的 Field 順序，必須要按照這個順序設置 Index ，才能達到最高效率。</p>
+<ul>
+<li>Equality ： 針對等值查詢的 Field。</li>
+<li>Sort : 要排序的 Field。</li>
+<li>Range : 要訪問的數據範圍的 Field。</li>
+</ul>
+<h2 id="讓-index-覆蓋查詢">讓 Index 覆蓋查詢</h2>
+<p><a href="https://www.mongodb.com/docs/upcoming/indexes/#covered-queries">Covered Queries</a>，可以直接從 Index 中返回結果，因此非常高效。</p>
+<p>在使用的同時，需要滿足以下條件：</p>
+<ul>
+<li>所有查詢條件的 Fields，都需要是 Index 的一部分。</li>
+<li>所有返回的 Fileds，都必須是 Index 的一部分。</li>
+<li>在查詢條件中，不包含等於 null，譬如： <code>(i.e. {&quot;field&quot; : null} or {&quot;field&quot; : {$eq : null}} )</code>。</li>
+</ul>
+<h2 id="在-low-cardinality-fields-上要小心進行-index">在 Low-Cardinality Fields 上要小心進行 Index</h2>
+<p>對於較少量唯一值得 Field 進行查詢會返回較大的結果。</p>
+<p>在 Compound Index 中可以包含 Low-Cardinality Field ，但是組合的 Index 需要包含較 High-Cardinality Field 。</p>
+<h2 id="移除不必要的-index">移除不必要的 Index</h2>
+<p>過多的 Index 會導致系統在 CUD 的時候性能下降，所以 Index 最好是適量就好，不要建立太多 Index。</p>
+<h2 id="不要使用通配符-index-來代替">不要使用通配符 Index 來代替</h2>
+<p>對於特殊查詢模式或處理多態的 Document 的工作負載，通配符 Index 確實提供了許多額外的靈活性，但是以其他的 Index 一樣，他也需要存儲以及維護，因此他會給 MongoDB 增加開銷。</p>
+<p>如果預先可以先知道應用程式的查詢模式，那麼應該對查詢所訪問的特定 Field 使用更有選擇性的 Index 。</p>
+<h2 id="使用-partial-index">使用 Partial Index</h2>
+<p>可以通過在特定的 Field 上建立 <a href="https://www.mongodb.com/docs/manual/core/index-partial/">Partial Indexes</a> 的方式來減少 Index 大小以及性能開銷。譬如： 在訂單狀態的 Field 上，只要狀態為&quot;處理中&quot;的，成為 index。</p>
+<h2 id="為排序建立合適的-index">為排序建立合適的 Index</h2>
+<p>因為 MongoDB 在排序的過程中，最多只能使用 32 MB 的記憶體來排序，所以如果要避免此問題發生，需要在對應的欄位上建立 Index 。</p>
+<h2 id="小心以下操作符的使用">小心以下操作符的使用</h2>
+<ol>
+<li>$where 和 $exists: 這兩個操作符，完全吃不到 Index 。</li>
+<li>$ne 和 $not: 通常還是可以使用 Index ，但是效率極低，甚至可能會變成 COLLSCAN 。</li>
+<li>如果你的查詢語句有 $or 的話，要注意是否 or 的兩置多個條件，是否每個條件都可以使用不同的 Index (在 or 底下，是支援多個 Index 引用的)，但是如果 $or + $sort 的話，就一定不會使用 Index ，可以的話使用使用的範圍查詢的方式，進而避開 $or + $sort。</li>
+<li>$nin: 不包含，這個操作也很容易變成 COLLSCAN 。</li>
+<li>對於 pipeline 內的 Index ，也很容易出意外，一旦經過 $project 、 $group 、 $lookup$ 、 $unwind 等操作之後，就會完全無法使用 Index 。</li>
+</ol>
+<h2 id="不要在頻繁寫入的-field-上建立-index">不要在頻繁寫入的 Field 上建立 Index</h2>
+<p>因為在頻繁會更新的欄位上建立 Index 的話，會導致每次在寫入或者更新的時候，都還需要去更新 Index 的 Btree，進而會導致性能下降， Index 在讀取操作較為重的情境下，比較能發揮出效能。</p>
+<h1 id="自動化-index-建議">自動化 Index 建議</h1>
+<p>如果真的不知道該怎麼設計以及使用時，這時候可以以不變應萬變，通過 <a href="https://www.mongodb.com/docs/atlas/performance-advisor/">Performance Advisor</a> 讓他監控執行超過 100 ms 的查詢，並且自動對新的 Index 提出建議來提高性能，不過這個是不太建議的做法。</p>
+<p>較好的做法是事前就先做好規劃，並且透過 Performance Advisor 去幫助自己看系統是不是還有哪邊是需要再做額外的調整的。</p>
+<h1 id="總結">總結</h1>
+<p>上述只有列出比較常見的場景，要如何設計以及使用 Index ，如果你其他常見的場景以及對應的 Index 使用方式，也歡迎到我的 Facebook 留言一起討論。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan Zhan 讓我們一起學習成為更好的自己</a> 留言，可以的話順手給個讚吧！感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="參考">參考</h2>
+<ul>
+<li><a href="https://blog.csdn.net/dch9210/article/details/116130749">MongoDB索引最佳实践</a></li>
+<li><a href="https://www.mongodb.com/blog/post/performance-best-practices-Indexing">Performance Best Practices: Indexing</a></li>
+<li><a href="https://blog.myctw.cc/post/4e6b.html">MongoDB 索引的 ESR 規則詳解</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        10 Apr 22 16:19 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mongodb/">mongodb</a>
+          <a href="/tags/index/">Index</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-03-20-mongodb-sorted-operation-oom/">
+            <span class="next-text nav-default">MongoDB Sorted Operation OOM</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
