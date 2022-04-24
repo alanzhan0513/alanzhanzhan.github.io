@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kubernetes 核心介紹 Api Server - Alan Zhan | 讓我們一起學習成為更好的自己</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包誇認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp;amp; Valiating) 提供" /><meta name="keywords" content="alan, zhan, blog, kubernetes, apiserver, authentication, authorization, admission, mutating, valiating, APF, FlowSchema, PriorityLevelConfiguration" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kubernetes 核心介紹 Api Server" />
+<meta property="og:description" content="API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包誇認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp; Valiating) 提供" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/" />
+<meta property="article:published_time" content="2022-04-24T19:07:12+08:00" />
+<meta property="article:modified_time" content="2022-04-24T19:07:12+08:00" />
+<meta itemprop="name" content="Kubernetes 核心介紹 Api Server">
+<meta itemprop="description" content="API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包誇認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp; Valiating) 提供">
+<meta itemprop="datePublished" content="2022-04-24T19:07:12&#43;08:00" />
+<meta itemprop="dateModified" content="2022-04-24T19:07:12&#43;08:00" />
+<meta itemprop="wordCount" content="3521">
+
+
+
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes 核心介紹 Api Server"/>
+<meta name="twitter:description" content="API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包誇認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp; Valiating) 提供"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kubernetes 核心介紹 Api Server</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 24 Apr 22 19:07 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+          <span class="more-meta"> 3521 words </span>
+          <span class="more-meta"> 8 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#api-server">API Server</a>
+      <ul>
+        <li><a href="#authentication">Authentication</a>
+          <ul>
+            <li><a href="#常見的-authentication-方法">常見的 Authentication 方法</a></li>
+          </ul>
+        </li>
+        <li><a href="#authorization">Authorization</a></li>
+        <li><a href="#admission-control">Admission Control</a>
+          <ul>
+            <li><a href="#admission-control-plugin">Admission Control Plugin</a></li>
+          </ul>
+        </li>
+        <li><a href="#api-server-訪問控制流程">API Server 訪問控制流程</a></li>
+      </ul>
+    </li>
+    <li><a href="#限流控制">限流控制</a>
+      <ul>
+        <li><a href="#maxinflightlimit">MaxInFlightLimit</a></li>
+        <li><a href="#client-限流">Client 限流</a></li>
+        <li><a href="#eventratelimit">EventRateLimit</a></li>
+        <li><a href="#api-priority-and-fariness">API Priority And Fariness</a>
+          <ul>
+            <li><a href="#概念">概念</a></li>
+            <li><a href="#priority">Priority</a></li>
+            <li><a href="#排隊">排隊</a></li>
+            <li><a href="#豁免請求">豁免請求</a></li>
+            <li><a href="#prioritylevelconfiguration">PriorityLevelConfiguration</a></li>
+            <li><a href="#flowschema">FlowSchema</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#總結">總結</a>
+      <ul>
+        <li><a href="#參考">參考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="api-server">API Server</h1>
+<p>kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能：</p>
+<ul>
+<li>提供集群管理的 REST API ，包誇認證、授權、數據檢驗以及集群狀態變更等
+<ul>
+<li>認證 Authentication</li>
+<li>授權 Authorization</li>
+<li>准入 Admission (Mutating &amp; Valiating)</li>
+</ul>
+</li>
+<li>提供其他模組之間的數據交互和通訊的樞紐，其他模組只能通過 API Server 查詢或者修改數據，只有 API Server 才能直接操作 etcd。</li>
+</ul>
+<p>kube-apiserver 支持提供 https ( 預設 port 6443 ) 和 http API (默認監聽 127.0.0.1 的 8080 )，其中 http API 是非安全的 API，不做任何認證授權機制，不建議在 Production 環境開啟此功能。</p>
+<h2 id="authentication">Authentication</h2>
+<p>開啟 TLS 時，所有的請求都需要首先認證。 Kubernetes 支持多種認證機制，並支持同時開啟多個認證 plugin  (只要有一個認證通過即可)。如果認證成功，則用戶的 username 會傳入授權模組做進一步驗證，對於認證失敗的請求則會返回 401。高階版本默認使用 TLS 作為驗證方式。</p>
+<h3 id="常見的-authentication-方法">常見的 Authentication 方法</h3>
+<ul>
+<li>X.509
+<ul>
+<li>使用 X509 客戶端證書，只需要 API Server 啟動時配置 —client-ca-file=SOMEFILE。在證書認證時，其 CN 域用作用戶名，而組織機構域則用做 group 名。</li>
+</ul>
+</li>
+<li>靜態 Token 文件
+<ul>
+<li>使用靜態 Token 文件認證，只需要 API Server 啟動時配置 —token-auth=file=SOMEFILE 。</li>
+<li>該文件為 csv 格式，美行至少包括三列 token,username,userid,”group1,group2,group3”</li>
+</ul>
+</li>
+<li>引導 Token
+<ul>
+<li>為了支持平滑的啟動引導新的集群，Kubernetes 包含了一種動態管理的持有指 token 類型，稱作啟動引導 token  (Bootstrap Token)。</li>
+<li>這些 token 以 Secret 的方式保存在 kube-system namespace 中，可以被動態管理和創建。</li>
+<li>控制器管理器包含的 TokenCleaner 控制器能夠在啟動引導 token 過期時，將其刪除。</li>
+<li>在使用 kubeadm 佈署 Kubernetes 時，可以通過 kubeadm token list 命令查詢。</li>
+</ul>
+</li>
+<li>靜態密碼文件
+<ul>
+<li>需要 API Server 啟動時候配置 —basic-auth-file=SOMEFILE ，文件格式為 csv ，每行至少三列 password,user,uid,”group1,group2,group3”。</li>
+</ul>
+</li>
+<li>ServiceAccount
+<ul>
+<li>ServiceAccount 是 Kubernetes 自動生成的，並會自動掛載到容器的 /run/secrets/kubernetes.io/serviceaccount 目錄中。</li>
+</ul>
+</li>
+<li>OpenID
+<ul>
+<li>OAuth 2.0 的認證機制。</li>
+</ul>
+</li>
+<li>Webhook Token 身分認證
+<ul>
+<li>—authentication-token-webhook-config-file 指向一個配置文件，其中描述訪問遠程的 Webhook 服務。</li>
+<li>—authentication-token-webhook-cache-ttl 用來設定身分認證決定的緩存時間。默認兩分鐘。</li>
+</ul>
+</li>
+<li>匿名請求
+<ul>
+<li>如果使用 AlwaysAllow 以外的認證模式，則匿名請求默認開啟，但可用 —anonymous-auth=false 禁止匿名請求。</li>
+</ul>
+</li>
+</ul>
+<h2 id="authorization">Authorization</h2>
+<p>授權主要是用於對集群資源的訪問控制，通過檢查請求包含的相關屬性值，與相對應的相對應的訪問策略相比較，API 請求必須滿足某些策略才能被處理。</p>
+<p>跟認證類似， Kubernetes 也支持多種授權機制，並支持同時開啟多個授權 plugin  (只要有一個驗證通過即可)。</p>
+<p>如果授權成功，則用戶的請求會發送到准入控制模組做進一步的請求驗證，對於授權失敗的請求，則返回 HTTP 403。</p>
+<p>Kubernetes 授權僅處理以下的請求屬性</p>
+<ul>
+<li>user, group, extra</li>
+<li>API、請求方法 (例如 get, post, update) 和請求路徑 (如 /api)</li>
+<li>請求資源和子資源</li>
+<li>namespace</li>
+<li>API Group</li>
+</ul>
+<p>目前 Kubernetes 支持以下授權 plugin</p>
+<ul>
+<li>ABAC</li>
+<li>RBAC</li>
+<li>Webhook</li>
+<li>Node</li>
+</ul>
+<h2 id="admission-control">Admission Control</h2>
+<p>准入控制 (Admission Control) 在授權後對請求做進一步的驗證或添加默認參數。不同於授權和認證只關心請求的用戶和操作，准入控制還處理請求的內容，並且僅對創建、更新、刪除或連接 (如代理) 等有效，而對讀操作無效。</p>
+<p>准入控制支持開啟多個 plugin ，他們依序調用，只有全部的 plugin 都通過請求，才可以放過進入系統。</p>
+<h3 id="admission-control-plugin">Admission Control Plugin</h3>
+<ul>
+<li>AlwaysAdmit : 接受所有請求。</li>
+<li>AlwaysPullImages : 總是拉取最新鏡像，在多租戶場景下非常有用。</li>
+<li>DenyEscalatingExec : 禁止特權容器的 exec 和 attach 操作。</li>
+<li>ImagePolicyWebhook : 通過 Webhook 決定 image 策略，同時需要配置 —admission-control-config-file。</li>
+<li>ServiceAccount : 自動創建默認 ServiceAccount，並確保 Pod 引用的 ServiceAccount 已經存在。</li>
+<li>SecurityContextDeny : 拒絕包含非法 SecurityContext 配置的容器。</li>
+<li>ResourceQuota : 限制 Pod 的請求不會超過配額，需要在 namespace 中創建一個 ResourceQuota 對象。</li>
+<li>LimitRanger : 為 Pod 設置默認資源請求和限制，需要在 napespace 中創建一個 LimitRanger 對象。</li>
+<li>InitialResource : 根據鏡像的歷史使用紀錄，為容器設置默認資源請求和限制。</li>
+<li>NamespaceLifecyle : 確保處於 termination 狀態的 namespace 不再接受新的對象創建請求，並拒絕請求不存在的 namespace 。</li>
+<li>DefaultStorageClass : 為 PVC 設置默認的 StorageClass。</li>
+<li>DefaultTolerationSeconds : 設置 Pod 的默認 forgiveness toleration 為五分鐘。</li>
+<li>PodSecurityPolicy : 使用 Pod Security Policies 時，必須開啟。</li>
+<li>NodeRestriction : 限制 kubelet 僅可訪問 node 、 endpoint 、 pod 、 service 以及 secret 、configmap 、 PV 和 PVC 等相關資源。</li>
+</ul>
+<p>除了默認的准入控制 plugin 以外，Kubernetes 預留了准入控制 plugin 的擴展點，用戶自定義准入控制 plugin ，實現自定義准入功能。</p>
+<ul>
+<li>MutatingWebhookConfiguration : 變形 plugin ，支持對準入對向的修改。</li>
+<li>ValidatingWebhookConfiguration : 較驗 plugin ，只能對準入對向合法性進行較驗，不能修改。</li>
+</ul>
+<h2 id="api-server-訪問控制流程">API Server 訪問控制流程</h2>
+<p><img src="/2022-04-24-kubernetes-api-server/kube-apiserver-flow.jpg" alt="kube-apiserver work flow"></p>
+<h1 id="限流控制">限流控制</h1>
+<p>為了防止突發流量影響到 kube-apiserver 的可用性， kubernetes 支持多種限流方式：</p>
+<ul>
+<li>MaxInFlightLimit</li>
+<li>Client 限流</li>
+<li>EventRateLinit</li>
+<li>APF: (API Priority And Fariness)</li>
+</ul>
+<h2 id="maxinflightlimit">MaxInFlightLimit</h2>
+<p>可以通過參數的方式，為 kube-apiserver 設置最大併發數量</p>
+<ul>
+<li>max-request-inflight: 在給定的時間內最大請求數。</li>
+<li>max-mutating-request-inflight : 在給定時間內的最大 mutating 請求數，調整 apiserver 的流控 qos 。</li>
+</ul>
+<h2 id="client-限流">Client 限流</h2>
+<p>只支持 Client 的限流， Cluster 無法控制用戶的行為，譬如 client-go 的 QPS 為 5 。</p>
+<h2 id="eventratelimit">EventRateLimit</h2>
+<p>只限制 event 請求，集成在 kube-apiserver 內部的 webhook 當中，可配置某個用戶、 namespace 、 server 等相關 event 操作限制。</p>
+<ul>
+<li>Pros
+<ul>
+<li>實現簡單，允許一定數量的併發。</li>
+<li>支持 server / namespace / user 等級別的限流。</li>
+</ul>
+</li>
+<li>Cons
+<ul>
+<li>僅支持 event ，通過 webhook 實現只能攔截修改類的請求。</li>
+<li>所有 namespace 的限流相同，沒有優先級的概念。</li>
+</ul>
+</li>
+</ul>
+<h2 id="api-priority-and-fariness">API Priority And Fariness</h2>
+<p>kube-apiserer 默認的限流方式太過簡單，一個錯誤的客戶發送大量請求，可能會導致其他客戶訪問的請求異常，他是 MaxInFlightLimit 的另一種替代方案，可以參考 <a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/1040-priority-and-fairness">KEP-1040: Priority and Fairness for API Server Requests</a> 。</p>
+<ul>
+<li>APF 以更細粒度的方式，對請求進行分類和隔離。</li>
+<li>他還引入了空間有限的排隊機制，因此在非常短暫的突發情況下，API server 不會拒絕任何請求。</li>
+<li>通過使用公平排隊技術從對列中分發請求，這樣一個行為不佳的控制器，就不會餓死其他控制器 (即使優先即相同)。</li>
+<li>APF 的核心
+<ul>
+<li>多等級</li>
+<li>多對列</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022-04-24-kubernetes-api-server/APF.jpg" alt="kube-apiserver work flow"></p>
+<h3 id="概念">概念</h3>
+<ul>
+<li>傳入的請通過 FlowSchema 按照其屬性分類，並分配優先級。</li>
+<li>每個優先級維護自定義的併發限制，加強了隔離度，這樣不同優先級的請求，就不會互相餓死。</li>
+<li>在同一個優先集中，公平排隊算法可以防止不同的 flow 請求互相餓死。</li>
+<li>該算法將請求排隊，通過排隊機制，防止在平均附載較低時，通訊量暴增導致請求失敗。</li>
+</ul>
+<h3 id="priority">Priority</h3>
+<ul>
+<li>如果未啟用 APF，API server 中的整體併發量將受到 kubectl-apiserver 的參數 —max-requests-inflight 和 —maxmutating-requests-inflight 的限制。</li>
+<li>啟用 APF 後，對這些參數定義的併發限制進行求和，然後將總和分配到一組可配置的優先級中。每個傳入的請求都會分配一個優先級。</li>
+<li>每個優先級都有各自的配置，設置允許分發的併發請求數。</li>
+</ul>
+<h3 id="排隊">排隊</h3>
+<ul>
+<li>即使在同一優先級中，也可能存在大量不同的流量源。</li>
+<li>在過載的情況下，防止一個請求流餓死其他流是非常有價值的 (尤其是在一個較為常見的場景中，有一個故障的客戶會瘋狂地向 kube-apiserver 發送請求，理想狀況下，這個有故障的客戶端，不應該對其他客戶端產生太大影響)。</li>
+<li>公平排隊算法在處理具有相同優先級的時候時，實現了上訴場景。</li>
+<li>每個請求都會被分配到某個 Flow 中，該 Flow 對應的 FlowSchema 的名字加上一個流區分項 (Flow Distinguisher) 來標示。</li>
+<li>這裡的流分區項，可以是發請請求的用戶、目標資源的名稱空間或者甚麼都不是。</li>
+<li>系統嘗試為不同流中，具有相同優先級的請求，賦予相似相等的權重。</li>
+<li>將請求劃分到流中之後，APF 功能將請求分配到對列中。</li>
+<li>分配時使用一種稱為混洗分配 (Shuffle-Sharding) 的技術。該技術可以相對有效的利用對列個離低強度與高強度的流。</li>
+<li>排隊算法的細節，可以針對每個優先等級進行調整，允許管理者在內存占用、公平性 (當總流量超標時，各個獨立的流將都會取得進展)、突發流量的蓉惹度已級排隊引發的額外延遲之間進行平衡。</li>
+</ul>
+<h3 id="豁免請求">豁免請求</h3>
+<p>某些特別不重要的請求不會受至於此特性施加的任何限制。這些豁免可以防止不當流量配置完全禁用 API server。</p>
+<h3 id="prioritylevelconfiguration">PriorityLevelConfiguration</h3>
+<p>一個 PriorityLevelConfiguration 表示單個隔離類型。
+每個 PriorityLevelConfigurations 對未完成請求的請求數有各自的限制，對排隊中的請求數也已有限制。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>flowcontrol.apiserver.k8s.io/v1alpha1<span class="w">
+</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>PriorityLevelConfiguration<span class="w">
+</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>restrict-pod-lister<span class="w">
+</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">type</span><span class="p">:</span><span class="w"> </span>Limited<span class="w">
+</span><span class="w">  </span><span class="k">limited</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">assuredConcurrencyShares</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="c"># 允許併發請求數</span><span class="w">
+</span><span class="w">    </span><span class="k">limitResponse</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">queuing</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="k">handSize</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="c"># shuffle sharding 的配置，每個 flowschema + distinguisher 的請求會被 enqueue 到多少個對列</span><span class="w">
+</span><span class="w">        </span><span class="k">queueLengthLimit</span><span class="p">:</span><span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="c"># 每個對列的對象數量</span><span class="w">
+</span><span class="w">        </span><span class="k">queues</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="c"># 當前 PriorityLevel 的對列總數</span><span class="w">
+</span><span class="w">      </span><span class="k">type</span><span class="p">:</span><span class="w"> </span>Queue<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="flowschema">FlowSchema</h3>
+<p>FlowSchema 匹配一些入站請求，並將它們分配給優先級。</p>
+<p>每個入站請求都會對所有的 FlowSchema 測試是否匹配，首先從 matchingPrecedence 數值最低的開始匹配，然後依次進行，直到手個匹配對象出現。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>flowcontrol.apiserver.k8s.io/v1alpha1<span class="w">
+</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>FlowSchema<span class="w">
+</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>restrict-pod-lister<span class="w">
+</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">matchingPriority</span><span class="p">:</span><span class="w"> </span><span class="m">800</span><span class="w"> </span><span class="c"># 規則優先級</span><span class="w">
+</span><span class="w">  </span><span class="k">priorityLevelConfiguration</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>restrict-pod-lister<span class="w"> </span><span class="c"># 對應的列隊優先級</span><span class="w">
+</span><span class="w">  </span><span class="k">distinguisherMethod</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">type</span><span class="p">:</span><span class="w"> </span>ByUser<span class="w"> </span><span class="c"># Distinguisher</span><span class="w">
+</span><span class="w">  </span><span class="k">rules</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="k">resourceRules</span><span class="p">:</span><span class="w"> </span><span class="c"># 對應的資源和請求類型</span><span class="w">
+</span><span class="w">    </span>- <span class="k">apiGroups</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">      </span><span class="k">namespaces</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;demo&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">      </span><span class="k">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;pods&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">      </span><span class="k">verbs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;list&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;get&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">    </span><span class="k">subjects</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="k">kind</span><span class="p">:</span><span class="w"> </span>ServiceAccount<span class="w">
+</span><span class="w">      </span><span class="k">serviceAccount</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>podlister<span class="m">-0</span><span class="w">
+</span><span class="w">        </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w">    </span>- <span class="k">kind</span><span class="p">:</span><span class="w"> </span>ServiceAccount<span class="w">
+</span><span class="w">      </span><span class="k">serviceAccount</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>podlister<span class="m">-1</span><span class="w">
+</span><span class="w">        </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>demo<span class="w"> 
+</span><span class="w">    </span>- <span class="k">kind</span><span class="p">:</span><span class="w"> </span>ServiceAccount<span class="w">
+</span><span class="w">      </span><span class="k">serviceAccount</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>podlister<span class="m">-2</span><span class="w">
+</span><span class="w">        </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h1 id="總結">總結</h1>
+<p>沒有想到 kube-apiserver 身為 cluster 的最重要的 API 盡然做了那麼多事情，也對了 APF 機制有了更深入的了解，期待這個 feature 早日 release。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan Zhan 讓我們一起學習成為更好的自己</a> 留言，可以的話順手給個讚吧！感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="參考">參考</h2>
+<ul>
+<li><a href="https://kubernetes.io/zh/docs/concepts/cluster-administration/flow-control/">API Priority and Fairness</a></li>
+<li><a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/1040-priority-and-fairness">KEP-1040: Priority and Fairness for API Server Requests
+</a></li>
+<li><a href="https://cloud.redhat.com/blog/surviving-the-api-storm-with-api-priority-fairness">Surviving The API Storm With API Priority &amp; Fairness</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        24 Apr 22 19:07 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-04-10-mongodb-index-best-practice/">
+            <span class="next-text nav-default">Mongodb Index 最佳實踐</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
