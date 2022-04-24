@@ -17,7 +17,7 @@
       <pubDate>Sun, 24 Apr 2022 19:07:12 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/</guid>
-      <description>API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包誇認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp;amp; Valiating) 提供</description>
+      <description>API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包括認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp;amp; Valiating) 提供</description>
     </item>
     
     <item>
