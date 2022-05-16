@@ -6,10 +6,19 @@
     <description>Recent content in kubernetes on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 24 Apr 2022 19:07:12 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 16 May 2022 22:40:48 +0800</lastBuildDate>
     
 	<atom:link href="https://alanzhan.dev/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kubernetes 核心介紹 Scheduler</title>
+      <link>https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/</link>
+      <pubDate>Mon, 16 May 2022 22:40:48 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/</guid>
+      <description>Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的</description>
+    </item>
     
     <item>
       <title>Kubernetes 核心介紹 Api Server</title>

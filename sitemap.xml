@@ -9,6 +9,27 @@
   </url>
   
   <url>
+    <loc>https://alanzhan.dev/categories/</loc>
+    <lastmod>2022-05-16T22:40:48+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/kubernetes/</loc>
+    <lastmod>2022-05-16T22:40:48+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/kubernetes/</loc>
+    <lastmod>2022-05-16T22:40:48+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/</loc>
     <lastmod>2022-05-16T22:40:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -23,35 +44,14 @@
   </url>
   
   <url>
-    <loc>https://alanzhan.dev/categories/</loc>
-    <lastmod>2022-04-24T19:07:12+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/kubernetes/</loc>
-    <lastmod>2022-04-24T19:07:12+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/categories/kubernetes/</loc>
-    <lastmod>2022-04-24T19:07:12+08:00</lastmod>
+    <loc>https://alanzhan.dev/tags/</loc>
+    <lastmod>2022-05-16T22:40:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/</loc>
-    <lastmod>2022-04-24T19:07:12+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/</loc>
     <lastmod>2022-04-24T19:07:12+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

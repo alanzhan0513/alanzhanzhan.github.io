@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Alan Zhan" /><meta name="description" content="Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的" /><meta name="keywords" content="alan, zhan, blog" />
+<meta name="author" content="Alan Zhan" /><meta name="description" content="Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的" /><meta name="keywords" content="alan, zhan, blog, scheduler, controller, affinity, antiaffinity, predicate, priority, bind, nodeaffinity, podeaffinity, taints, tolerations, priorityclass" />
 
 
 
@@ -49,11 +49,11 @@
 <meta itemprop="description" content="Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的">
 <meta itemprop="datePublished" content="2022-05-16T22:40:48&#43;08:00" />
 <meta itemprop="dateModified" content="2022-05-16T22:40:48&#43;08:00" />
-<meta itemprop="wordCount" content="1672">
+<meta itemprop="wordCount" content="1753">
 
 
 
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Kubernetes 核心介紹 Scheduler"/>
 <meta name="twitter:description" content="Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的"/>
 
@@ -130,8 +130,10 @@
 
       <div class="post-meta">
         <span class="post-time"> 16 May 22 22:40 &#43;0800 </span>
-        
-          <span class="more-meta"> 1672 words </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+          <span class="more-meta"> 1753 words </span>
           <span class="more-meta"> 4 mins read </span>
         
       </div>
@@ -144,11 +146,8 @@
   <ul>
     <li><a href="#scheduler">Scheduler</a>
       <ul>
-        <li><a href="#scheduling-cycle--binding-cycle">Scheduling Cycle &amp; Binding Cycle</a>
-          <ul>
-            <li><a href="#predicate-策略">Predicate 策略</a></li>
-          </ul>
-        </li>
+        <li><a href="#scheduling-cycle--binding-cycle">Scheduling Cycle &amp; Binding Cycle</a></li>
+        <li><a href="#predicate-策略">Predicate 策略</a></li>
         <li><a href="#priorites-策略">Priorites 策略</a></li>
       </ul>
     </li>
@@ -162,6 +161,7 @@
     </li>
     <li><a href="#priorityclass">PriorityClass</a></li>
     <li><a href="#多調度器">多調度器</a></li>
+    <li><a href="#總結">總結</a></li>
   </ul>
 </nav>
   </div>
@@ -173,7 +173,7 @@
 <p>設計 scheduler 需要要充分考慮諸多因素：</p>
 <ul>
 <li>公平調度</li>
-<li>資源高校利用</li>
+<li>資源高效利用</li>
 <li>QoS(Quality of Service)</li>
 <li>affinity 和 antiaffinity</li>
 <li>數據本地化 (data locality)</li>
@@ -189,7 +189,7 @@
 </ul>
 <h2 id="scheduling-cycle--binding-cycle">Scheduling Cycle &amp; Binding Cycle</h2>
 <p><img src="/2022-05-16-kubernetes-scheduler/scheduling-cycle-binding-cycle.jpg" alt=""></p>
-<h3 id="predicate-策略">Predicate 策略</h3>
+<h2 id="predicate-策略">Predicate 策略</h2>
 <p>這邊只有列出常見的策略，還有其他很多策略，你也可以編寫自己的策略。</p>
 <ul>
 <li>PodFitsHostPorts: 檢查是否有 Host Ports 衝突。</li>
@@ -441,6 +441,9 @@
 </div>
 </div><h1 id="多調度器">多調度器</h1>
 <p>如果默認的調度器不滿足需求，還可以部屬自定義的調度器。並且在整個集群中，同時可以運行多個調度器實例，通過 pod.spec.schedulerName 來選擇使用哪一個調度器 (默認使用內置的調度器)。</p>
+<h1 id="總結">總結</h1>
+<p>對於 k8s 整體運作原理已經開始有更深入的認識了，期待自己早日搞懂 k8s 。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，可以的話順手給個讚吧！感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
     </div>
 
@@ -460,7 +463,9 @@
   
 </div>
 <footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
       <nav class="post-nav">
         
         <a class="next" href="/post/2022-04-24-kubernetes-api-server/">
