@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>me on Alan Zhan | 讓我們一起學習成為更好的自己</title>
+    <title>me on Alan 的筆記本</title>
     <link>https://alanzhan.dev/tags/me/</link>
-    <description>Recent content in me on Alan Zhan | 讓我們一起學習成為更好的自己</description>
+    <description>Recent content in me on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <lastBuildDate>Thu, 13 May 1993 00:00:00 +0800</lastBuildDate>
@@ -17,8 +17,8 @@
       <pubDate>Thu, 13 May 1993 00:00:00 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/1993-05-13-about-me/</guid>
-      <description>I have 4-year experience as a software engineer and focus on back-end. In my spare time, I like to gain new knowledge which can improve my critical thinking and the knowledge can help me solve problems or create value for my work. I hope that my passion can create more products that users love and use.
-Experience  Higgs • Full Stack Enginner • Apr. 2018 ~ Present ISCOM Online International Information Inc • Software Engineer • Sep.</description>
+      <description>I have been working as a senior full-stack engineer more than 5 years experience. I like to gain new knowledge which can improve my critical thinking and the knowledge can help me solve problems or create value for my work. I hope that my passion can create more products that users love and use.
+Experience  Higgs • Senior Full Stack Enginner • Apr. 2018 ~ Present ISCOM Online International Information Inc • Software Engineer • Sep.</description>
     </item>
     
   </channel>

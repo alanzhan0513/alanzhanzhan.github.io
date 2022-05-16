@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kubernetes 核心介紹 Scheduler - Alan 的筆記本</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的" /><meta name="keywords" content="alan, zhan, blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kubernetes 核心介紹 Scheduler" />
+<meta property="og:description" content="Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/" />
+<meta property="article:published_time" content="2022-05-16T22:40:48+08:00" />
+<meta property="article:modified_time" content="2022-05-16T22:40:48+08:00" />
+<meta itemprop="name" content="Kubernetes 核心介紹 Scheduler">
+<meta itemprop="description" content="Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的">
+<meta itemprop="datePublished" content="2022-05-16T22:40:48&#43;08:00" />
+<meta itemprop="dateModified" content="2022-05-16T22:40:48&#43;08:00" />
+<meta itemprop="wordCount" content="1672">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes 核心介紹 Scheduler"/>
+<meta name="twitter:description" content="Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kubernetes 核心介紹 Scheduler</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 16 May 22 22:40 &#43;0800 </span>
+        
+          <span class="more-meta"> 1672 words </span>
+          <span class="more-meta"> 4 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#scheduler">Scheduler</a>
+      <ul>
+        <li><a href="#scheduling-cycle--binding-cycle">Scheduling Cycle &amp; Binding Cycle</a>
+          <ul>
+            <li><a href="#predicate-策略">Predicate 策略</a></li>
+          </ul>
+        </li>
+        <li><a href="#priorites-策略">Priorites 策略</a></li>
+      </ul>
+    </li>
+    <li><a href="#指定-node-調度">指定 Node 調度</a>
+      <ul>
+        <li><a href="#nodeselector">NodeSelector</a></li>
+        <li><a href="#nodeaffinity">NodeAffinity</a></li>
+        <li><a href="#podaffinity">PodAffinity</a></li>
+        <li><a href="#taints-和-tolerations">Taints 和 Tolerations</a></li>
+      </ul>
+    </li>
+    <li><a href="#priorityclass">PriorityClass</a></li>
+    <li><a href="#多調度器">多調度器</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。</p>
+<p>Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的所有節點健康狀況和資源使用情控，為待調度的 Pod 選擇最佳節點，完成調度。</p>
+<p>kube-scheduler 負責分配調度 Pod 到集群內的節點上，他監聽 kube-apiserver ，查詢還未分配 Node 的 Pod ，然後根據調度策略為這些 Pod 分配節點 (更新 Pod 的 NodeName Field)。</p>
+<p>設計 scheduler 需要要充分考慮諸多因素：</p>
+<ul>
+<li>公平調度</li>
+<li>資源高校利用</li>
+<li>QoS(Quality of Service)</li>
+<li>affinity 和 antiaffinity</li>
+<li>數據本地化 (data locality)</li>
+<li>內部負載干擾 (inter-workload interference)</li>
+<li>deadlines</li>
+</ul>
+<h1 id="scheduler">Scheduler</h1>
+<p>kube-scheduler 調度分為幾個階段：</p>
+<ul>
+<li>predicate: 將所有節點拿出來，過濾不符合條件節點。</li>
+<li>priority: 優先級排序，選擇優先級最高的節點。</li>
+<li>Bind : 將計算節點與 Pod 綁定，完成調度。</li>
+</ul>
+<h2 id="scheduling-cycle--binding-cycle">Scheduling Cycle &amp; Binding Cycle</h2>
+<p><img src="/2022-05-16-kubernetes-scheduler/scheduling-cycle-binding-cycle.jpg" alt=""></p>
+<h3 id="predicate-策略">Predicate 策略</h3>
+<p>這邊只有列出常見的策略，還有其他很多策略，你也可以編寫自己的策略。</p>
+<ul>
+<li>PodFitsHostPorts: 檢查是否有 Host Ports 衝突。</li>
+<li>PodFitsPorts: 同PodFitsHostPorts。</li>
+<li>PodFitsResources: 檢查 Node 的資源是否充足，包括允許的 Pod 數量、CPU、內存、GPU 個數以及其他的 OpaqueIntResources。</li>
+<li>Hostname: 檢查 pod.Spec.NodeName 是否與候選節點一致。</li>
+<li>MatchNodeSelector: 檢查候選節點的 pod.Spec.NodeSelector 是否匹配。</li>
+<li>NoVolumeZoneConflict: 檢查 volume zone 是否衝突。</li>
+<li>MatchInterPodAffinity: 檢查是否匹配 Pod 的 affinity 要求。</li>
+<li>NoDiskConflict: 檢查是否存在 Volume 衝突，僅用於 GCP PD 、 AWS EBS 、 Ceph RBD 以及 iSCSI 。</li>
+<li>PodToleratesNodeTaints: 檢查 Pod 是否容忍 Node Taints。</li>
+<li>CheckNodeMemoryPressure: 檢查 Pod 是否可以調度到 MemoryPressure 的節點上。</li>
+<li>CheckNodeDiskPressure: 檢查 Pod 是否可以調度到 DiskPressure 的節點上。</li>
+<li>NoVolumeNodeConflict: 檢查節點是否滿足 Pod 所引用的 Volume 的條件。</li>
+</ul>
+<h2 id="priorites-策略">Priorites 策略</h2>
+<p>經過 Predicate 之後，就要去為剩下的機器打分數，然後排序。</p>
+<ul>
+<li>SelectorSpreadPriority: 優先減少節點上屬於同一個 Service 或 Replication Controller 的 Pod 數量。</li>
+<li>InterPodAffinityPriority: 優先將 Pod 調度到相同的拓樸上 (如同一個節點、Rack、Zone 等)。</li>
+<li>LeastRequestedPriority: 優先調度到請求資源少的節點上。</li>
+<li>BalancedResourceAllocation: 優先平衡各節點的資源使用。</li>
+<li>NodePreferAvoidPodsPriority: alpha.kubernetes.io/perferAvoidPods 字段判斷，權重為 10000 ，避免其他優先即策略的影響。</li>
+<li>NodeAffinitypriority: 優先調度到匹配 NodeAffinity 的節點上。</li>
+<li>TaintTolerationPriority: 優先調度到匹配 TaintToleration 節點上。</li>
+<li>ServiceSpreadingPriority: 盡量將同一個 service 的 Pod 分配到不同節點上，已經被 SelectorSpreadPriority 替代 (默認未使用)。</li>
+<li>EqualPriority: 將所有節點的優先級設置為1 (默認未使用)。</li>
+<li>ImageLocalityPriority: 盡量將使用大 Image 的容器調度到已經下拉的該 Image 的節點上 (默認未使用)。</li>
+<li>MostRequestedPriority: 盡量調度到已經使用過的 Node 上，特別適用於 cluster0autoscaler (默認未使用)。</li>
+</ul>
+<h1 id="指定-node-調度">指定 Node 調度</h1>
+<p>可以通過 nodeSelector 、 nodeAffinity 、 podAffinity 以及 Taints 與 tolerations 等來將 Pod 調度到需要的 Node 上。</p>
+<p>也可以指定設置 nodeName 參數，將 Pod 調度到指定 Node 節點上。</p>
+<h2 id="nodeselector">NodeSelector</h2>
+<p>可以在 pod 上面標記 nodeSelector ，讓在創建 pod 的時候調度到打有對應的 key 與 value 的機器上。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Pod<span class="w">
+</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w"> 
+</span><span class="w">	</span><span class="k">name</span><span class="p">:</span><span class="w"> </span>nginx<span class="w">
+</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">containers</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>nginx<span class="w">
+</span><span class="w">    </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>nginx<span class="w">
+</span><span class="w">    </span><span class="k">imagePullPolicy</span><span class="p">:</span><span class="w"> </span>IfNotPresent<span class="w">
+</span><span class="w">  </span><span class="k">nodeSelector</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">disktype</span><span class="p">:</span><span class="w"> </span>ssd<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id="nodeaffinity">NodeAffinity</h2>
+<p>NodeAffinity 目前支援兩種</p>
+<ul>
+<li>requiredDuringSchedulingIgnoredDuringExecution: 必須滿足條件。</li>
+<li>preferedDuringSchedulingIgnoredDuringExecution: 優選條件。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Pod<span class="w">
+</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>with-affinity-anti-affinity<span class="w">
+</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">affinity</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">nodeAffinity</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="k">nodeSelectorTerms</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="k">matchExpressions</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span>- <span class="k">key</span><span class="p">:</span><span class="w"> </span>kubernetes.io/os<span class="w">
+</span><span class="w">            </span><span class="k">operator</span><span class="p">:</span><span class="w"> </span>In<span class="w">
+</span><span class="w">            </span><span class="k">values</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span>- linux<span class="w">
+</span><span class="w">      </span><span class="k">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="k">weight</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">        </span><span class="k">preference</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">matchExpressions</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span>- <span class="k">key</span><span class="p">:</span><span class="w"> </span>label<span class="m">-1</span><span class="w">
+</span><span class="w">            </span><span class="k">operator</span><span class="p">:</span><span class="w"> </span>In<span class="w">
+</span><span class="w">            </span><span class="k">values</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span>- key<span class="m">-1</span><span class="w">
+</span><span class="w">      </span>- <span class="k">weight</span><span class="p">:</span><span class="w"> </span><span class="m">50</span><span class="w">
+</span><span class="w">        </span><span class="k">preference</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">matchExpressions</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span>- <span class="k">key</span><span class="p">:</span><span class="w"> </span>label<span class="m">-2</span><span class="w">
+</span><span class="w">            </span><span class="k">operator</span><span class="p">:</span><span class="w"> </span>In<span class="w">
+</span><span class="w">            </span><span class="k">values</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span>- key<span class="m">-2</span><span class="w">
+</span><span class="w">  </span><span class="k">containers</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>with-node-affinity<span class="w">
+</span><span class="w">    </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>k8s.gcr.io/pause<span class="p">:</span><span class="m">2.0</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id="podaffinity">PodAffinity</h2>
+<p>PodAffinity 基於 Pod 的標籤來選擇 Node，僅調度滿足條件 Pod 所在的 Node 上，支持 PodAffinity 和 PodAntiffinity。</p>
+<ul>
+<li>requiredDuringSchedulingIgnoredDuringExecution: 必須滿足條件。</li>
+<li>preferedDuringSchedulingIgnoredDuringExecution: 優選條件。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Pod<span class="w">
+</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>with-pod-affinity<span class="w">
+</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">affinity</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">podAffinity</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="k">labelSelector</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">matchExpressions</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span>- <span class="k">key</span><span class="p">:</span><span class="w"> </span>security<span class="w">
+</span><span class="w">            </span><span class="k">operator</span><span class="p">:</span><span class="w"> </span>In<span class="w">
+</span><span class="w">            </span><span class="k">values</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span>- S1<span class="w">
+</span><span class="w">        </span><span class="k">topologyKey</span><span class="p">:</span><span class="w"> </span>topology.kubernetes.io/zone<span class="w">
+</span><span class="w">    </span><span class="k">podAntiAffinity</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="k">weight</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span><span class="w">        </span><span class="k">podAffinityTerm</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">labelSelector</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">matchExpressions</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span>- <span class="k">key</span><span class="p">:</span><span class="w"> </span>security<span class="w">
+</span><span class="w">              </span><span class="k">operator</span><span class="p">:</span><span class="w"> </span>In<span class="w">
+</span><span class="w">              </span><span class="k">values</span><span class="p">:</span><span class="w">
+</span><span class="w">              </span>- S2<span class="w">
+</span><span class="w">          </span><span class="k">topologyKey</span><span class="p">:</span><span class="w"> </span>topology.kubernetes.io/hostname<span class="w">
+</span><span class="w">  </span><span class="k">containers</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>with-pod-affinity<span class="w">
+</span><span class="w">    </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>k8s.gcr.io/pause<span class="p">:</span><span class="m">2.0</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id="taints-和-tolerations">Taints 和 Tolerations</h2>
+<p>在使用 NodeSelector 的場景下，是不會強制可以拒絕 Pod 調度到某些 Node 上的，或者是在初步規劃 kubernetes 時，沒有考慮到會有所有部門都會使用 Kubernetes 的技術，結果後面大家都上 k8s 導致需要為某些節點做牆隔離，為了解決這些問題，所以可以使用 Taints 和 Tolerations。</p>
+<p>Taint 和 Tolerations 用於保證 Pod 不會被調度到不合適的 Node 上，其中 Taint 應用於 Node 上，而 Toleration 則應用在 Pod 上。</p>
+<p>目前支持的 Taint 類型：</p>
+<ul>
+<li>NoSchedule: 新的 Pod 不會被調度到該節點上，不影響正在運行的 Pod。</li>
+<li>PreferNoSchedule: Soft 版的 NoSchedule ，盡量不調度到該 Node 上。</li>
+<li>NoExecute: 新的 Pod 不調度到該 Node 上，並且刪除 (evict) 已經在運行的 Pod。Pod 可以增加一個時間 (tolerationSecondes)。</li>
+</ul>
+<p>然而，當 Pod 與 Toleration 匹配 Node 的所有 Taints 的時候，可以調度到該 Node 上，當 Pod 是已經運行的時候，也不會被刪除 (evicted)。</p>
+<p>在 kubernets 內，當一個節點有問題的時候，他也是通過 taints 的機制，將機器打上 key value，以確保不會在有 pod 不會再被調度上去，並且打上 tolerationSecondes 確保在一訂時間內恢復的話， pod 是不會被驅逐的。</p>
+<h1 id="priorityclass">PriorityClass</h1>
+<p>從 v1.8 開始，kube-scheduler 支持定義 Pod 的優先級，從而保證高優先級的 Pod 優先調度。</p>
+<p>preemptionPolicy:</p>
+<ul>
+<li>PreemptLowerPriority: 將允許該 PriorityClass 的 Pod 搶占較低優先級的 Pod 。</li>
+<li>Never: 非搶佔式。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>scheduling.k8s.io/v1<span class="w">
+</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>PriorityClass<span class="w">
+</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>high-priority<span class="w">
+</span><span class="w"></span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">1000000</span><span class="w">
+</span><span class="w"></span><span class="k">preemptionPolicy</span><span class="p">:</span><span class="w"> </span>Never<span class="w">
+</span><span class="w"></span><span class="k">globalDefault</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="k">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;This priority class should be used for XYZ service pods only.&#34;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h1 id="多調度器">多調度器</h1>
+<p>如果默認的調度器不滿足需求，還可以部屬自定義的調度器。並且在整個集群中，同時可以運行多個調度器實例，通過 pod.spec.schedulerName 來選擇使用哪一個調度器 (默認使用內置的調度器)。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        16 May 22 22:40 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-04-24-kubernetes-api-server/">
+            <span class="next-text nav-default">Kubernetes 核心介紹 Api Server</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
