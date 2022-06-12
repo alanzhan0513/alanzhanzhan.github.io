@@ -6,10 +6,24 @@
     <description>Recent content in Tags on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 16 May 2022 22:40:48 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 12 Jun 2022 13:01:44 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>leetcode</title>
+      <link>https://alanzhan.dev/tags/leetcode/</link>
+      <pubDate>Sun, 12 Jun 2022 13:01:44 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/tags/leetcode/</guid>
+      <description></description>
+    </item>
     
-	<atom:link href="https://alanzhan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
-    
+    <item>
+      <title>leetcode-easy</title>
+      <link>https://alanzhan.dev/tags/leetcode-easy/</link>
+      <pubDate>Sun, 12 Jun 2022 13:01:44 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/tags/leetcode-easy/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>kubernetes</title>

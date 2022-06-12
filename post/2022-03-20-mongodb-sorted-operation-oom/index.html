@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
 
 
 <link rel="canonical" href="https://alanzhan.dev/post/2022-03-20-mongodb-sorted-operation-oom/" />
@@ -35,24 +35,21 @@
 
 
 
-<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link href="/sass/main.min.67ec3458d297a750ad65cc14c128a47931875c6be1b31b4216dd61905bc210dd.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="MongoDB Sorted Operation OOM" />
 <meta property="og:description" content="這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://alanzhan.dev/post/2022-03-20-mongodb-sorted-operation-oom/" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-03-20-mongodb-sorted-operation-oom/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-03-20T15:11:15+08:00" />
 <meta property="article:modified_time" content="2022-03-20T15:11:15+08:00" />
+
 <meta itemprop="name" content="MongoDB Sorted Operation OOM">
-<meta itemprop="description" content="這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::">
-<meta itemprop="datePublished" content="2022-03-20T15:11:15&#43;08:00" />
-<meta itemprop="dateModified" content="2022-03-20T15:11:15&#43;08:00" />
+<meta itemprop="description" content="這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::"><meta itemprop="datePublished" content="2022-03-20T15:11:15+08:00" />
+<meta itemprop="dateModified" content="2022-03-20T15:11:15+08:00" />
 <meta itemprop="wordCount" content="1200">
-
-
-
 <meta itemprop="keywords" content="mongodb,index," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="MongoDB Sorted Operation OOM"/>
 <meta name="twitter:description" content="這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::"/>
@@ -207,11 +204,11 @@
 <p>我們可以增加可用的記憶體空間，這邊的範例是改成 100 MB。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">db.adminCommand({ setParameter: 1, internalQueryExecMaxBlockingSortBytes: 104857600 })
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">db.adminCommand({ setParameter: 1, internalQueryExecMaxBlockingSortBytes: 104857600 })
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="使用-disk-當作記憶體">使用 Disk 當作記憶體</h2>
 <p>如果你使用 aggregation pipeline 的話，你可以使用 <code>allowDiskUse: true</code> 來突破記憶體限制，讓 disk 來幫助你！</p>
@@ -219,11 +216,11 @@
 <p>上面兩個方法可以幫你快速解決問題，不過建議還是會使用 index 來解決，<code>記得把 background 設置為 true</code>，不然你在 production 建立 index 的時候，因為資料量過多造成寫入鎖死。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">db.Foo.createIndex({ &#34;Bar&#34;: 1 }, { background: true })
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">db.Foo.createIndex({ &#34;Bar&#34;: 1 }, { background: true })
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h1 id="總結">總結</h1>
 <p>至於 index 要怎麼設計規劃呢？讓我賣賣關子，下幾篇會再給大家好好的解釋清楚。</p>
@@ -283,8 +280,8 @@
       <div class="social-links">
       <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
       <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
-      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
-      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.linkedin.com/in/alanzhan0513/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhan0513/" class="iconfont icon-github" title="github"></a>
   <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 
@@ -323,7 +320,7 @@
 
 
 
-<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+<script type="text/javascript" src="/js/main.min.9e3db4166f5901c11faec00349b7b03ae36c12a6e820a208cf498f1aee812258.js"></script>
 
 
 <script type="application/javascript">

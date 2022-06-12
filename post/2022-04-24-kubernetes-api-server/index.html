@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
 
 
 <link rel="canonical" href="https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/" />
@@ -35,24 +35,21 @@
 
 
 
-<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link href="/sass/main.min.67ec3458d297a750ad65cc14c128a47931875c6be1b31b4216dd61905bc210dd.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="Kubernetes 核心介紹 Api Server" />
 <meta property="og:description" content="API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包括認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp; Valiating) 提供" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-04-24T19:07:12+08:00" />
 <meta property="article:modified_time" content="2022-04-24T19:07:12+08:00" />
+
 <meta itemprop="name" content="Kubernetes 核心介紹 Api Server">
-<meta itemprop="description" content="API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包括認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp; Valiating) 提供">
-<meta itemprop="datePublished" content="2022-04-24T19:07:12&#43;08:00" />
-<meta itemprop="dateModified" content="2022-04-24T19:07:12&#43;08:00" />
-<meta itemprop="wordCount" content="3510">
-
-
-
+<meta itemprop="description" content="API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包括認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp; Valiating) 提供"><meta itemprop="datePublished" content="2022-04-24T19:07:12+08:00" />
+<meta itemprop="dateModified" content="2022-04-24T19:07:12+08:00" />
+<meta itemprop="wordCount" content="3430">
 <meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Kubernetes 核心介紹 Api Server"/>
 <meta name="twitter:description" content="API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包括認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp; Valiating) 提供"/>
@@ -133,8 +130,8 @@
         <div class="post-category">
             <a href="/categories/kubernetes/"> kubernetes </a>
             </div>
-          <span class="more-meta"> 3510 words </span>
-          <span class="more-meta"> 8 mins read </span>
+          <span class="more-meta"> 3430 words </span>
+          <span class="more-meta"> 7 mins read </span>
         
       </div>
     </header>
@@ -374,7 +371,7 @@
 每個 PriorityLevelConfigurations 對未完成請求的請求數有各自的限制，對排隊中的請求數也已有限制。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -390,28 +387,28 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>flowcontrol.apiserver.k8s.io/v1alpha1<span class="w">
-</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>PriorityLevelConfiguration<span class="w">
-</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>restrict-pod-lister<span class="w">
-</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">type</span><span class="p">:</span><span class="w"> </span>Limited<span class="w">
-</span><span class="w">  </span><span class="k">limited</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">assuredConcurrencyShares</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="c"># 允許併發請求數</span><span class="w">
-</span><span class="w">    </span><span class="k">limitResponse</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="k">queuing</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">handSize</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="c"># shuffle sharding 的配置，每個 flowschema + distinguisher 的請求會被 enqueue 到多少個對列</span><span class="w">
-</span><span class="w">        </span><span class="k">queueLengthLimit</span><span class="p">:</span><span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="c"># 每個對列的對象數量</span><span class="w">
-</span><span class="w">        </span><span class="k">queues</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="c"># 當前 PriorityLevel 的對列總數</span><span class="w">
-</span><span class="w">      </span><span class="k">type</span><span class="p">:</span><span class="w"> </span>Queue<span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">flowcontrol.apiserver.k8s.io/v1alpha1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PriorityLevelConfiguration</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">restrict-pod-lister</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Limited</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">limited</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">assuredConcurrencyShares</span><span class="p">:</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="c"># 允許併發請求數</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">limitResponse</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">queuing</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">handSize</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="c"># shuffle sharding 的配置，每個 flowschema + distinguisher 的請求會被 enqueue 到多少個對列</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">queueLengthLimit</span><span class="p">:</span><span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="c"># 每個對列的對象數量</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">queues</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="c"># 當前 PriorityLevel 的對列總數</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Queue</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="flowschema">FlowSchema</h3>
 <p>FlowSchema 匹配一些入站請求，並將它們分配給優先級。</p>
 <p>每個入站請求都會對所有的 FlowSchema 測試是否匹配，首先從 matchingPrecedence 數值最低的開始匹配，然後依次進行，直到手個匹配對象出現。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -442,36 +439,36 @@
 </span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>flowcontrol.apiserver.k8s.io/v1alpha1<span class="w">
-</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>FlowSchema<span class="w">
-</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>restrict-pod-lister<span class="w">
-</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">matchingPriority</span><span class="p">:</span><span class="w"> </span><span class="m">800</span><span class="w"> </span><span class="c"># 規則優先級</span><span class="w">
-</span><span class="w">  </span><span class="k">priorityLevelConfiguration</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>restrict-pod-lister<span class="w"> </span><span class="c"># 對應的列隊優先級</span><span class="w">
-</span><span class="w">  </span><span class="k">distinguisherMethod</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">type</span><span class="p">:</span><span class="w"> </span>ByUser<span class="w"> </span><span class="c"># Distinguisher</span><span class="w">
-</span><span class="w">  </span><span class="k">rules</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="k">resourceRules</span><span class="p">:</span><span class="w"> </span><span class="c"># 對應的資源和請求類型</span><span class="w">
-</span><span class="w">    </span>- <span class="k">apiGroups</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">      </span><span class="k">namespaces</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;demo&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">      </span><span class="k">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;pods&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">      </span><span class="k">verbs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;list&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;get&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">    </span><span class="k">subjects</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- <span class="k">kind</span><span class="p">:</span><span class="w"> </span>ServiceAccount<span class="w">
-</span><span class="w">      </span><span class="k">serviceAccount</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>podlister<span class="m">-0</span><span class="w">
-</span><span class="w">        </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>demo<span class="w">
-</span><span class="w">    </span>- <span class="k">kind</span><span class="p">:</span><span class="w"> </span>ServiceAccount<span class="w">
-</span><span class="w">      </span><span class="k">serviceAccount</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>podlister<span class="m">-1</span><span class="w">
-</span><span class="w">        </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>demo<span class="w"> 
-</span><span class="w">    </span>- <span class="k">kind</span><span class="p">:</span><span class="w"> </span>ServiceAccount<span class="w">
-</span><span class="w">      </span><span class="k">serviceAccount</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>podlister<span class="m">-2</span><span class="w">
-</span><span class="w">        </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>demo<span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">flowcontrol.apiserver.k8s.io/v1alpha1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">FlowSchema</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">restrict-pod-lister</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">matchingPriority</span><span class="p">:</span><span class="w"> </span><span class="m">800</span><span class="w"> </span><span class="c"># 規則優先級</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">priorityLevelConfiguration</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">restrict-pod-lister</span><span class="w"> </span><span class="c"># 對應的列隊優先級</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">distinguisherMethod</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ByUser</span><span class="w"> </span><span class="c"># Distinguisher</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">resourceRules</span><span class="p">:</span><span class="w"> </span><span class="c"># 對應的資源和請求類型</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">apiGroups</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">namespaces</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;demo&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;pods&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;list&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;get&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">subjects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">serviceAccount</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">podlister-0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">demo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">serviceAccount</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">podlister-1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">demo </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">serviceAccount</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">podlister-2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">demo</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h1 id="總結">總結</h1>
 <p>沒有想到 kube-apiserver 身為 cluster 的最重要的 API 盡然做了那麼多事情，也對了 APF 機制有了更深入的了解，期待這個 feature 早日 release。</p>
@@ -533,8 +530,8 @@
       <div class="social-links">
       <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
       <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
-      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
-      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.linkedin.com/in/alanzhan0513/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhan0513/" class="iconfont icon-github" title="github"></a>
   <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 
@@ -573,7 +570,7 @@
 
 
 
-<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+<script type="text/javascript" src="/js/main.min.9e3db4166f5901c11faec00349b7b03ae36c12a6e820a208cf498f1aee812258.js"></script>
 
 
 <script type="application/javascript">

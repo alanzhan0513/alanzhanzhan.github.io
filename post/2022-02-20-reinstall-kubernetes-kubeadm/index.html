@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
 
 
 <link rel="canonical" href="https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/" />
@@ -35,24 +35,21 @@
 
 
 
-<link href="/sass/main.min.b8a5378fd28c1e551f5c54523eef8acfc47e02a33d7782c629b05d264ac2f8d9.css" rel="stylesheet">
+<link href="/sass/main.min.67ec3458d297a750ad65cc14c128a47931875c6be1b31b4216dd61905bc210dd.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="安裝兩次的 Kubernetes Kubeadm" />
 <meta property="og:description" content="想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-02-20T15:04:19+08:00" />
 <meta property="article:modified_time" content="2022-02-20T15:04:19+08:00" />
+
 <meta itemprop="name" content="安裝兩次的 Kubernetes Kubeadm">
-<meta itemprop="description" content="想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但">
-<meta itemprop="datePublished" content="2022-02-20T15:04:19&#43;08:00" />
-<meta itemprop="dateModified" content="2022-02-20T15:04:19&#43;08:00" />
+<meta itemprop="description" content="想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但"><meta itemprop="datePublished" content="2022-02-20T15:04:19+08:00" />
+<meta itemprop="dateModified" content="2022-02-20T15:04:19+08:00" />
 <meta itemprop="wordCount" content="1050">
-
-
-
 <meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="安裝兩次的 Kubernetes Kubeadm"/>
 <meta name="twitter:description" content="想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但"/>
@@ -169,33 +166,33 @@
 <li>修改 Docker 的 cgroup 的設定，這個修改是為了讓 K8s 與 container runtime 的 cgroup driver 一致，可以避免系統會出現不穩定的狀況。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo vim /etc/docker/daemon.json
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /etc/docker/daemon.json
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
-    <span class="nt">&#34;exec-opts&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;native.cgroupdriver=systemd&#34;</span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;exec-opts&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;native.cgroupdriver=systemd&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>重啟 Docker
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart docker
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart docker
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 </ol>
@@ -205,7 +202,7 @@
 <li>允許 iptables 檢查橋接流量 (bridged traffic) 。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -216,96 +213,96 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
-</span><span class="s">br_netfilter
-</span><span class="s">EOF</span>
-
-cat <span class="s">&lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
-</span><span class="s">net.bridge.bridge-nf-call-ip6tables = 1
-</span><span class="s">net.bridge.bridge-nf-call-iptables = 1
-</span><span class="s">EOF</span>
-sudo sysctl --system
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">br_netfilter
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-iptables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">sudo sysctl --system
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>更新 apt 與 K8s 所需要的包。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get install -y apt-transport-https ca-certificates curl
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>下載 Google Cloud 公開簽名密鑰。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>添加 K8s 的 apt 倉庫。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/kubernetes.list
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/kubernetes.list
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>更新 apt 包的索引，便且安裝 kubelet 、 kubeadmi 和 kubectl ，並鎖定版本。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-mark hold kubelet kubeadm kubectl
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get install -y kubelet kubeadm kubectl
+</span></span><span class="line"><span class="cl">sudo apt-mark hold kubelet kubeadm kubectl
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>啟動 k8s 。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo kubeadm init
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo kubeadm init
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>加入 worker node
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>複製 kubeconfig
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p <span class="nv">$HOME</span>/.kube
-sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
-sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p <span class="nv">$HOME</span>/.kube
+</span></span><span class="line"><span class="cl">sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+</span></span><span class="line"><span class="cl">sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 </ol>
@@ -315,30 +312,30 @@ sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k
 <p>我終於安裝好了，那我把 Worker Node 加入到集群內吧，加入完畢之後，正當我準備開始使用 K8s 的時候，我卻看到 nodes 的狀態均為 NotReady，。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">alan@k8s-01:~$ kubectl get nodes
-NAME     STATUS     ROLES                  AGE     VERSION
-k8s-03   NotReady   &lt;none&gt;                 7m17s   v1.23.4
-k8s-01   NotReady   control-plane,master   7m45s   v1.23.4
-k8s-02   NotReady   &lt;none&gt;                 7m24s   v1.23.4
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">alan@k8s-01:~$ kubectl get nodes
+</span></span><span class="line"><span class="cl">NAME     STATUS     ROLES                  AGE     VERSION
+</span></span><span class="line"><span class="cl">k8s-03   NotReady   &lt;none&gt;                 7m17s   v1.23.4
+</span></span><span class="line"><span class="cl">k8s-01   NotReady   control-plane,master   7m45s   v1.23.4
+</span></span><span class="line"><span class="cl">k8s-02   NotReady   &lt;none&gt;                 7m24s   v1.23.4
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>原因是因為我沒有設定 CNI (container network interface) 插件，<a href="https://stackoverflow.com/questions/44086826/kubeadm-master-node-never-ready">kubeadm: master node never ready</a>，於是我就 apply flannel 上去。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+</span></span><span class="line"><span class="cl">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>但是裝完之後我還是一樣節點處於不可用狀態啊，到底又是怎麼了，一查之後才發現 flannel 需要 pod netwokr CIDR (Classless Inter-Domain Routing) 設定，好吧，那我重作好了。</p>
 <h1 id="第二次安裝">第二次安裝</h1>
@@ -349,33 +346,33 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 <li>修改 Docker 的 cgroup 的設定，這個修改是為了讓 K8s 與 container runtime 的 cgroup driver 一致，可以避免系統會出現不穩定的狀況。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo vim /etc/docker/daemon.json
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /etc/docker/daemon.json
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
-    <span class="nt">&#34;exec-opts&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;native.cgroupdriver=systemd&#34;</span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;exec-opts&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;native.cgroupdriver=systemd&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>重啟 Docker
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart docker
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart docker
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 </ol>
@@ -385,7 +382,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 <li>允許 iptables 檢查橋接流量 (bridged traffic) 。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -396,108 +393,108 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
-</span><span class="s">br_netfilter
-</span><span class="s">EOF</span>
-
-cat <span class="s">&lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
-</span><span class="s">net.bridge.bridge-nf-call-ip6tables = 1
-</span><span class="s">net.bridge.bridge-nf-call-iptables = 1
-</span><span class="s">EOF</span>
-sudo sysctl --system
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">br_netfilter
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-iptables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">sudo sysctl --system
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>更新 apt 與 K8s 所需要的包。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get install -y apt-transport-https ca-certificates curl
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>下載 Google Cloud 公開簽名密鑰。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>添加 K8s 的 apt 倉庫。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/kubernetes.list
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/kubernetes.list
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>更新 apt 包的索引，便且安裝 kubelet 、 kubeadmi 和 kubectl ，並鎖定版本。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-mark hold kubelet kubeadm kubectl
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get install -y kubelet kubeadm kubectl
+</span></span><span class="line"><span class="cl">sudo apt-mark hold kubelet kubeadm kubectl
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>啟動 k8s 。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo kubeadm init --pod-network-cidr<span class="o">=</span>10.244.0.0/16
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo kubeadm init --pod-network-cidr<span class="o">=</span>10.244.0.0/16
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>複製 kubeconfig
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p <span class="nv">$HOME</span>/.kube
-sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
-sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p <span class="nv">$HOME</span>/.kube
+</span></span><span class="line"><span class="cl">sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+</span></span><span class="line"><span class="cl">sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>設定 CNI 。
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+</span></span><span class="line"><span class="cl">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>加入 worker node
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 </ol>
@@ -506,19 +503,19 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 <p>搞定！收工下課！</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">zhan@k8s-01:~$ kubectl get nodes
-NAME     STATUS   ROLES                  AGE   VERSION
-k82-03   Ready    &lt;none&gt;                 25h   v1.23.4
-k8s-01   Ready    control-plane,master   25h   v1.23.4
-k8s-02   Ready    &lt;none&gt;                 25h   v1.23.4
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">zhan@k8s-01:~$ kubectl get nodes
+</span></span><span class="line"><span class="cl">NAME     STATUS   ROLES                  AGE   VERSION
+</span></span><span class="line"><span class="cl">k82-03   Ready    &lt;none&gt;                 25h   v1.23.4
+</span></span><span class="line"><span class="cl">k8s-01   Ready    control-plane,master   25h   v1.23.4
+</span></span><span class="line"><span class="cl">k8s-02   Ready    &lt;none&gt;                 25h   v1.23.4
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h1 id="總結">總結</h1>
 <p>終於 K8s 被我自架起來了，之後要來好好一定要來好好探究 K8s ，不然又會遇到奇怪的事情，然後查了半天才解決。</p>
@@ -579,8 +576,8 @@ k8s-02   Ready    &lt;none&gt;                 25h   v1.23.4
       <div class="social-links">
       <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
       <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
-      <a href="https://www.linkedin.com/in/alanzhanzhan/" class="iconfont icon-linkedin" title="linkedin"></a>
-      <a href="https://github.com/alanzhanzhan/" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.linkedin.com/in/alanzhan0513/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhan0513/" class="iconfont icon-github" title="github"></a>
   <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 
@@ -619,7 +616,7 @@ k8s-02   Ready    &lt;none&gt;                 25h   v1.23.4
 
 
 
-<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+<script type="text/javascript" src="/js/main.min.9e3db4166f5901c11faec00349b7b03ae36c12a6e820a208cf498f1aee812258.js"></script>
 
 
 <script type="application/javascript">

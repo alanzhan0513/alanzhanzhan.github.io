@@ -6,11 +6,7 @@
     <description>Recent content in mongodb on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 10 Apr 2022 16:19:10 +0800</lastBuildDate>
-    
-	<atom:link href="https://alanzhan.dev/categories/mongodb/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 10 Apr 2022 16:19:10 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/categories/mongodb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mongodb Index 最佳實踐</title>
       <link>https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/</link>

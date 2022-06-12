@@ -6,11 +6,7 @@
     <description>Recent content in Algorithm on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 13 Jul 2021 21:51:30 +0800</lastBuildDate>
-    
-	<atom:link href="https://alanzhan.dev/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 13 Jul 2021 21:51:30 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Interpolation Search Algorithm - 插補搜尋法</title>
       <link>https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/</link>

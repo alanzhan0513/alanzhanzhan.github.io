@@ -6,11 +6,7 @@
     <description>Recent content in kubernetes on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 16 May 2022 22:40:48 +0800</lastBuildDate>
-    
-	<atom:link href="https://alanzhan.dev/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 16 May 2022 22:40:48 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes 核心介紹 Scheduler</title>
       <link>https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/</link>
