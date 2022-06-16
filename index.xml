@@ -6,7 +6,16 @@
     <description>Recent content on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 14 Jun 2022 18:00:00 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Jun 2022 18:00:00 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>白話解 Leetcode - 111 Minimum Depth of Binary Tree</title>
+      <link>https://alanzhan.dev/post/2022-06-16-leetcode-111/</link>
+      <pubDate>Thu, 16 Jun 2022 18:00:00 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-16-leetcode-111/</guid>
+      <description>111. Minimum Depth of Binary Tree EasyGiven a binary tree, find its minimum depth. The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node. Note:&amp;nbsp;A leaf is a node with no children. &amp;nbsp; Example 1: Input: root = [3,9,20,null,null,15,7] Output: 2 Example 2: Input: root = [2,null,3,null,4,null,5,null,6] Output: 5 &amp;nbsp; Constraints: The number of nodes in the tree</description>
+    </item>
+    
     <item>
       <title>白話解 Leetcode - 104 Maximum Depth of Binary Tree</title>
       <link>https://alanzhan.dev/post/2022-06-14-leetcode-104/</link>
