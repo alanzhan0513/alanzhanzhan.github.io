@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 20 Jun 2022 18:00:00 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Jun 2022 23:50:13 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>白話解 Leetcode - 200 Number of Islands</title>
+      <link>https://alanzhan.dev/post/2022-06-23-leetcode-200/</link>
+      <pubDate>Thu, 23 Jun 2022 23:50:13 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-23-leetcode-200/</guid>
+      <description>200. Number of Islands MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &amp;nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;] ]</description>
+    </item>
+    
     <item>
       <title>白話解 Leetcode - 78 Subsets</title>
       <link>https://alanzhan.dev/post/2022-06-20-leetcode-78/</link>
