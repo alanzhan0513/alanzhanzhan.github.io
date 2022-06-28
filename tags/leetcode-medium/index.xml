@@ -6,7 +6,16 @@
     <description>Recent content in leetcode-medium on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 23 Jun 2022 23:50:13 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/leetcode-medium/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Jun 2022 23:59:43 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/leetcode-medium/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>白話解 Leetcode - 433 Minimum Genetic Mutation</title>
+      <link>https://alanzhan.dev/post/2022-06-28-leetcode-433/</link>
+      <pubDate>Sat, 25 Jun 2022 23:59:43 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-28-leetcode-433/</guid>
+      <description>433. Minimum Genetic Mutation MediumA gene string can be represented by an 8-character long string, with choices from &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, and &#39;T&#39;. Suppose we need to investigate a mutation from a gene string start to a gene string end where one mutation is defined as one single character changed in the gene string. For example, &#34;AACCGGTT&#34; --&amp;gt; &#34;AACCGGTA&#34; is one mutation. There is also a gene bank bank that</description>
+    </item>
+    
     <item>
       <title>白話解 Leetcode - 200 Number of Islands</title>
       <link>https://alanzhan.dev/post/2022-06-23-leetcode-200/</link>
