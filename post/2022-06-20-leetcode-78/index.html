@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Alan Zhan" /><meta name="description" content="78. Subsets MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &amp;nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &amp;nbsp; Constraints: 1 &amp;lt;= nums.length &amp;lt;= 10 -10 &amp;lt;= nums[i] &amp;lt;= 10 All the numbers of&amp;nbsp;nums are unique. 題意 傳入" /><meta name="keywords" content="alan, zhan, blog, golang, 白話解, leetcode, 78, subsets, recursive, dfs, medium" />
+<meta name="author" content="Alan Zhan" /><meta name="description" content="78. Subsets https://leetcode.com/problems/subsets/ MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &amp;nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &amp;nbsp; Constraints: 1 &amp;lt;= nums.length &amp;lt;= 10 -10 &amp;lt;= nums[i] &amp;lt;= 10 All the numbers of&amp;nbsp;nums are unique. 題意 傳" /><meta name="keywords" content="alan, zhan, blog, golang, 白話解, leetcode, 78, subsets, recursive, dfs, medium" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="白話解 Leetcode - 78 Subsets" />
-<meta property="og:description" content="78. Subsets MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &nbsp; Constraints: 1 &lt;= nums.length &lt;= 10 -10 &lt;= nums[i] &lt;= 10 All the numbers of&nbsp;nums are unique. 題意 傳入" />
+<meta property="og:description" content="78. Subsets https://leetcode.com/problems/subsets/ MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &nbsp; Constraints: 1 &lt;= nums.length &lt;= 10 -10 &lt;= nums[i] &lt;= 10 All the numbers of&nbsp;nums are unique. 題意 傳" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://alanzhan.dev/post/2022-06-20-leetcode-78/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-06-20T18:00:00+08:00" />
 <meta property="article:modified_time" content="2022-06-20T18:00:00+08:00" />
 
 <meta itemprop="name" content="白話解 Leetcode - 78 Subsets">
-<meta itemprop="description" content="78. Subsets MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &nbsp; Constraints: 1 &lt;= nums.length &lt;= 10 -10 &lt;= nums[i] &lt;= 10 All the numbers of&nbsp;nums are unique. 題意 傳入"><meta itemprop="datePublished" content="2022-06-20T18:00:00+08:00" />
+<meta itemprop="description" content="78. Subsets https://leetcode.com/problems/subsets/ MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &nbsp; Constraints: 1 &lt;= nums.length &lt;= 10 -10 &lt;= nums[i] &lt;= 10 All the numbers of&nbsp;nums are unique. 題意 傳"><meta itemprop="datePublished" content="2022-06-20T18:00:00+08:00" />
 <meta itemprop="dateModified" content="2022-06-20T18:00:00+08:00" />
-<meta itemprop="wordCount" content="475">
+<meta itemprop="wordCount" content="476">
 <meta itemprop="keywords" content="leetcode,leetcode-medium," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="白話解 Leetcode - 78 Subsets"/>
-<meta name="twitter:description" content="78. Subsets MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &nbsp; Constraints: 1 &lt;= nums.length &lt;= 10 -10 &lt;= nums[i] &lt;= 10 All the numbers of&nbsp;nums are unique. 題意 傳入"/>
+<meta name="twitter:description" content="78. Subsets https://leetcode.com/problems/subsets/ MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &nbsp; Constraints: 1 &lt;= nums.length &lt;= 10 -10 &lt;= nums[i] &lt;= 10 All the numbers of&nbsp;nums are unique. 題意 傳"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -130,7 +130,7 @@
         <div class="post-category">
             <a href="/categories/leetcode/"> leetcode </a>
             </div>
-          <span class="more-meta"> 475 words </span>
+          <span class="more-meta"> 476 words </span>
           <span class="more-meta"> 1 min read </span>
         
       </div>
@@ -141,7 +141,7 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#78-subsetshttpsleetcodecomproblemssubsets"><a href="https://leetcode.com/problems/subsets/">78. Subsets</a></a>
+    <li><a href="#78-subsets">78. Subsets</a>
       <ul>
         <li><a href="#題意">題意</a></li>
         <li><a href="#解題思路">解題思路</a></li>
@@ -154,7 +154,8 @@
   </div>
 </div>
     <div class="post-content">
-      <h1 id="78-subsetshttpsleetcodecomproblemssubsets"><a href="https://leetcode.com/problems/subsets/">78. Subsets</a></h1>
+      <h1 id="78-subsets">78. Subsets</h1>
+<p><a href="https://leetcode.com/problems/subsets/">https://leetcode.com/problems/subsets/</a></p>
 <h3>Medium</h3><hr><div><p>Given an integer array <code>nums</code> of <strong>unique</strong> elements, return <em>all possible subsets (the power set)</em>.</p>
 <p>The solution set <strong>must not</strong> contain duplicate subsets. Return the solution in <strong>any order</strong>.</p>
 <p>&nbsp;</p>

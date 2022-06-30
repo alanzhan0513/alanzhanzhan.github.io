@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Alan Zhan" /><meta name="description" content="200. Number of Islands MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &amp;nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;] ]" /><meta name="keywords" content="alan, zhan, blog, golang, 白話解, leetcode, medium, recursive, 200, islands, number" />
+<meta name="author" content="Alan Zhan" /><meta name="description" content="200. Number of Islands https://leetcode.com/problems/number-of-islands/ MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &amp;nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;]" /><meta name="keywords" content="alan, zhan, blog, golang, 白話解, leetcode, medium, recursive, 200, islands, number" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="白話解 Leetcode - 200 Number of Islands" />
-<meta property="og:description" content="200. Number of Islands MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;] ]" />
+<meta property="og:description" content="200. Number of Islands https://leetcode.com/problems/number-of-islands/ MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;]" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://alanzhan.dev/post/2022-06-23-leetcode-200/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-06-23T23:50:13+08:00" />
 <meta property="article:modified_time" content="2022-06-23T23:50:13+08:00" />
 
 <meta itemprop="name" content="白話解 Leetcode - 200 Number of Islands">
-<meta itemprop="description" content="200. Number of Islands MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;] ]"><meta itemprop="datePublished" content="2022-06-23T23:50:13+08:00" />
+<meta itemprop="description" content="200. Number of Islands https://leetcode.com/problems/number-of-islands/ MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;]"><meta itemprop="datePublished" content="2022-06-23T23:50:13+08:00" />
 <meta itemprop="dateModified" content="2022-06-23T23:50:13+08:00" />
-<meta itemprop="wordCount" content="531">
+<meta itemprop="wordCount" content="532">
 <meta itemprop="keywords" content="leetcode,leetcode-medium," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="白話解 Leetcode - 200 Number of Islands"/>
-<meta name="twitter:description" content="200. Number of Islands MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;] ]"/>
+<meta name="twitter:description" content="200. Number of Islands https://leetcode.com/problems/number-of-islands/ MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;]"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -130,7 +130,7 @@
         <div class="post-category">
             <a href="/categories/leetcode/"> leetcode </a>
             </div>
-          <span class="more-meta"> 531 words </span>
+          <span class="more-meta"> 532 words </span>
           <span class="more-meta"> 2 mins read </span>
         
       </div>
@@ -141,7 +141,7 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#200-number-of-islandshttpsleetcodecomproblemsnumber-of-islands"><a href="https://leetcode.com/problems/number-of-islands/">200. Number of Islands</a></a>
+    <li><a href="#200-number-of-islands">200. Number of Islands</a>
       <ul>
         <li><a href="#題意">題意</a></li>
         <li><a href="#解題思路">解題思路</a></li>
@@ -154,7 +154,8 @@
   </div>
 </div>
     <div class="post-content">
-      <h1 id="200-number-of-islandshttpsleetcodecomproblemsnumber-of-islands"><a href="https://leetcode.com/problems/number-of-islands/">200. Number of Islands</a></h1>
+      <h1 id="200-number-of-islands">200. Number of Islands</h1>
+<p><a href="https://leetcode.com/problems/number-of-islands/">https://leetcode.com/problems/number-of-islands/</a></p>
 <h3>Medium</h3><hr><div><p>Given an <code>m x n</code> 2D binary grid <code>grid</code> which represents a map of <code>'1'</code>s (land) and <code>'0'</code>s (water), return <em>the number of islands</em>.</p>
 <p>An <strong>island</strong> is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.</p>
 <p>&nbsp;</p>

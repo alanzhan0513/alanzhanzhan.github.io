@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Alan Zhan" /><meta name="description" content="23. Merge k Sorted Lists HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &amp;nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&amp;gt;4-&amp;gt;5, 1-&amp;gt;3-&amp;gt;4, 2-&amp;gt;6 ] merging them into one sorted list: 1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;4-&amp;gt;5-&amp;gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists =" /><meta name="keywords" content="alan, zhan, blog, golang, 白話解, leetcode, hard, recursive, 23, merge, k, sorted, lists" />
+<meta name="author" content="Alan Zhan" /><meta name="description" content="23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/ HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &amp;nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&amp;gt;4-&amp;gt;5, 1-&amp;gt;3-&amp;gt;4, 2-&amp;gt;6 ] merging them into one sorted list: 1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;4-&amp;gt;5-&amp;gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists" /><meta name="keywords" content="alan, zhan, blog, golang, 白話解, leetcode, hard, recursive, 23, merge, k, sorted, lists" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
-<meta property="og:description" content="23. Merge k Sorted Lists HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ] merging them into one sorted list: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists =" />
+<meta property="og:description" content="23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/ HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ] merging them into one sorted list: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://alanzhan.dev/post/2022-06-25-leetcode-23/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-06-25T23:29:46+08:00" />
 <meta property="article:modified_time" content="2022-06-25T23:29:46+08:00" />
 
 <meta itemprop="name" content="白話解 Leetcode - 23  Merge k Sorted Lists">
-<meta itemprop="description" content="23. Merge k Sorted Lists HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ] merging them into one sorted list: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists ="><meta itemprop="datePublished" content="2022-06-25T23:29:46+08:00" />
+<meta itemprop="description" content="23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/ HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ] merging them into one sorted list: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists"><meta itemprop="datePublished" content="2022-06-25T23:29:46+08:00" />
 <meta itemprop="dateModified" content="2022-06-25T23:29:46+08:00" />
-<meta itemprop="wordCount" content="613">
+<meta itemprop="wordCount" content="614">
 <meta itemprop="keywords" content="leetcode,leetcode-hard," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="白話解 Leetcode - 23  Merge k Sorted Lists"/>
-<meta name="twitter:description" content="23. Merge k Sorted Lists HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ] merging them into one sorted list: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists ="/>
+<meta name="twitter:description" content="23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/ HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ] merging them into one sorted list: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -130,7 +130,7 @@
         <div class="post-category">
             <a href="/categories/leetcode/"> leetcode </a>
             </div>
-          <span class="more-meta"> 613 words </span>
+          <span class="more-meta"> 614 words </span>
           <span class="more-meta"> 2 mins read </span>
         
       </div>
@@ -141,7 +141,7 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#23-merge-k-sorted-listshttpsleetcodecomproblemsmerge-k-sorted-lists"><a href="https://leetcode.com/problems/merge-k-sorted-lists/">23. Merge k Sorted Lists</a></a>
+    <li><a href="#23-merge-k-sorted-lists">23. Merge k Sorted Lists</a>
       <ul>
         <li><a href="#題意">題意</a></li>
         <li><a href="#解題思路">解題思路</a></li>
@@ -154,7 +154,8 @@
   </div>
 </div>
     <div class="post-content">
-      <h1 id="23-merge-k-sorted-listshttpsleetcodecomproblemsmerge-k-sorted-lists"><a href="https://leetcode.com/problems/merge-k-sorted-lists/">23. Merge k Sorted Lists</a></h1>
+      <h1 id="23-merge-k-sorted-lists">23. Merge k Sorted Lists</h1>
+<p><a href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></p>
 <h3>Hard</h3><hr><div><p>You are given an array of <code>k</code> linked-lists <code>lists</code>, each linked-list is sorted in ascending order.</p>
 <p><em>Merge all the linked-lists into one sorted linked-list and return it.</em></p>
 <p>&nbsp;</p>
