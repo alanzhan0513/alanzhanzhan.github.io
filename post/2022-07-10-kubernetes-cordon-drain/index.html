@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kubernetes - Node 維護 Pod 遷移 - Alan 的筆記本</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使" /><meta name="keywords" content="alan, zhan, blog, kubernetes, pod, node, gke, cordon, uncordon, delete, PodAntiffinity, drain, 維護, 故障, 轉移" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.67ec3458d297a750ad65cc14c128a47931875c6be1b31b4216dd61905bc210dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kubernetes - Node 維護 Pod 遷移" />
+<meta property="og:description" content="敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-10T18:19:11+08:00" />
+<meta property="article:modified_time" content="2022-07-10T18:19:11+08:00" />
+
+<meta itemprop="name" content="Kubernetes - Node 維護 Pod 遷移">
+<meta itemprop="description" content="敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使"><meta itemprop="datePublished" content="2022-07-10T18:19:11+08:00" />
+<meta itemprop="dateModified" content="2022-07-10T18:19:11+08:00" />
+<meta itemprop="wordCount" content="725">
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes - Node 維護 Pod 遷移"/>
+<meta name="twitter:description" content="敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kubernetes - Node 維護 Pod 遷移</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 10 Jul 22 18:19 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+          <span class="more-meta"> 725 words </span>
+          <span class="more-meta"> 2 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#情境">情境</a></li>
+    <li><a href="#作法">作法</a>
+      <ul>
+        <li><a href="#1-讓該節點停止調度">1. 讓該節點停止調度</a></li>
+        <li><a href="#2-驅逐在這節點的-pod">2. 驅逐在這節點的 Pod</a></li>
+        <li><a href="#3-恢復該節點的調度或者刪除節點">3. 恢復該節點的調度或者刪除節點</a></li>
+      </ul>
+    </li>
+    <li><a href="#注意事項">注意事項</a></li>
+    <li><a href="#總結">總結</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使用 Cordon + Drain 或者手動刪除 Pod ，讓 Pod 重新長在新的 Node Pool 上，當然在 GKE 上直接刪除舊的 Node Pool 也可以達到一樣的效果，只是我們選用了更安全的做法。</p>
+<p>上述的做法，其實就是將 Node 標記為不可調度，然後再讓 Pod 生長在預期的主機上，今天就來説說當機器遇到故障或者需要升級的時候，我們該怎麼安全的處理。</p>
+<h1 id="情境">情境</h1>
+<p>如果 Worker Node 要做系統升級或者發現即將故障了，我們該怎麼安全的處置。</p>
+<h1 id="作法">作法</h1>
+<h2 id="1-讓該節點停止調度">1. 讓該節點停止調度</h2>
+<p>我們使用 <code>cordon</code> 先將目標節點打上不可調度，此時只會將 Node 狀態變成 SchedulingDisabled ，之後再創建的 Pod ，都不會再調度到該節點上，舊有的 Pod 不會受到影響，依然可以繼續提供服務。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl cordon &lt;node-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="2-驅逐在這節點的-pod">2. 驅逐在這節點的 Pod</h2>
+<p>接下來我們要將 Pod 從 Node 上驅逐，這邊有兩個做法。</p>
+<p>第一種作法是直接將節點上的所有 Pod 驅逐，但是如果你的一個 Deployment 內的 Pod 都活在此節點上的話，你的服務是有機會中斷的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl drain &lt;node-name&gt; --force --ignore-daemonsets
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第二種作法是手動的一個一個將 Pod 在節點上刪除，此做法較為安全。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl delete pod &lt;pod-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="3-恢復該節點的調度或者刪除節點">3. 恢復該節點的調度或者刪除節點</h2>
+<p>當你升級完畢你的節點後，你就可以將節點標記為可調度狀態。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl uncordon &lt;node-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>當你的節點確定硬體異常的話，就直接刪除節點吧。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl delete node &lt;node-name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="注意事項">注意事項</h1>
+<ul>
+<li>要驅逐的 Pod 的 replica 必須大於 1 ， 不然你的服務會有中斷發生。</li>
+<li>要檢查一下 Pod 是否有特殊的策略，不然被驅逐後就有機會不會被調度成功。</li>
+<li>建議配置 PodAntiffinity 策略，確保同一個 Deployment 內的 Pods 與被驅逐的 Pod 可以盡量調度到不同的節點上。</li>
+</ul>
+<h1 id="總結">總結</h1>
+<p>在 production 上，如果沒有十足的信心，建議在將 Pod 轉移到新的 Node 的處理過程中，一個一個手動刪除 Pod 吧。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        10 Jul 22 18:19 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-06-30-leetcode-69/">
+            <span class="next-text nav-default">白話解 Leetcode - 69 Sqrt(x)</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhan0513/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhan0513/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.9e3db4166f5901c11faec00349b7b03ae36c12a6e820a208cf498f1aee812258.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

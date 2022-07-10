@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 30 Jun 2022 23:37:48 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 10 Jul 2022 18:19:11 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes - Node 維護 Pod 遷移</title>
+      <link>https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/</link>
+      <pubDate>Sun, 10 Jul 2022 18:19:11 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/</guid>
+      <description>敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使</description>
+    </item>
+    
     <item>
       <title>白話解 Leetcode - 69 Sqrt(x)</title>
       <link>https://alanzhan.dev/post/2022-06-30-leetcode-69/</link>

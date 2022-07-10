@@ -3,14 +3,49 @@
   
   <url>
     <loc>https://alanzhan.dev/</loc>
-    <lastmod>2022-06-30T23:37:48+08:00</lastmod>
+    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/categories/</loc>
-    <lastmod>2022-06-30T23:37:48+08:00</lastmod>
+    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/kubernetes/</loc>
+    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/kubernetes/</loc>
+    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/</loc>
+    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/</loc>
+    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/</loc>
+    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,20 +66,6 @@
   
   <url>
     <loc>https://alanzhan.dev/tags/leetcode-easy/</loc>
-    <lastmod>2022-06-30T23:37:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/post/</loc>
-    <lastmod>2022-06-30T23:37:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/</loc>
     <lastmod>2022-06-30T23:37:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -137,20 +158,6 @@
   <url>
     <loc>https://alanzhan.dev/post/2022-06-12-leetcode-226/</loc>
     <lastmod>2022-06-12T13:01:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/kubernetes/</loc>
-    <lastmod>2022-05-16T22:40:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/categories/kubernetes/</loc>
-    <lastmod>2022-05-16T22:40:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
