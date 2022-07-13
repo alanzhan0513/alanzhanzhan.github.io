@@ -3,14 +3,63 @@
   
   <url>
     <loc>https://alanzhan.dev/</loc>
-    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/categories/</loc>
-    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/dynamic-programing/</loc>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/leetcode/</loc>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/leetcode/</loc>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/leetcode-easy/</loc>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/</loc>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/</loc>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/2022-07-13-leetcode-70/</loc>
+    <lastmod>2022-07-13T22:22:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -32,41 +81,6 @@
   <url>
     <loc>https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/</loc>
     <lastmod>2022-07-10T18:19:11+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/post/</loc>
-    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/</loc>
-    <lastmod>2022-07-10T18:19:11+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/leetcode/</loc>
-    <lastmod>2022-06-30T23:37:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/categories/leetcode/</loc>
-    <lastmod>2022-06-30T23:37:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/leetcode-easy/</loc>
-    <lastmod>2022-06-30T23:37:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

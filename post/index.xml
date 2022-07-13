@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 10 Jul 2022 18:19:11 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Jul 2022 22:22:58 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>白話解 Leetcode - 70 Climbing Stairs</title>
+      <link>https://alanzhan.dev/post/2022-07-13-leetcode-70/</link>
+      <pubDate>Wed, 13 Jul 2022 22:22:58 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-07-13-leetcode-70/</guid>
+      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ EasyYou are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top? &amp;nbsp; Example 1: Input: n = 2 Output: 2 Explanation: There are two ways to climb to the top. 1. 1 step + 1 step 2. 2 steps Example 2: Input: n</description>
+    </item>
+    
     <item>
       <title>Kubernetes - Node 維護 Pod 遷移</title>
       <link>https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/</link>
