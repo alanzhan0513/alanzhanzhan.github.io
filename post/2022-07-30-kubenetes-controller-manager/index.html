@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kubernetes 核心介紹 Controller Manager - Alan 的筆記本</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop" /><meta name="keywords" content="alan, zhan, blog, kubernetes, controller, manager, informer, cloud, node, eviction, leader, election" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.67ec3458d297a750ad65cc14c128a47931875c6be1b31b4216dd61905bc210dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kubernetes 核心介紹 Controller Manager" />
+<meta property="og:description" content="Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-30T20:07:01+08:00" />
+<meta property="article:modified_time" content="2022-07-30T20:07:01+08:00" />
+
+<meta itemprop="name" content="Kubernetes 核心介紹 Controller Manager">
+<meta itemprop="description" content="Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop"><meta itemprop="datePublished" content="2022-07-30T20:07:01+08:00" />
+<meta itemprop="dateModified" content="2022-07-30T20:07:01+08:00" />
+<meta itemprop="wordCount" content="1371">
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes 核心介紹 Controller Manager"/>
+<meta name="twitter:description" content="Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kubernetes 核心介紹 Controller Manager</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 30 Jul 22 20:07 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+          <span class="more-meta"> 1371 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#controller-工作流程">Controller 工作流程</a></li>
+    <li><a href="#informer-的內部機制">Informer 的內部機制</a></li>
+    <li><a href="#controller-的協同工作原理">Controller 的協同工作原理</a></li>
+    <li><a href="#常見的-controller">常見的 Controller</a></li>
+    <li><a href="#cloud-controller-manager">Cloud Controller Manager</a>
+      <ul>
+        <li><a href="#需要客製的-cloud-controller">需要客製的 Cloud Controller</a></li>
+      </ul>
+    </li>
+    <li><a href="#高可用">高可用</a></li>
+    <li><a href="#高性能">高性能</a></li>
+    <li><a href="#node-eviction">Node Eviction</a>
+      <ul>
+        <li><a href="#leader-election-的工作機制">Leader Election 的工作機制</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop ，負責通過 api-server 監聽其相對應的資源，根據對象狀態來決定接下來的動作，使其達到預期的狀態。</p>
+<ul>
+<li>Controller Manager 是集群的大腦，是確保集群動起來的關鍵。</li>
+<li>作用是確保 Kubernetes 遵循聲明式系統規範，確保系統的真實狀態 (Actual State) 與用戶定義的期望狀態 (Desired State) 一致。</li>
+<li>Controller Manager 是多個 Controller 的組合，每個 Controller 事實上都是一個 control loop，負責監聽其管控對象，當對象發生變更時完成配置。</li>
+<li>Controller 配置失敗通常會觸發自動重試，整個集群會在 Controller 不斷重試的機制下，確保最終一致性 (Eventual Consistency)。</li>
+</ul>
+<h1 id="controller-工作流程">Controller 工作流程</h1>
+<p><img src="/2022-07-30-kubenetes-controller-manager/controller-flow.png" alt=""></p>
+<h1 id="informer-的內部機制">Informer 的內部機制</h1>
+<p><img src="/2022-07-30-kubenetes-controller-manager/informer.png" alt=""></p>
+<h1 id="controller-的協同工作原理">Controller 的協同工作原理</h1>
+<p><img src="/2022-07-30-kubenetes-controller-manager/controller-collaborative-work.png" alt=""></p>
+<h1 id="常見的-controller">常見的 Controller</h1>
+<ol>
+<li>必須啟動的 Controller
+<ul>
+<li>EndpointController</li>
+<li>ReplicationController</li>
+<li>PodGCController</li>
+<li>ResourceQuotaController</li>
+<li>NamespaceController</li>
+<li>ServiceAccountController</li>
+<li>GarbageCollectorController</li>
+<li>DaemonSetController</li>
+<li>JobController</li>
+<li>DeploymentController</li>
+<li>ReplicaSetController</li>
+<li>HPAController</li>
+<li>DisruptionController</li>
+<li>StatefulSetController</li>
+<li>CronJobController</li>
+<li>CSRSigningController</li>
+<li>CSRApprovingController</li>
+<li>TTLController</li>
+</ul>
+</li>
+<li>默認啟動的可選 Controller ，可通過選項設置是否開啟
+<ul>
+<li>TokenController</li>
+<li>NodeController</li>
+<li>ServiceController</li>
+<li>RouteController</li>
+<li>PVBinderController</li>
+<li>AttachDetachController</li>
+</ul>
+</li>
+<li>默認禁止的可選 Controller ，可通過選項設置是否開啟
+<ul>
+<li>BootstrapSignerController</li>
+<li>TokenCleanerController</li>
+</ul>
+</li>
+</ol>
+<h1 id="cloud-controller-manager">Cloud Controller Manager</h1>
+<p>甚麼時候需要 cloud controller manager?</p>
+<p>Cloud Controller Manager 自 Kubernetes 1.6 開始，從 kube-controller-manager 中分離出來，主要因為 Cloud Controller Manager 往往需要和企業的 Cloud 做深度結合，release cycle 跟 kubernetes 相對獨立。</p>
+<p>與 kubernetes 核心管理組件一起升級是一件費時費力的事情。</p>
+<p>通常 cloud controller manager 需要:</p>
+<ul>
+<li>認證授權: 企業 cloud 往往需要認證訊息， kubernetes 要與 cloud API，需要獲取 cloud 系統裡的 Service Account。</li>
+<li>cloud controller manager 本身作為一個用戶泰的 component ，需要 kubernetes 中有正確的 RBAC 設置，獲取資源操作權限。</li>
+<li>高可用: 需要通過 leader election 來確保 cloud controller manager 高可用。</li>
+</ul>
+<p>Cloud Controller Manager 是從老版本的 API Server 分離出來的。</p>
+<ul>
+<li>kuber-apiserver 和 kube-controller-manager 中一定不能指定 cloud-provider，否則會加載內置的 cloud controller manager。</li>
+<li>kuberlet 要配置 &ndash;cloud-provider=external。</li>
+</ul>
+<p>Cloud Controller Manager 主要支持：</p>
+<ul>
+<li>Node Controller: 訪問 cloud API ，來更新 node 狀態，在 cloud 刪除該節點以後，從 kubernetes 刪除 node。</li>
+<li>Route Controller: 在 cloud 環境配置路由。</li>
+<li>Service Controller: 負責配置為 loadbalancer 類型的服務配置 LB VIP。</li>
+</ul>
+<h2 id="需要客製的-cloud-controller">需要客製的 Cloud Controller</h2>
+<ul>
+<li>Ingress controller</li>
+<li>Service controller</li>
+<li>自主研發的 controller
+<ul>
+<li>RBAC controller</li>
+<li>Account Controller</li>
+</ul>
+</li>
+</ul>
+<h1 id="高可用">高可用</h1>
+<p>在啟動時設置 <code>--leader-elect=true</code> 後，controller manager 會使用多節點選主的方式選擇主節點。只有主節點才會調用 <code>StartControllers()</code> 啟動所有 Controller ，而其他從節點則僅執行選主算法。</p>
+<p>多節點選主的實現方法見 <a href="https://github.com/kubernetes/client-go/blob/master/tools/leaderelection/leaderelection.go">leaderelection.go</a>。它實現了兩種資源鎖（Endpoint 或 ConfigMap，kube-controller-manager 和 cloud-controller-manager 都使用 Endpoint 鎖），通過更新資源的 Annotation（<code>control-plane.alpha.kubernetes.io/leader</code>），來確定 master slave 關係。</p>
+<h1 id="高性能">高性能</h1>
+<p>從 Kubernetes 1.7 開始，所有需要監控資源變化情況的調用均推薦使用 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go">Informer</a>。 Informer 提供了基於事件通知的只讀緩存機制，可以註冊資源變化的回調函數，並可以極大減少 API 的調用。</p>
+<p>Informer 的使用方法可以參考 <a href="https://github.com/feiskyer/kubernetes-handbook/tree/master/examples/client/informer">這裡</a>。</p>
+<h1 id="node-eviction">Node Eviction</h1>
+<p>Node Controller 在節點異常後，會按照默認的速率（<code>--node-eviction-rate=0.1</code>，即每10秒一個節點的速率）進行 Node 的驅逐。 Node Controller 按照 Zone 將節點劃分為不同的組，再跟進 Zone 的狀態進行速率調整：</p>
+<ul>
+<li>Normal：所有節點都 Ready，默認速率驅逐。</li>
+<li>PartialDisruption：即超過33% 的節點 NotReady 的狀態。當異常節點比例大於 <code>-unhealthy-zone-threshold=0.55</code> 時開始減慢速率：
+<ul>
+<li>小集群（即節點數量小於 <code>-large-cluster-size-threshold=50</code>）：停止驅逐</li>
+<li>大集群，減慢速率為 <code>-secondary-node-eviction-rate=0.01</code></li>
+</ul>
+</li>
+<li>FullDisruption：所有節點都 NotReady，返回使用默認速率驅逐。但當所有 Zone 都處在 FullDisruption 時，停止驅逐。</li>
+</ul>
+<h2 id="leader-election-的工作機制">Leader Election 的工作機制</h2>
+<p><img src="/2022-07-30-kubenetes-controller-manager/leader-eviction.png" alt=""></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        30 Jul 22 20:07 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-07-13-leetcode-70/">
+            <span class="next-text nav-default">白話解 Leetcode - 70 Climbing Stairs</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'alanzhan-dev';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhan0513/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhan0513/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.9e3db4166f5901c11faec00349b7b03ae36c12a6e820a208cf498f1aee812258.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

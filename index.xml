@@ -6,7 +6,16 @@
     <description>Recent content on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 13 Jul 2022 22:22:58 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 30 Jul 2022 20:07:01 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes 核心介紹 Controller Manager</title>
+      <link>https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/</link>
+      <pubDate>Sat, 30 Jul 2022 20:07:01 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/</guid>
+      <description>Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop</description>
+    </item>
+    
     <item>
       <title>白話解 Leetcode - 70 Climbing Stairs</title>
       <link>https://alanzhan.dev/post/2022-07-13-leetcode-70/</link>
