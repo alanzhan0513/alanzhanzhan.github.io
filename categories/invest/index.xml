@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>invest on Alan 的筆記本</title>
+    <link>https://alanzhan.dev/categories/invest/</link>
+    <description>Recent content in invest on Alan 的筆記本</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 14 Aug 2022 14:41:06 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/categories/invest/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>阿甘投資法</title>
+      <link>https://alanzhan.dev/post/2022-08-14-forrest-gump-invest/</link>
+      <pubDate>Sun, 14 Aug 2022 14:41:06 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-08-14-forrest-gump-invest/</guid>
+      <description>還記得我大概在三年前，當時的我是一位股市小白，我剛才了解完畢台灣股市之後，就隨即投入股市交易，當時買的第一張股票是 中信金 2891 ，這個代碼還記得清</description>
+    </item>
+    
+  </channel>
+</rss>

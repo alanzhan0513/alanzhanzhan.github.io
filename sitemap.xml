@@ -3,14 +3,63 @@
   
   <url>
     <loc>https://alanzhan.dev/</loc>
-    <lastmod>2022-07-30T20:07:01+08:00</lastmod>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://alanzhan.dev/categories/</loc>
-    <lastmod>2022-07-30T20:07:01+08:00</lastmod>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/invest/</loc>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/invest/</loc>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/</loc>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/reading/</loc>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/categories/reading/</loc>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/tags/</loc>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://alanzhan.dev/post/2022-08-14-forrest-gump-invest/</loc>
+    <lastmod>2022-08-14T14:41:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,20 +80,6 @@
   
   <url>
     <loc>https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/</loc>
-    <lastmod>2022-07-30T20:07:01+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/post/</loc>
-    <lastmod>2022-07-30T20:07:01+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/</loc>
     <lastmod>2022-07-30T20:07:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -151,20 +186,6 @@
   <url>
     <loc>https://alanzhan.dev/post/2022-06-14-leetcode-104/</loc>
     <lastmod>2022-06-14T18:00:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/tags/reading/</loc>
-    <lastmod>2022-06-13T18:00:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://alanzhan.dev/categories/reading/</loc>
-    <lastmod>2022-06-13T18:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
