@@ -6,7 +6,16 @@
     <description>Recent content in kubernetes on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 30 Jul 2022 20:07:01 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 Aug 2022 20:56:08 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes 核心介紹 Kubelet</title>
+      <link>https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/</link>
+      <pubDate>Tue, 30 Aug 2022 20:56:08 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/</guid>
+      <description>Kubelet 架構 如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成： Kubelet API，包括 10250 port 的認證 API、4194 port 的 cAdvisor API、10255 port 的只讀 API</description>
+    </item>
+    
     <item>
       <title>Kubernetes 核心介紹 Controller Manager</title>
       <link>https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/</link>

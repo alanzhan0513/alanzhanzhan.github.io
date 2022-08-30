@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kubernetes 核心介紹 Kubelet - Alan 的筆記本</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Alan Zhan" /><meta name="description" content="Kubelet 架構 如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成： Kubelet API，包括 10250 port 的認證 API、4194 port 的 cAdvisor API、10255 port 的只讀 API" /><meta name="keywords" content="alan, zhan, blog, kubernetes, kubelet, pod, nod, syncloop, flow, worknode, eviction, cAdvisor" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.100.2 with theme even" />
+
+
+<link rel="canonical" href="https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.67ec3458d297a750ad65cc14c128a47931875c6be1b31b4216dd61905bc210dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kubernetes 核心介紹 Kubelet" />
+<meta property="og:description" content="Kubelet 架構 如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成： Kubelet API，包括 10250 port 的認證 API、4194 port 的 cAdvisor API、10255 port 的只讀 API" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-08-30T20:56:08+08:00" />
+<meta property="article:modified_time" content="2022-08-30T20:56:08+08:00" />
+
+<meta itemprop="name" content="Kubernetes 核心介紹 Kubelet">
+<meta itemprop="description" content="Kubelet 架構 如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成： Kubelet API，包括 10250 port 的認證 API、4194 port 的 cAdvisor API、10255 port 的只讀 API"><meta itemprop="datePublished" content="2022-08-30T20:56:08+08:00" />
+<meta itemprop="dateModified" content="2022-08-30T20:56:08+08:00" />
+<meta itemprop="wordCount" content="3002">
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes 核心介紹 Kubelet"/>
+<meta name="twitter:description" content="Kubelet 架構 如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成： Kubelet API，包括 10250 port 的認證 API、4194 port 的 cAdvisor API、10255 port 的只讀 API"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/1993-05-13-about-me">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="">
+        <li class="mobile-menu-item"></li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href=""></a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kubernetes 核心介紹 Kubelet</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 30 Aug 22 20:56 &#43;0800 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+          <span class="more-meta"> 3002 words </span>
+          <span class="more-meta"> 6 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#kubelet-架構">Kubelet 架構</a></li>
+    <li><a href="#kubelet-管理-pod-核心流程">kubelet 管理 Pod 核心流程</a>
+      <ul>
+        <li><a href="#node-管理">Node 管理</a></li>
+        <li><a href="#pod-管理">Pod 管理</a>
+          <ul>
+            <li><a href="#獲取-pod-清單">獲取 Pod 清單</a></li>
+            <li><a href="#通過-api-server-獲取-pod-清單及創建-pod-的過程">通過 API Server 獲取 Pod 清單及創建 Pod 的過程</a></li>
+            <li><a href="#static-pod">Static Pod</a></li>
+          </ul>
+        </li>
+        <li><a href="#容器健康檢查">容器健康檢查</a></li>
+        <li><a href="#cadvisor-資源監控">cAdvisor 資源監控</a></li>
+        <li><a href="#kubelet-eviction">Kubelet Eviction</a></li>
+      </ul>
+    </li>
+    <li><a href="#pod-啟動流程">Pod 啟動流程</a></li>
+    <li><a href="#kubelet-啟動-pod-的流程">kubelet 啟動 Pod 的流程</a></li>
+    <li><a href="#總結">總結</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="kubelet-架構">Kubelet 架構</h1>
+<p>如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成：</p>
+<ul>
+<li>Kubelet API，包括 10250  port 的認證 API、4194  port 的 cAdvisor API、10255  port 的只讀 API 以及 10248  port 的健康檢查 API 。</li>
+<li>syncLoop：從 API 或者 manifest 目錄接收 Pod 更新，發送到 podWorkers 處理，大量使用 channel 處理來處理異步請求 。</li>
+<li>輔助的 manager，如 cAdvisor、PLEG、Volume Manager 等，處理 syncLoop 以外的其他工作 。</li>
+<li>CRI：容器執行引擎接口，負責與 container runtime shim 通信 。</li>
+<li>容器執行引擎，如 dockershim、rkt 等 。</li>
+<li>網絡插件，目前支持 CNI 和 kubenet 。</li>
+</ul>
+<p><img src="/2022-08-30-kubernetes-kubelet/architecture.png" alt="kubelet 架構圖"></p>
+<h1 id="kubelet-管理-pod-核心流程">kubelet 管理 Pod 核心流程</h1>
+<p><img src="/2022-08-30-kubernetes-kubelet/manage-pod-flow.png" alt="kubelet 管理 Pod 核心流程"></p>
+<p>每個節點都運行一個 kubelete 服務進程，默認監聽 port  10250。</p>
+<ul>
+<li>接收並執行 master 發來的指令</li>
+<li>管理 Pod 及 Pod 中的容器</li>
+<li>每個 kubelet 進程會在 API Server 上註冊節點自身信息，定期向 master 節點會報節點資源使用情控，並通過 cAdvisor 監控節點和容器的資源。</li>
+</ul>
+<h2 id="node-管理">Node 管理</h2>
+<p>節點管理主要是節點自註冊和節點狀態更新</p>
+<ul>
+<li>kubelet 可以通過設置啟動參數 —register-node 來確定是否向 API Server 註冊自己。</li>
+<li>如果 kuberlet 沒有選擇自註冊模式，則用戶需要自己配置 Node 資源訊息，同時需要告知 kubelet 集群上的 API Server 的位置。</li>
+<li>kubelet 在啟動時，通過 API Server 註冊節點訊息，並定時向 API Server 發送節點新消息，API Server 在接收到新消息後，將訊息寫入 etcd。</li>
+</ul>
+<h2 id="pod-管理">Pod 管理</h2>
+<h3 id="獲取-pod-清單">獲取 Pod 清單</h3>
+<p>Kubelet 以 PodSpec 的方式工作。 PodSpec 是描述一個 Pod 的 YAML 或 JSON 對象。 kubelet 採用一組通過各種機制提供的 PodSpecs（主要通過 apiserver），並確保這些 PodSpecs 中描述的 Pod 正常健康運行。</p>
+<p>向 Kubelet 提供節點上需要運行的 Pod 清單的方法：</p>
+<ul>
+<li>文件：啟動參數 &ndash;config 指定的配置目錄下的文件 (默認 / etc/kubernetes/manifests/)。該文件每 20 秒重新檢查一次（可配置）。</li>
+<li>HTTP endpoint (URL)：啟動參數 &ndash;manifest-url 設置。每 20 秒檢查一次這個端點（可配置）。</li>
+<li>API Server：通過 API Server 監聽 etcd 目錄，同步 Pod 清單。</li>
+<li>HTTP server：kubelet 偵聽 HTTP 請求，並響應簡單的 API 以提交新的 Pod 清單。</li>
+</ul>
+<h3 id="通過-api-server-獲取-pod-清單及創建-pod-的過程">通過 API Server 獲取 Pod 清單及創建 Pod 的過程</h3>
+<p>Kubelet 通過 API Server Client(Kubelet 啟動時創建)使用 Watch 加 List 的方式監聽 <code>/registry/nodes/$ 當前節點名</code> 和 <code>/registry/pods</code> 目錄，將獲取的信息同步到本地緩存中。</p>
+<p>Kubelet 監聽 etcd，所有針對 Pod 的操作都將會被 Kubelet 監聽到。如果發現有新的綁定到本節點的 Pod，則按照 Pod 清單的要求創建該 Pod。</p>
+<p>如果發現本地的 Pod 被修改，則 Kubelet 會做出相應的修改，比如刪除 Pod 中某個容器時，則通過 Docker Client 刪除該容器。如果發現刪除本節點的 Pod，則刪除相應的 Pod，並通過 Docker Client 刪除 Pod 中的容器。</p>
+<p>Kubelet 讀取監聽到的信息，如果是創建和修改 Pod 任務，則執行如下處理：</p>
+<ul>
+<li>為該 Pod 創建一個數據目錄。</li>
+<li>從 API Server 讀取該 Pod 清單。</li>
+<li>為該 Pod 掛載外部 Volume 。</li>
+<li>下載 Pod 用到的 Secret 。</li>
+<li>檢查已經在節點上運行的 Pod，如果該 Pod 沒有容器或 Pause 容器沒有啟動，則先停止 Pod 裡所有容器的進程。如果在 Pod 中有需要刪除的容器，則刪除這些容器。</li>
+<li>用 <code>kubernetes/pause</code> 鏡像為每個 Pod 創建一個容器。 Pause 容器用於接管 Pod 中所有其他容器的網絡。每創建一個新的 Pod，Kubelet 都會先創建一個 Pause 容器，然後創建其他容器。</li>
+<li>為 Pod 中的每個容器做如下處理：
+<ol>
+<li>為容器計算一個 hash 值，然後用容器的名字去 Docker 查詢對應容器的 hash 值。若查找到容器，且兩者 hash 值不同，則停止 Docker 中容器的進程，並停止與之關聯的 Pause 容器的進程。若兩者相同，則不做任何處理。</li>
+<li>如果容器被終止了，且容器沒有指定的 restartPolicy，則不做任何處理。</li>
+<li>調用 Docker Client 下載容器鏡像，調用 Docker Client 運行容器。</li>
+</ol>
+</li>
+</ul>
+<h3 id="static-pod">Static Pod</h3>
+<p>所有以非 API Server 方式創建的 Pod 都叫 Static Pod。 Kubelet 將 Static Pod 的狀態匯報給 API Server，API Server 為該 Static Pod 創建一個 Mirror Pod 和其相匹配。 Mirror Pod 的狀態將真實反映 Static Pod 的狀態。當 Static Pod 被刪除時，與之相對應的 Mirror Pod 也會被刪除。</p>
+<h2 id="容器健康檢查">容器健康檢查</h2>
+<p>Pod 通過兩類探針檢查容器的健康狀態:</p>
+<ul>
+<li>(1) LivenessProbe 探針：用於判斷容器是否健康，告訴 Kubelet 一個容器什麼時候處於不健康的狀態。如果 LivenessProbe 探針探測到容器不健康，則 Kubelet 將刪除該容器，並根據容器的重啟策略做相應的處理。如果一個容器不包含 LivenessProbe 探針，那麼 Kubelet 認為該容器的 LivenessProbe 探針返回的值永遠是 <code>Success</code>。</li>
+<li>(2)ReadinessProbe：用於判斷容器是否啟動完成且準備接收請求。如果 ReadinessProbe 探針探測到失敗，則 Pod 的狀態將被修改。 Endpoint Controller 將從 Service 的 Endpoint 中刪除包含該容器所在 Pod 的 IP 地址的 Endpoint 條目。</li>
+</ul>
+<p>Kubelet 定期調用容器中的 LivenessProbe 探針來診斷容器的健康狀況。 LivenessProbe 包含如下三種實現方式：</p>
+<ul>
+<li>ExecAction：在容器內部執行一個命令，如果該命令的退出狀態碼為 0，則表明容器健康。</li>
+<li>TCPSocketAction：通過容器的 IP 地址和 port 號執行 TCP 檢查，如果 port 能被訪問，則表明容器健康。</li>
+<li>HTTPGetAction：通過容器的 IP 地址和 port 號及路徑調用 HTTP GET 方法，如果響應的狀態碼大於等於 200 且小於 400，則認為容器狀態健康。</li>
+</ul>
+<p>LivenessProbe 和 ReadinessProbe 探針包含在 Pod 定義的 spec.containers.{某個容器} 中。</p>
+<h2 id="cadvisor-資源監控">cAdvisor 資源監控</h2>
+<p>Kubernetes 集群中，應用程序的執行情況可以在不同的級別上監測到，這些級別包括：容器、Pod、Service 和整個集群。 Heapster 項目為 Kubernetes 提供了一個基本的監控平台，它是集群級別的監控和事件數據集成器 (Aggregator)。 Heapster 以 Pod 的方式運行在集群中，Heapster 通過 Kubelet 發現所有運行在集群中的節點，並查看來自這些節點的資源使用情況。 Kubelet 通過 cAdvisor 獲取其所在節點及容器的數據。 Heapster 通過帶著關聯標籤的 Pod 分組這些信息，這些數據將被推到一個可配置的後端，用於存儲和可視化展示。支持的後端包括 InfluxDB(使用 Grafana 實現可視化) 和 Google Cloud Monitoring。</p>
+<p>cAdvisor 是一個開源的分析容器資源使用率和性能特性的代理工具，集成到 Kubelet中，當Kubelet啟動時會同時啟動cAdvisor，且一個cAdvisor只監控一個Node節點的信息。 cAdvisor 自動查找所有在其所在節點上的容器，自動採集 CPU、內存、文件系統和網絡使用的統計信息。 cAdvisor 通過它所在節點機的 Root 容器，採集並分析該節點機的全面使用情況。</p>
+<p>cAdvisor 通過其所在節點機的 4194  port 暴露一個簡單的 UI。</p>
+<h2 id="kubelet-eviction">Kubelet Eviction</h2>
+<p>Kubelet 會監控資源的使用情況，並使用驅逐機制防止計算和存儲資源耗盡。在驅逐時，Kubelet 將 Pod 的所有容器停止，並將 PodPhase 設置為 Failed。</p>
+<p>Kubelet 定期（<code>housekeeping-interval</code>）檢查系統的資源是否達到了預先配置的驅逐閾值，包括</p>
+<table>
+<thead>
+<tr>
+<th>Eviction Signal</th>
+<th>Condition</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>memory.available</td>
+<td>MemoryPressue</td>
+<td>memory.available := node.status.capacity[memory] - node.stats.memory.workingSet </td>
+</tr>
+<tr>
+<td>nodefs.available</td>
+<td>DiskPressure</td>
+<td>nodefs.available := node.stats.fs.available</td>
+</tr>
+<tr>
+<td>nodefs.inodesFree</td>
+<td>DiskPressure</td>
+<td>nodefs.inodesFree := node.stats.fs.inodesFree</td>
+</tr>
+<tr>
+<td>imagefs.available</td>
+<td>DiskPressure</td>
+<td>imagefs.available := node.stats.runtime.imagefs.available</td>
+</tr>
+<tr>
+<td>imagefs.inodesFree</td>
+<td>DiskPressure</td>
+<td>imagefs.inodesFree := node.stats.runtime.imagefs.inodesFree</td>
+</tr>
+</tbody>
+</table>
+<p>驅逐信號可以分為軟驅逐和硬驅逐</p>
+<ul>
+<li>軟驅逐（Soft Eviction）：配合驅逐寬限期（eviction-soft-grace-period和eviction-max-pod-grace-period）一起使用。系統資源達到軟驅逐閾值並在超過寬限期之後才會執行驅逐動作。</li>
+<li>硬驅逐（Hard Eviction ）：系統資源達到硬驅逐閾值時立即執行驅逐動作。</li>
+</ul>
+<p>驅逐動作包括回收節點資源和驅逐用戶 Pod 兩種：</p>
+<ul>
+<li>回收節點資源
+<ul>
+<li>配置了 imagefs 閾值時
+<ul>
+<li>達到 nodefs 閾值：刪除已停止的 Pod</li>
+<li>達到 imagefs 閾值：刪除未使用的鏡像</li>
+</ul>
+</li>
+<li>未配置 imagefs 閾值時
+<ul>
+<li>達到 nodefs閾值時，按照刪除已停止的 Pod 和刪除未使用鏡像的順序清理資源</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>驅逐用戶 Pod
+<ul>
+<li>驅逐順序為：BestEffort、Burstable、Guaranteed</li>
+<li>配置了 imagefs 閾值時
+<ul>
+<li>達到 nodefs 閾值，基於 nodefs 用量驅逐（local volume + logs）</li>
+<li>達到 imagefs 閾值，基於 imagefs 用量驅逐（容器可寫層）</li>
+</ul>
+</li>
+<li>未配置 imagefs 閾值時
+<ul>
+<li>達到 nodefs 閾值時，按照總磁盤使用驅逐（local volume + logs + 容器可寫層）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="pod-啟動流程">Pod 啟動流程</h1>
+<p><img src="/2022-08-30-kubernetes-kubelet/create-pod-flow.png" alt="Pod 啟動流程"></p>
+<h1 id="kubelet-啟動-pod-的流程">kubelet 啟動 Pod 的流程</h1>
+<p><img src="/2022-08-30-kubernetes-kubelet/create-pod-by-kubectl-flow.png" alt="kubelet 啟動 Pod 的流程"></p>
+<h1 id="總結">總結</h1>
+<p>Kubelet 看來就是 WorkNode 最重要的組件了，沒有想到一個 kubelet 懶了那麼多的事情呢，你也長知識了嗎？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Alan Zhan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        30 Aug 22 20:56 &#43;0800
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2022-08-28-leetcode-25/">
+            <span class="next-text nav-default">白話解 Leetcode - 25 Reverse Nodes in k-Group</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'alanzhan-dev';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://www.linkedin.com/in/alanzhan0513/" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/alanzhan0513/" class="iconfont icon-github" title="github"></a>
+  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Alan Zhan</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.9e3db4166f5901c11faec00349b7b03ae36c12a6e820a208cf498f1aee812258.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-174975293-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
