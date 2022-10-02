@@ -6,7 +6,16 @@
     <description>Recent content on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 30 Aug 2022 20:56:08 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 02 Oct 2022 20:20:53 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>終身成長</title>
+      <link>https://alanzhan.dev/post/2022-10-02-lifelong-growth/</link>
+      <pubDate>Sun, 02 Oct 2022 20:20:53 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-10-02-lifelong-growth/</guid>
+      <description>思維模式 你今天去上了一門對你來說是很重要的課程，而且你非常喜歡這門課。你的教授公佈了期中考的考試成績，然而你考試的成績只獲得了 60 分。你非常的</description>
+    </item>
+    
     <item>
       <title>Kubernetes 核心介紹 Kubelet</title>
       <link>https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/</link>
