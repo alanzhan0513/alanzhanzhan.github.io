@@ -6,22 +6,31 @@
     <description>Recent content in Tags on Alan 的筆記本</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 02 Oct 2022 20:20:53 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kubernetes</title>
+      <link>https://alanzhan.dev/tags/kubernetes/</link>
+      <pubDate>Sun, 12 Mar 2023 18:04:41 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>terraform</title>
+      <link>https://alanzhan.dev/tags/terraform/</link>
+      <pubDate>Sun, 12 Mar 2023 18:04:41 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/tags/terraform/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>reading</title>
       <link>https://alanzhan.dev/tags/reading/</link>
       <pubDate>Sun, 02 Oct 2022 20:20:53 +0800</pubDate>
       
       <guid>https://alanzhan.dev/tags/reading/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://alanzhan.dev/tags/kubernetes/</link>
-      <pubDate>Tue, 30 Aug 2022 20:56:08 +0800</pubDate>
-      
-      <guid>https://alanzhan.dev/tags/kubernetes/</guid>
       <description></description>
     </item>
     
