@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kubernetes on Alan 的筆記本</title>
+    <title>kubernetes on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/kubernetes/</link>
-    <description>Recent content in kubernetes on Alan 的筆記本</description>
+    <description>Recent content in kubernetes on Alan Zhan Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
+    <language>en-us</language>
     <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>透過 Terraform 建立私有 GKE Cluster</title>

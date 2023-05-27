@@ -1,184 +1,251 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>白話解 Leetcode - 226 Invert Binary Tree - Alan 的筆記本</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+    
+    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:type" content="article">
 
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
 
+    
+    <meta name="title" content="白話解 Leetcode - 226 Invert Binary Tree" />
+    <meta property="og:title" content="白話解 Leetcode - 226 Invert Binary Tree" />
+    <meta property="twitter:title" content="白話解 Leetcode - 226 Invert Binary Tree" />
+    
 
-<meta name="author" content="Alan Zhan" /><meta name="description" content="226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ EasyGiven the root of a binary tree, invert the tree, and return its root. &amp;nbsp; Example 1: Input: root = [4,2,7,1,3,6,9] Output: [4,7,2,9,6,3,1] Example 2: Input: root = [2,1,3] Output: [2,3,1] Example 3: Input: root = [] Output: [] &amp;nbsp; Constraints: The number of nodes in the tree is in the range [0, 100]. -100 &amp;lt;= Node.val &amp;lt;= 100 題意 將整棵樹" /><meta name="keywords" content="alan, zhan, blog, golang, 白話解, leetcode, 226, invert, binary, tree, recursive, easy" />
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
 
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
 
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
 
+    <title>白話解 Leetcode - 226 Invert Binary Tree | Alan Zhan Blog</title>
 
+    <link rel="canonical" href="/post/2022-06-12-leetcode-226/">
 
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-<meta name="generator" content="Hugo 0.100.2 with theme even" />
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
 
-<link rel="canonical" href="https://alanzhan.dev/post/2022-06-12-leetcode-226/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
 
+    
+    
 
+    
+    <script src="/js/jquery.min.js"></script>
 
-<link href="/sass/main.min.67ec3458d297a750ad65cc14c128a47931875c6be1b31b4216dd61905bc210dd.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+    
+    <script src="/js/bootstrap.min.js"></script>
 
+    
+    <script src="/js/hux-blog.min.js"></script>
 
-<meta property="og:title" content="白話解 Leetcode - 226 Invert Binary Tree" />
-<meta property="og:description" content="226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ EasyGiven the root of a binary tree, invert the tree, and return its root. &nbsp; Example 1: Input: root = [4,2,7,1,3,6,9] Output: [4,7,2,9,6,3,1] Example 2: Input: root = [2,1,3] Output: [2,3,1] Example 3: Input: root = [] Output: [] &nbsp; Constraints: The number of nodes in the tree is in the range [0, 100]. -100 &lt;= Node.val &lt;= 100 題意 將整棵樹" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://alanzhan.dev/post/2022-06-12-leetcode-226/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-06-12T13:01:44+08:00" />
-<meta property="article:modified_time" content="2022-06-12T13:01:44+08:00" />
+    
+    <script src="/js/lazysizes.min.js"></script>
 
-<meta itemprop="name" content="白話解 Leetcode - 226 Invert Binary Tree">
-<meta itemprop="description" content="226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ EasyGiven the root of a binary tree, invert the tree, and return its root. &nbsp; Example 1: Input: root = [4,2,7,1,3,6,9] Output: [4,7,2,9,6,3,1] Example 2: Input: root = [2,1,3] Output: [2,3,1] Example 3: Input: root = [] Output: [] &nbsp; Constraints: The number of nodes in the tree is in the range [0, 100]. -100 &lt;= Node.val &lt;= 100 題意 將整棵樹"><meta itemprop="datePublished" content="2022-06-12T13:01:44+08:00" />
-<meta itemprop="dateModified" content="2022-06-12T13:01:44+08:00" />
-<meta itemprop="wordCount" content="350">
-<meta itemprop="keywords" content="leetcode,leetcode-easy," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="白話解 Leetcode - 226 Invert Binary Tree"/>
-<meta name="twitter:description" content="226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ EasyGiven the root of a binary tree, invert the tree, and return its root. &nbsp; Example 1: Input: root = [4,2,7,1,3,6,9] Output: [4,7,2,9,6,3,1] Example 2: Input: root = [2,1,3] Output: [2,3,1] Example 3: Input: root = [] Output: [] &nbsp; Constraints: The number of nodes in the tree is in the range [0, 100]. -100 &lt;= Node.val &lt;= 100 題意 將整棵樹"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
+    
+    
 
 </head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/post">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/tags">
-        <li class="mobile-menu-item">Tags</li>
-      </a><a href="/categories">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/post/1993-05-13-about-me">
-        <li class="mobile-menu-item">About</li>
-      </a><a href="">
-        <li class="mobile-menu-item"></li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
-</div>
 
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags">Tags</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href=""></a>
-      </li>
-  </ul>
-</nav>
-    </header>
 
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">白話解 Leetcode - 226 Invert Binary Tree</h1>
 
-      <div class="post-meta">
-        <span class="post-time"> 12 Jun 22 13:01 &#43;0800 </span>
-        <div class="post-category">
-            <a href="/categories/leetcode/"> leetcode </a>
-            </div>
-          <span class="more-meta"> 350 words </span>
-          <span class="more-meta"> 1 min read </span>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-174975293-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
         
-      </div>
-    </header>
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+        </div>
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#226-invert-binary-tree">226. Invert Binary Tree</a>
-      <ul>
-        <li><a href="#題意">題意</a></li>
-        <li><a href="#解題思路">解題思路</a></li>
-        <li><a href="#原始碼">原始碼</a></li>
-      </ul>
-    </li>
-    <li><a href="#結尾">結尾</a></li>
-  </ul>
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
 </nav>
-  </div>
-</div>
-    <div class="post-content">
-      <h1 id="226-invert-binary-tree">226. Invert Binary Tree</h1>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/header.jpg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/algorithm" title="algorithm">
+                            algorithm
+                        </a>
+                        
+                        <a class="tag" href="/tags/leetcode" title="leetcode">
+                            leetcode
+                        </a>
+                        
+                        <a class="tag" href="/tags/leetcode-easy" title="leetcode-easy">
+                            leetcode-easy
+                        </a>
+                        
+                    </div>
+                    <h1>白話解 Leetcode - 226 Invert Binary Tree</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Alan Zhan
+                             
+                            on 
+                            Sunday, June 12, 2022
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h1 id="226-invert-binary-tree">226. Invert Binary Tree</h1>
 <p><a href="https://leetcode.com/problems/invert-binary-tree/">https://leetcode.com/problems/invert-binary-tree/</a></p>
-<h3>Easy</h3><hr><div><p>Given the <code>root</code> of a binary tree, invert the tree, and return <em>its root</em>.</p>
-<p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://assets.leetcode.com/uploads/2021/03/14/invert1-tree.jpg" style="width: 500px; height: 165px;">
-<pre><strong>Input:</strong> root = [4,2,7,1,3,6,9]
-<strong>Output:</strong> [4,7,2,9,6,3,1]
-</pre>
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://assets.leetcode.com/uploads/2021/03/14/invert2-tree.jpg" style="width: 500px; height: 120px;">
-<pre><strong>Input:</strong> root = [2,1,3]
-<strong>Output:</strong> [2,3,1]
-</pre>
-<p><strong>Example 3:</strong></p>
-<pre><strong>Input:</strong> root = []
-<strong>Output:</strong> []
-</pre>
-<p>&nbsp;</p>
-<p><strong>Constraints:</strong></p>
-<ul>
-	<li>The number of nodes in the tree is in the range <code>[0, 100]</code>.</li>
-	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
-</ul>
-</div>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 <hr>
 <h2 id="題意">題意</h2>
 <p>將整棵樹的所有左右節點互相對調。</p>
@@ -190,169 +257,391 @@
 <li>將左節點和右節點當作 root，繼續遞歸調用 invertTree 方法，直到第一步被觸發結束遍例。</li>
 </ol>
 <h2 id="原始碼">原始碼</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * Definition for a binary tree node.
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * type TreeNode struct {
-</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Val int
-</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Left *TreeNode
-</span></span></span><span class="line"><span class="cl"><span class="cm"> *     Right *TreeNode
-</span></span></span><span class="line"><span class="cl"><span class="cm"> * }
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">invertTree</span><span class="p">(</span><span class="nx">root</span> <span class="o">*</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="o">*</span><span class="nx">TreeNode</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">root</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">root</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="nx">root</span><span class="p">.</span><span class="nx">Left</span><span class="p">,</span> <span class="nx">root</span><span class="p">.</span><span class="nx">Right</span> <span class="p">=</span> <span class="nx">root</span><span class="p">.</span><span class="nx">Right</span><span class="p">,</span> <span class="nx">root</span><span class="p">.</span><span class="nx">Left</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">invertTree</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">Left</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">invertTree</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">Right</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">root</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="結尾">結尾</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#6272a4">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * Definition for a binary tree node.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * type TreeNode struct {
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> *     Val int
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> *     Left *TreeNode
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> *     Right *TreeNode
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * }
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">invertTree</span>(root <span style="color:#ff79c6">*</span>TreeNode) <span style="color:#ff79c6">*</span>TreeNode {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> root <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> root
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    root.Left, root.Right = root.Right, root.Left
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">invertTree</span>(root.Left)
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">invertTree</span>(root.Right)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> root
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="結尾">結尾</h1>
 <p>你有更好或更簡單的解決方案嗎？</p>
 <p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
-    </div>
 
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">Author</span>
-    <span class="item-content">Alan Zhan</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">LastMod</span>
-    <span class="item-content">
-        12 Jun 22 13:01 &#43;0800
-        
-    </span>
-  </p>
-  
-  
-</div>
-<footer class="post-footer">
-      <div class="post-tags">
-          <a href="/tags/leetcode/">leetcode</a>
-          <a href="/tags/leetcode-easy/">leetcode-easy</a>
-          </div>
-      <nav class="post-nav">
-        <a class="prev" href="/post/2022-06-13-winners-take-all/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">如何在贏者全拿的職場中生存</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/post/2022-05-16-kubernetes-scheduler/">
-            <span class="next-text nav-default">Kubernetes 核心介紹 Scheduler</span>
-            <span class="next-text nav-mobile">Next</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2022-05-16-kubernetes-scheduler/" data-toggle="tooltip" data-placement="top" title="Kubernetes 核心介紹 Scheduler">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/2022-06-13-winners-take-all/" data-toggle="tooltip" data-placement="top" title="如何在贏者全拿的職場中生存">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/algorithm" title="algorithm">
+                            algorithm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/dockerfile" title="dockerfile">
+                            dockerfile
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/dynamic-programing" title="dynamic-programing">
+                            dynamic-programing
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/gc" title="gc">
+                            gc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/golang" title="golang">
+                            golang
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/index" title="index">
+                            index
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/invest" title="invest">
+                            invest
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kubernetes" title="kubernetes">
+                            kubernetes
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/leetcode" title="leetcode">
+                            leetcode
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/leetcode-easy" title="leetcode-easy">
+                            leetcode-easy
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/leetcode-hard" title="leetcode-hard">
+                            leetcode-hard
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/leetcode-medium" title="leetcode-medium">
+                            leetcode-medium
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/reading" title="reading">
+                            reading
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tech" title="tech">
+                            tech
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/terraform" title="terraform">
+                            terraform
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
         </div>
-        <div id="disqus_thread"></div>
-    <script type="text/javascript">
-    (function() {
-      
-      
-      if (window.location.hostname === 'localhost') return;
-
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      var disqus_shortname = 'alanzhan-dev';
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-  
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
-      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
-      <a href="https://www.linkedin.com/in/alanzhan0513/" class="iconfont icon-linkedin" title="linkedin"></a>
-      <a href="https://github.com/alanzhan0513/" class="iconfont icon-github" title="github"></a>
-  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
-
-<div class="copyright">
-  <span class="power-by">
-    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
-  </span>
-  <span class="division">|</span>
-  <span class="theme-info">
-    Theme - 
-    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
-
-  
-
-  <span class="copyright-year">
-    &copy; 
-    2020 - 
-    2023
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">Alan Zhan</span>
-  </span>
-</div>
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
     </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+</article>
 
 
 
-<script type="text/javascript" src="/js/main.min.9e3db4166f5901c11faec00349b7b03ae36c12a6e820a208cf498f1aee812258.js"></script>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan Blog 2023
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-174975293-1', 'auto');
-	ga('set', 'anonymizeIp', true);
-	ga('send', 'pageview');
-}
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
 </script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
 
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 

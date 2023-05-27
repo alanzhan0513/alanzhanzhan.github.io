@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tech on Alan Zhan Blog</title>
+    <link>https://alanzhan.dev/tags/tech/</link>
+    <description>Recent content in tech on Alan Zhan Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>透過 Terraform 建立私有 GKE Cluster</title>
+      <link>https://alanzhan.dev/post/2023-03-12-terraform-private-gke/</link>
+      <pubDate>Sun, 12 Mar 2023 18:04:41 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2023-03-12-terraform-private-gke/</guid>
+      <description>讓我們一起來花個十分鐘，我會手把手地教你使用 Terraform ，建立私有的 GKE Cluster ！ 設定 GCP 建立 Service Account 首先我們會需要先到 Google Cloud 的頁面上，建立一個 Service Account 給 Terraform 使用，位置可以</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 核心介紹 Kubelet</title>
+      <link>https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/</link>
+      <pubDate>Tue, 30 Aug 2022 20:56:08 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/</guid>
+      <description>Kubelet 架構 如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成： Kubelet API，包括 10250 port 的認證 API、4194 port 的 cAdvisor API、10255 port 的只讀 API</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes - Node 維護 Pod 遷移</title>
+      <link>https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/</link>
+      <pubDate>Sun, 10 Jul 2022 18:19:11 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/</guid>
+      <description>敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 核心介紹 Scheduler</title>
+      <link>https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/</link>
+      <pubDate>Mon, 16 May 2022 22:40:48 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/</guid>
+      <description>Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 核心介紹 Api Server</title>
+      <link>https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/</link>
+      <pubDate>Sun, 24 Apr 2022 19:07:12 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/</guid>
+      <description>API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包括認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp;amp; Valiating) 提供</description>
+    </item>
+    
+    <item>
+      <title>Mongodb Index 最佳實踐</title>
+      <link>https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/</link>
+      <pubDate>Sun, 10 Apr 2022 16:19:10 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/</guid>
+      <description>自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重</description>
+    </item>
+    
+    <item>
+      <title>MongoDB Sorted Operation OOM</title>
+      <link>https://alanzhan.dev/post/2022-03-20-mongodb-sorted-operation-oom/</link>
+      <pubDate>Sun, 20 Mar 2022 15:11:15 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-03-20-mongodb-sorted-operation-oom/</guid>
+      <description>這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下： MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by ::</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 核心介紹 Etcd</title>
+      <link>https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/</link>
+      <pubDate>Mon, 28 Feb 2022 15:58:47 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/</guid>
+      <description>在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！ 什麼是 etcd 呢 etcd 是 CoreOs 基於 Raft 算法開發的分散式</description>
+    </item>
+    
+    <item>
+      <title>安裝兩次的 Kubernetes Kubeadm</title>
+      <link>https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/</link>
+      <pubDate>Sun, 20 Feb 2022 15:04:19 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/</guid>
+      <description>想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 基礎介紹</title>
+      <link>https://alanzhan.dev/post/2022-02-14-kubernetes-introduction/</link>
+      <pubDate>Mon, 14 Feb 2022 21:48:40 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-02-14-kubernetes-introduction/</guid>
+      <description>終於要來好好深入探討 Kubernetes ，因為 Kubernetes 是基於 golang 這門語言開發的，所以在稍早已經先針對 golang 深度研究了，不過對於 Docker 與 container 技術有經有深入研究過了，小弟就就不針對</description>
+    </item>
+    
+    <item>
+      <title>Golang 記憶體管理 GC 全面解析</title>
+      <link>https://alanzhan.dev/post/2022-02-13-golang-memory-management/</link>
+      <pubDate>Sun, 13 Feb 2022 14:42:09 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-02-13-golang-memory-management/</guid>
+      <description>新的一年又到來了，在這邊祝大家虎頭虎尾，所以這個年還沒過完，我得好好的繼續整理技術文章給大家了，這樣有好的開始！ 上次分析完 Golang Goroutine 與 GMP 原理全面分</description>
+    </item>
+    
+    <item>
+      <title>Golang Goroutine 與 GMP 原理全面分析</title>
+      <link>https://alanzhan.dev/post/2022-01-24-golang-goroutine/</link>
+      <pubDate>Mon, 24 Jan 2022 20:24:58 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-01-24-golang-goroutine/</guid>
+      <description>最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能</description>
+    </item>
+    
+    <item>
+      <title>10 個 Dockerfile 的最佳實踐</title>
+      <link>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</link>
+      <pubDate>Sun, 16 Jan 2022 16:55:15 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</guid>
+      <description>最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。</description>
+    </item>
+    
+    <item>
+      <title>Github Pages Custom Domain - Github Blog 自訂域名</title>
+      <link>https://alanzhan.dev/post/2022-01-09-github-pages-custom-domain/</link>
+      <pubDate>Sun, 09 Jan 2022 14:58:58 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-01-09-github-pages-custom-domain/</guid>
+      <description>最近剛好在更換域名，所以順手做一下筆記，也讓大家可以輕鬆上手，設定自己的 Github page 域名。 第一步：購買域名 先去購買自己想要的域名名稱：我是去 Google Domain 購買</description>
+    </item>
+    
+  </channel>
+</rss>

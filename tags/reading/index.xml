@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>reading on Alan 的筆記本</title>
+    <title>reading on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/reading/</link>
-    <description>Recent content in reading on Alan 的筆記本</description>
+    <description>Recent content in reading on Alan Zhan Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
+    <language>en-us</language>
     <lastBuildDate>Sun, 02 Oct 2022 20:20:53 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/reading/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>終身成長</title>

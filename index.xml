@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Alan 的筆記本</title>
+    <title>Alan Zhan Blog</title>
     <link>https://alanzhan.dev/</link>
-    <description>Recent content on Alan 的筆記本</description>
+    <description>Recent content on Alan Zhan Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
+    <language>en-us</language>
     <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>透過 Terraform 建立私有 GKE Cluster</title>
@@ -40,7 +40,7 @@
       <pubDate>Sun, 28 Aug 2022 14:22:55 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-08-28-leetcode-25/</guid>
-      <description>25. Reverse Nodes in k-Group https://leetcode.com/problems/reverse-nodes-in-k-group/ HardGiven the head of a linked list, reverse the nodes of the list k at a time, and return the modified list. k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is. You may</description>
+      <description>25. Reverse Nodes in k-Group https://leetcode.com/problems/reverse-nodes-in-k-group/ 題意 有一個 Linked List ，將 k 個節點為一組，並且將這一組內部的元素進行反轉，如果節點總數不足 k 個就不用反轉，最後回傳反轉後的結果。 解題思路</description>
     </item>
     
     <item>
@@ -67,7 +67,7 @@
       <pubDate>Wed, 13 Jul 2022 22:22:58 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-07-13-leetcode-70/</guid>
-      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ EasyYou are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top? &amp;nbsp; Example 1: Input: n = 2 Output: 2 Explanation: There are two ways to climb to the top. 1. 1 step + 1 step 2. 2 steps Example 2: Input: n</description>
+      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ 題意 你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？ 解題思路 我們使用動態處理，爬第一階的話，一定是 1 種方法，爬第二階的話，我</description>
     </item>
     
     <item>
@@ -85,7 +85,7 @@
       <pubDate>Thu, 30 Jun 2022 23:37:48 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-30-leetcode-69/</guid>
-      <description>69. Sqrt(x) https://leetcode.com/problems/sqrtx/ EasyGiven a non-negative integer x,&amp;nbsp;compute and return the square root of x. Since the return type&amp;nbsp;is an integer, the decimal digits are truncated, and only the integer part of the result&amp;nbsp;is returned. Note:&amp;nbsp;You are not allowed to use any built-in exponent function or operator, such as pow(x, 0.5) or&amp;nbsp;x ** 0.5. &amp;nbsp; Example 1: Input: x = 4 Output: 2 Example 2: Input: x = 8 Output:</description>
+      <description>69. Sqrt(x) https://leetcode.com/problems/sqrtx/ 題意 對 x 開根號後的整數為為多少？ 解題思路 我們來使用二分搜尋法，讓左右邊界快速縮減，透過 mid 的次方，就可以知道 x 的根號會落在哪邊了，今天程</description>
     </item>
     
     <item>
@@ -94,7 +94,7 @@
       <pubDate>Tue, 28 Jun 2022 23:55:43 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-28-leetcode-433/</guid>
-      <description>433. Minimum Genetic Mutation https://leetcode.com/problems/minimum-genetic-mutation/ MediumA gene string can be represented by an 8-character long string, with choices from &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, and &#39;T&#39;. Suppose we need to investigate a mutation from a gene string start to a gene string end where one mutation is defined as one single character changed in the gene string. For example, &#34;AACCGGTT&#34; --&amp;gt; &#34;AACCGGTA&#34; is one mutation. There is also a gene bank bank</description>
+      <description>433. Minimum Genetic Mutation https://leetcode.com/problems/minimum-genetic-mutation/ 題意 每一段字串代表一個基因序列，基因在變化的時候，每次只會變化一個字，只要變化的過程以及變化結束的時候，都在 bank 庫中找得到就好，最後</description>
     </item>
     
     <item>
@@ -103,7 +103,7 @@
       <pubDate>Sat, 25 Jun 2022 23:29:46 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-25-leetcode-23/</guid>
-      <description>23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/ HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. &amp;nbsp; Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1-&amp;gt;4-&amp;gt;5, 1-&amp;gt;3-&amp;gt;4, 2-&amp;gt;6 ] merging them into one sorted list: 1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;4-&amp;gt;5-&amp;gt;6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists</description>
+      <description>23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/ 題意 將 k 個已經排好順序的 linked list 合併成為一個排好序的 list。 解題思路 如果一個一個合併匯總成一個 list ，這樣暴力破解，相當的的沒效率，所</description>
     </item>
     
     <item>
@@ -112,7 +112,7 @@
       <pubDate>Thu, 23 Jun 2022 23:50:13 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-23-leetcode-200/</guid>
-      <description>200. Number of Islands https://leetcode.com/problems/number-of-islands/ MediumGiven an m x n 2D binary grid grid which represents a map of &#39;1&#39;s (land) and &#39;0&#39;s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water. &amp;nbsp; Example 1: Input: grid = [ [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;], [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;], [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;]</description>
+      <description>200. Number of Islands https://leetcode.com/problems/number-of-islands/ 題意 給你一個二維的陣列， 1 代表陸地， 0 代表是水，島嶼四面環水，島嶼是由上下左右連接組合而成的，請問這個二維陣列中有幾個島嶼？ 解題思</description>
     </item>
     
     <item>
@@ -121,7 +121,7 @@
       <pubDate>Mon, 20 Jun 2022 18:00:00 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-20-leetcode-78/</guid>
-      <description>78. Subsets https://leetcode.com/problems/subsets/ MediumGiven an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order. &amp;nbsp; Example 1: Input: nums = [1,2,3] Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]] Example 2: Input: nums = [0] Output: [[],[0]] &amp;nbsp; Constraints: 1 &amp;lt;= nums.length &amp;lt;= 10 -10 &amp;lt;= nums[i] &amp;lt;= 10 All the numbers of&amp;nbsp;nums are unique. 題意 傳</description>
+      <description>78. Subsets https://leetcode.com/problems/subsets/ 題意 傳入一個數值陣列，將元素與元素之間的所有有可能發生的組合回傳。 解題思路 可以把每個元素想像為取或者不取，如果取了就把元素塞入 stack 中，如</description>
     </item>
     
     <item>
@@ -130,7 +130,7 @@
       <pubDate>Thu, 16 Jun 2022 18:00:00 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-16-leetcode-111/</guid>
-      <description>111. Minimum Depth of Binary Tree https://leetcode.com/problems/minimum-depth-of-binary-tree/ EasyGiven a binary tree, find its minimum depth. The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node. Note:&amp;nbsp;A leaf is a node with no children. &amp;nbsp; Example 1: Input: root = [3,9,20,null,null,15,7] Output: 2 Example 2: Input: root = [2,null,3,null,4,null,5,null,6] Output: 5 &amp;nbsp; Constraints: The number of nodes in the</description>
+      <description>111. Minimum Depth of Binary Tree https://leetcode.com/problems/minimum-depth-of-binary-tree/ 題意 尋找這棵樹最小的節點，他的深度為何？ 解題思路 這次的題目與 104 Maximum Depth of Binary Tree 相似，這次當然也要使用不同的思路解題，這次就使用迴圈的</description>
     </item>
     
     <item>
@@ -139,7 +139,7 @@
       <pubDate>Tue, 14 Jun 2022 18:00:00 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-14-leetcode-104/</guid>
-      <description>104. Maximum Depth of Binary Tree https://leetcode.com/problems/maximum-depth-of-binary-tree/ EasyGiven the root of a binary tree, return its maximum depth. A binary tree&#39;s maximum depth&amp;nbsp;is the number of nodes along the longest path from the root node down to the farthest leaf node. &amp;nbsp; Example 1: Input: root = [3,9,20,null,null,15,7] Output: 3 Example 2: Input: root = [1,null,2] Output: 2 &amp;nbsp; Constraints: The number of nodes in the tree is in the</description>
+      <description>104. Maximum Depth of Binary Tree https://leetcode.com/problems/maximum-depth-of-binary-tree/ 題意 尋找這棵樹最深的節點，他的深度為何？ 解題思路 這次的題目與 226 Invert Binary Tree 相似，這次也採用遞歸的做法，不過思路換一套方法。 一樣把每個</description>
     </item>
     
     <item>
@@ -157,7 +157,7 @@
       <pubDate>Sun, 12 Jun 2022 13:01:44 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-12-leetcode-226/</guid>
-      <description>226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ EasyGiven the root of a binary tree, invert the tree, and return its root. &amp;nbsp; Example 1: Input: root = [4,2,7,1,3,6,9] Output: [4,7,2,9,6,3,1] Example 2: Input: root = [2,1,3] Output: [2,3,1] Example 3: Input: root = [] Output: [] &amp;nbsp; Constraints: The number of nodes in the tree is in the range [0, 100]. -100 &amp;lt;= Node.val &amp;lt;= 100 題意 將整棵樹</description>
+      <description>226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ 題意 將整棵樹的所有左右節點互相對調。 解題思路 我們可以把每個節點都視為是一個 root 節後，然後遍例所有的 root 節點，並且將每個 root 節點的左右節點</description>
     </item>
     
     <item>
@@ -333,12 +333,12 @@
     
     <item>
       <title>About Me</title>
-      <link>https://alanzhan.dev/post/1993-05-13-about-me/</link>
+      <link>https://alanzhan.dev/about/</link>
       <pubDate>Thu, 13 May 1993 00:00:00 +0800</pubDate>
       
-      <guid>https://alanzhan.dev/post/1993-05-13-about-me/</guid>
-      <description>I have been working as a senior full-stack engineer for 7 years experience. I like to gain new knowledge which can improve my critical thinking and the knowledge can help me solve problems or create value for my work. I hope that my passion can create more products that users love and use.
-Experience Opennet • DevOps Engineer • Oct. 2022 ~ Present Playsee • Backend Engineer • Jun. 2022 ~ Sep.</description>
+      <guid>https://alanzhan.dev/about/</guid>
+      <description>I have been working as a senior full-stack engineer for 8 years experience. I like to gain new knowledge which can improve my critical thinking and the knowledge can help me solve problems or create value for my work. Hope my passion can create more products that users love and use.
+Experience OpenNet • DevOps Engineer • Oct. 2022 ~ Present Playsee • Backend Engineer • Jun. 2022 ~ Sep. 2022 Higgs • Senior Full Stack Engineer • Apr.</description>
     </item>
     
   </channel>

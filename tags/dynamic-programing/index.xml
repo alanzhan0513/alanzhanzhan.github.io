@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>dynamic-programing on Alan 的筆記本</title>
+    <title>dynamic-programing on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/dynamic-programing/</link>
-    <description>Recent content in dynamic-programing on Alan 的筆記本</description>
+    <description>Recent content in dynamic-programing on Alan Zhan Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
+    <language>en-us</language>
     <lastBuildDate>Wed, 13 Jul 2022 22:22:58 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/dynamic-programing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>白話解 Leetcode - 70 Climbing Stairs</title>
@@ -13,7 +13,7 @@
       <pubDate>Wed, 13 Jul 2022 22:22:58 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-07-13-leetcode-70/</guid>
-      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ EasyYou are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top? &amp;nbsp; Example 1: Input: n = 2 Output: 2 Explanation: There are two ways to climb to the top. 1. 1 step + 1 step 2. 2 steps Example 2: Input: n</description>
+      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ 題意 你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？ 解題思路 我們使用動態處理，爬第一階的話，一定是 1 種方法，爬第二階的話，我</description>
     </item>
     
   </channel>

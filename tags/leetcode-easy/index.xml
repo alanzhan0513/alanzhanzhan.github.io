@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>leetcode-easy on Alan 的筆記本</title>
+    <title>leetcode-easy on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/leetcode-easy/</link>
-    <description>Recent content in leetcode-easy on Alan 的筆記本</description>
+    <description>Recent content in leetcode-easy on Alan Zhan Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
+    <language>en-us</language>
     <lastBuildDate>Wed, 13 Jul 2022 22:22:58 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/leetcode-easy/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>白話解 Leetcode - 70 Climbing Stairs</title>
@@ -13,7 +13,7 @@
       <pubDate>Wed, 13 Jul 2022 22:22:58 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-07-13-leetcode-70/</guid>
-      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ EasyYou are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top? &amp;nbsp; Example 1: Input: n = 2 Output: 2 Explanation: There are two ways to climb to the top. 1. 1 step + 1 step 2. 2 steps Example 2: Input: n</description>
+      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ 題意 你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？ 解題思路 我們使用動態處理，爬第一階的話，一定是 1 種方法，爬第二階的話，我</description>
     </item>
     
     <item>
@@ -22,7 +22,7 @@
       <pubDate>Thu, 30 Jun 2022 23:37:48 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-30-leetcode-69/</guid>
-      <description>69. Sqrt(x) https://leetcode.com/problems/sqrtx/ EasyGiven a non-negative integer x,&amp;nbsp;compute and return the square root of x. Since the return type&amp;nbsp;is an integer, the decimal digits are truncated, and only the integer part of the result&amp;nbsp;is returned. Note:&amp;nbsp;You are not allowed to use any built-in exponent function or operator, such as pow(x, 0.5) or&amp;nbsp;x ** 0.5. &amp;nbsp; Example 1: Input: x = 4 Output: 2 Example 2: Input: x = 8 Output:</description>
+      <description>69. Sqrt(x) https://leetcode.com/problems/sqrtx/ 題意 對 x 開根號後的整數為為多少？ 解題思路 我們來使用二分搜尋法，讓左右邊界快速縮減，透過 mid 的次方，就可以知道 x 的根號會落在哪邊了，今天程</description>
     </item>
     
     <item>
@@ -31,7 +31,7 @@
       <pubDate>Thu, 16 Jun 2022 18:00:00 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-16-leetcode-111/</guid>
-      <description>111. Minimum Depth of Binary Tree https://leetcode.com/problems/minimum-depth-of-binary-tree/ EasyGiven a binary tree, find its minimum depth. The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node. Note:&amp;nbsp;A leaf is a node with no children. &amp;nbsp; Example 1: Input: root = [3,9,20,null,null,15,7] Output: 2 Example 2: Input: root = [2,null,3,null,4,null,5,null,6] Output: 5 &amp;nbsp; Constraints: The number of nodes in the</description>
+      <description>111. Minimum Depth of Binary Tree https://leetcode.com/problems/minimum-depth-of-binary-tree/ 題意 尋找這棵樹最小的節點，他的深度為何？ 解題思路 這次的題目與 104 Maximum Depth of Binary Tree 相似，這次當然也要使用不同的思路解題，這次就使用迴圈的</description>
     </item>
     
     <item>
@@ -40,7 +40,7 @@
       <pubDate>Tue, 14 Jun 2022 18:00:00 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-14-leetcode-104/</guid>
-      <description>104. Maximum Depth of Binary Tree https://leetcode.com/problems/maximum-depth-of-binary-tree/ EasyGiven the root of a binary tree, return its maximum depth. A binary tree&#39;s maximum depth&amp;nbsp;is the number of nodes along the longest path from the root node down to the farthest leaf node. &amp;nbsp; Example 1: Input: root = [3,9,20,null,null,15,7] Output: 3 Example 2: Input: root = [1,null,2] Output: 2 &amp;nbsp; Constraints: The number of nodes in the tree is in the</description>
+      <description>104. Maximum Depth of Binary Tree https://leetcode.com/problems/maximum-depth-of-binary-tree/ 題意 尋找這棵樹最深的節點，他的深度為何？ 解題思路 這次的題目與 226 Invert Binary Tree 相似，這次也採用遞歸的做法，不過思路換一套方法。 一樣把每個</description>
     </item>
     
     <item>
@@ -49,7 +49,7 @@
       <pubDate>Sun, 12 Jun 2022 13:01:44 +0800</pubDate>
       
       <guid>https://alanzhan.dev/post/2022-06-12-leetcode-226/</guid>
-      <description>226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ EasyGiven the root of a binary tree, invert the tree, and return its root. &amp;nbsp; Example 1: Input: root = [4,2,7,1,3,6,9] Output: [4,7,2,9,6,3,1] Example 2: Input: root = [2,1,3] Output: [2,3,1] Example 3: Input: root = [] Output: [] &amp;nbsp; Constraints: The number of nodes in the tree is in the range [0, 100]. -100 &amp;lt;= Node.val &amp;lt;= 100 題意 將整棵樹</description>
+      <description>226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ 題意 將整棵樹的所有左右節點互相對調。 解題思路 我們可以把每個節點都視為是一個 root 節後，然後遍例所有的 root 節點，並且將每個 root 節點的左右節點</description>
     </item>
     
   </channel>

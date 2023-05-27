@@ -1,12 +1,102 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>algorithm on Alan 的筆記本</title>
+    <title>algorithm on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/algorithm/</link>
-    <description>Recent content in algorithm on Alan 的筆記本</description>
+    <description>Recent content in algorithm on Alan Zhan Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
-    <lastBuildDate>Tue, 13 Jul 2021 21:51:30 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Sun, 28 Aug 2022 14:22:55 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>白話解 Leetcode - 25 Reverse Nodes in k-Group</title>
+      <link>https://alanzhan.dev/post/2022-08-28-leetcode-25/</link>
+      <pubDate>Sun, 28 Aug 2022 14:22:55 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-08-28-leetcode-25/</guid>
+      <description>25. Reverse Nodes in k-Group https://leetcode.com/problems/reverse-nodes-in-k-group/ 題意 有一個 Linked List ，將 k 個節點為一組，並且將這一組內部的元素進行反轉，如果節點總數不足 k 個就不用反轉，最後回傳反轉後的結果。 解題思路</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 70 Climbing Stairs</title>
+      <link>https://alanzhan.dev/post/2022-07-13-leetcode-70/</link>
+      <pubDate>Wed, 13 Jul 2022 22:22:58 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-07-13-leetcode-70/</guid>
+      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ 題意 你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？ 解題思路 我們使用動態處理，爬第一階的話，一定是 1 種方法，爬第二階的話，我</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 69 Sqrt(x)</title>
+      <link>https://alanzhan.dev/post/2022-06-30-leetcode-69/</link>
+      <pubDate>Thu, 30 Jun 2022 23:37:48 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-30-leetcode-69/</guid>
+      <description>69. Sqrt(x) https://leetcode.com/problems/sqrtx/ 題意 對 x 開根號後的整數為為多少？ 解題思路 我們來使用二分搜尋法，讓左右邊界快速縮減，透過 mid 的次方，就可以知道 x 的根號會落在哪邊了，今天程</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 433 Minimum Genetic Mutation</title>
+      <link>https://alanzhan.dev/post/2022-06-28-leetcode-433/</link>
+      <pubDate>Tue, 28 Jun 2022 23:55:43 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-28-leetcode-433/</guid>
+      <description>433. Minimum Genetic Mutation https://leetcode.com/problems/minimum-genetic-mutation/ 題意 每一段字串代表一個基因序列，基因在變化的時候，每次只會變化一個字，只要變化的過程以及變化結束的時候，都在 bank 庫中找得到就好，最後</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 23  Merge k Sorted Lists</title>
+      <link>https://alanzhan.dev/post/2022-06-25-leetcode-23/</link>
+      <pubDate>Sat, 25 Jun 2022 23:29:46 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-25-leetcode-23/</guid>
+      <description>23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/ 題意 將 k 個已經排好順序的 linked list 合併成為一個排好序的 list。 解題思路 如果一個一個合併匯總成一個 list ，這樣暴力破解，相當的的沒效率，所</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 200 Number of Islands</title>
+      <link>https://alanzhan.dev/post/2022-06-23-leetcode-200/</link>
+      <pubDate>Thu, 23 Jun 2022 23:50:13 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-23-leetcode-200/</guid>
+      <description>200. Number of Islands https://leetcode.com/problems/number-of-islands/ 題意 給你一個二維的陣列， 1 代表陸地， 0 代表是水，島嶼四面環水，島嶼是由上下左右連接組合而成的，請問這個二維陣列中有幾個島嶼？ 解題思</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 78 Subsets</title>
+      <link>https://alanzhan.dev/post/2022-06-20-leetcode-78/</link>
+      <pubDate>Mon, 20 Jun 2022 18:00:00 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-20-leetcode-78/</guid>
+      <description>78. Subsets https://leetcode.com/problems/subsets/ 題意 傳入一個數值陣列，將元素與元素之間的所有有可能發生的組合回傳。 解題思路 可以把每個元素想像為取或者不取，如果取了就把元素塞入 stack 中，如</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 111 Minimum Depth of Binary Tree</title>
+      <link>https://alanzhan.dev/post/2022-06-16-leetcode-111/</link>
+      <pubDate>Thu, 16 Jun 2022 18:00:00 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-16-leetcode-111/</guid>
+      <description>111. Minimum Depth of Binary Tree https://leetcode.com/problems/minimum-depth-of-binary-tree/ 題意 尋找這棵樹最小的節點，他的深度為何？ 解題思路 這次的題目與 104 Maximum Depth of Binary Tree 相似，這次當然也要使用不同的思路解題，這次就使用迴圈的</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 104 Maximum Depth of Binary Tree</title>
+      <link>https://alanzhan.dev/post/2022-06-14-leetcode-104/</link>
+      <pubDate>Tue, 14 Jun 2022 18:00:00 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-14-leetcode-104/</guid>
+      <description>104. Maximum Depth of Binary Tree https://leetcode.com/problems/maximum-depth-of-binary-tree/ 題意 尋找這棵樹最深的節點，他的深度為何？ 解題思路 這次的題目與 226 Invert Binary Tree 相似，這次也採用遞歸的做法，不過思路換一套方法。 一樣把每個</description>
+    </item>
+    
+    <item>
+      <title>白話解 Leetcode - 226 Invert Binary Tree</title>
+      <link>https://alanzhan.dev/post/2022-06-12-leetcode-226/</link>
+      <pubDate>Sun, 12 Jun 2022 13:01:44 +0800</pubDate>
+      
+      <guid>https://alanzhan.dev/post/2022-06-12-leetcode-226/</guid>
+      <description>226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ 題意 將整棵樹的所有左右節點互相對調。 解題思路 我們可以把每個節點都視為是一個 root 節後，然後遍例所有的 root 節點，並且將每個 root 節點的左右節點</description>
+    </item>
+    
     <item>
       <title>Interpolation Search Algorithm - 插補搜尋法</title>
       <link>https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/</link>

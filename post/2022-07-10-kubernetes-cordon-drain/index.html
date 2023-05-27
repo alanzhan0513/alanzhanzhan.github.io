@@ -1,216 +1,257 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Kubernetes - Node 維護 Pod 遷移 - Alan 的筆記本</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+    
+    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:type" content="article">
 
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
 
+    
+    <meta name="title" content="Kubernetes - Node 維護 Pod 遷移" />
+    <meta property="og:title" content="Kubernetes - Node 維護 Pod 遷移" />
+    <meta property="twitter:title" content="Kubernetes - Node 維護 Pod 遷移" />
+    
 
-<meta name="author" content="Alan Zhan" /><meta name="description" content="敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使" /><meta name="keywords" content="alan, zhan, blog, kubernetes, pod, node, gke, cordon, uncordon, delete, PodAntiffinity, drain, 維護, 故障, 轉移" />
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
 
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
 
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
 
+    <title>Kubernetes - Node 維護 Pod 遷移 | Alan Zhan Blog</title>
 
+    <link rel="canonical" href="/post/2022-07-10-kubernetes-cordon-drain/">
 
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-<meta name="generator" content="Hugo 0.100.2 with theme even" />
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
 
-<link rel="canonical" href="https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
 
+    
+    
 
+    
+    <script src="/js/jquery.min.js"></script>
 
-<link href="/sass/main.min.67ec3458d297a750ad65cc14c128a47931875c6be1b31b4216dd61905bc210dd.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+    
+    <script src="/js/bootstrap.min.js"></script>
 
+    
+    <script src="/js/hux-blog.min.js"></script>
 
-<meta property="og:title" content="Kubernetes - Node 維護 Pod 遷移" />
-<meta property="og:description" content="敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-07-10T18:19:11+08:00" />
-<meta property="article:modified_time" content="2022-07-10T18:19:11+08:00" />
+    
+    <script src="/js/lazysizes.min.js"></script>
 
-<meta itemprop="name" content="Kubernetes - Node 維護 Pod 遷移">
-<meta itemprop="description" content="敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使"><meta itemprop="datePublished" content="2022-07-10T18:19:11+08:00" />
-<meta itemprop="dateModified" content="2022-07-10T18:19:11+08:00" />
-<meta itemprop="wordCount" content="725">
-<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Kubernetes - Node 維護 Pod 遷移"/>
-<meta name="twitter:description" content="敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
+    
+    
 
 </head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/post">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/tags">
-        <li class="mobile-menu-item">Tags</li>
-      </a><a href="/categories">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/post/1993-05-13-about-me">
-        <li class="mobile-menu-item">About</li>
-      </a><a href="">
-        <li class="mobile-menu-item"></li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">讓我們一起學習成為更好的自己</a>
-</div>
 
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags">Tags</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/1993-05-13-about-me">About</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href=""></a>
-      </li>
-  </ul>
-</nav>
-    </header>
 
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">Kubernetes - Node 維護 Pod 遷移</h1>
 
-      <div class="post-meta">
-        <span class="post-time"> 10 Jul 22 18:19 &#43;0800 </span>
-        <div class="post-category">
-            <a href="/categories/kubernetes/"> kubernetes </a>
-            </div>
-          <span class="more-meta"> 725 words </span>
-          <span class="more-meta"> 2 mins read </span>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-174975293-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
         
-      </div>
-    </header>
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+        </div>
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#情境">情境</a></li>
-    <li><a href="#作法">作法</a>
-      <ul>
-        <li><a href="#1-讓該節點停止調度">1. 讓該節點停止調度</a></li>
-        <li><a href="#2-驅逐在這節點的-pod">2. 驅逐在這節點的 Pod</a></li>
-        <li><a href="#3-恢復該節點的調度或者刪除節點">3. 恢復該節點的調度或者刪除節點</a></li>
-      </ul>
-    </li>
-    <li><a href="#注意事項">注意事項</a></li>
-    <li><a href="#總結">總結</a></li>
-  </ul>
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/about//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
 </nav>
-  </div>
-</div>
-    <div class="post-content">
-      <p>敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使用 Cordon + Drain 或者手動刪除 Pod ，讓 Pod 重新長在新的 Node Pool 上，當然在 GKE 上直接刪除舊的 Node Pool 也可以達到一樣的效果，只是我們選用了更安全的做法。</p>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/header.jpg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/kubernetes" title="kubernetes">
+                            kubernetes
+                        </a>
+                        
+                        <a class="tag" href="/tags/tech" title="tech">
+                            tech
+                        </a>
+                        
+                    </div>
+                    <h1>Kubernetes - Node 維護 Pod 遷移</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Alan Zhan
+                             
+                            on 
+                            Sunday, July 10, 2022
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <p>敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使用 Cordon + Drain 或者手動刪除 Pod ，讓 Pod 重新長在新的 Node Pool 上，當然在 GKE 上直接刪除舊的 Node Pool 也可以達到一樣的效果，只是我們選用了更安全的做法。</p>
 <p>上述的做法，其實就是將 Node 標記為不可調度，然後再讓 Pod 生長在預期的主機上，今天就來説說當機器遇到故障或者需要升級的時候，我們該怎麼安全的處理。</p>
 <h1 id="情境">情境</h1>
 <p>如果 Worker Node 要做系統升級或者發現即將故障了，我們該怎麼安全的處置。</p>
 <h1 id="作法">作法</h1>
 <h2 id="1-讓該節點停止調度">1. 讓該節點停止調度</h2>
 <p>我們使用 <code>cordon</code> 先將目標節點打上不可調度，此時只會將 Node 狀態變成 SchedulingDisabled ，之後再創建的 Pod ，都不會再調度到該節點上，舊有的 Pod 不會受到影響，依然可以繼續提供服務。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl cordon &lt;node-name&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="2-驅逐在這節點的-pod">2. 驅逐在這節點的 Pod</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl cordon &lt;node-name&gt;
+</span></span></code></pre></div><h2 id="2-驅逐在這節點的-pod">2. 驅逐在這節點的 Pod</h2>
 <p>接下來我們要將 Pod 從 Node 上驅逐，這邊有兩個做法。</p>
 <p>第一種作法是直接將節點上的所有 Pod 驅逐，但是如果你的一個 Deployment 內的 Pod 都活在此節點上的話，你的服務是有機會中斷的。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl drain &lt;node-name&gt; --force --ignore-daemonsets
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>第二種作法是手動的一個一個將 Pod 在節點上刪除，此做法較為安全。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl delete pod &lt;pod-name&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="3-恢復該節點的調度或者刪除節點">3. 恢復該節點的調度或者刪除節點</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl drain &lt;node-name&gt; --force --ignore-daemonsets
+</span></span></code></pre></div><p>第二種作法是手動的一個一個將 Pod 在節點上刪除，此做法較為安全。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl delete pod &lt;pod-name&gt;
+</span></span></code></pre></div><h2 id="3-恢復該節點的調度或者刪除節點">3. 恢復該節點的調度或者刪除節點</h2>
 <p>當你升級完畢你的節點後，你就可以將節點標記為可調度狀態。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl uncordon &lt;node-name&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>當你的節點確定硬體異常的話，就直接刪除節點吧。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl delete node &lt;node-name&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="注意事項">注意事項</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl uncordon &lt;node-name&gt;
+</span></span></code></pre></div><p>當你的節點確定硬體異常的話，就直接刪除節點吧。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl delete node &lt;node-name&gt;
+</span></span></code></pre></div><h1 id="注意事項">注意事項</h1>
 <ul>
 <li>要驅逐的 Pod 的 replica 必須大於 1 ， 不然你的服務會有中斷發生。</li>
 <li>要檢查一下 Pod 是否有特殊的策略，不然被驅逐後就有機會不會被調度成功。</li>
@@ -220,122 +261,369 @@
 <p>在 production 上，如果沒有十足的信心，建議在將 Pod 轉移到新的 Node 的處理過程中，一個一個手動刪除 Pod 吧。</p>
 <p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
-    </div>
 
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">Author</span>
-    <span class="item-content">Alan Zhan</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">LastMod</span>
-    <span class="item-content">
-        10 Jul 22 18:19 &#43;0800
-        
-    </span>
-  </p>
-  
-  
-</div>
-<footer class="post-footer">
-      <div class="post-tags">
-          <a href="/tags/kubernetes/">kubernetes</a>
-          </div>
-      <nav class="post-nav">
-        <a class="prev" href="/post/2022-07-13-leetcode-70/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">白話解 Leetcode - 70 Climbing Stairs</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/post/2022-06-30-leetcode-69/">
-            <span class="next-text nav-default">白話解 Leetcode - 69 Sqrt(x)</span>
-            <span class="next-text nav-mobile">Next</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2022-06-30-leetcode-69/" data-toggle="tooltip" data-placement="top" title="白話解 Leetcode - 69 Sqrt(x)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/2022-07-13-leetcode-70/" data-toggle="tooltip" data-placement="top" title="白話解 Leetcode - 70 Climbing Stairs">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/algorithm" title="algorithm">
+                            algorithm
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/docker" title="docker">
+                            docker
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/dockerfile" title="dockerfile">
+                            dockerfile
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/dynamic-programing" title="dynamic-programing">
+                            dynamic-programing
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/gc" title="gc">
+                            gc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/golang" title="golang">
+                            golang
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/index" title="index">
+                            index
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/invest" title="invest">
+                            invest
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/kubernetes" title="kubernetes">
+                            kubernetes
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/leetcode" title="leetcode">
+                            leetcode
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/leetcode-easy" title="leetcode-easy">
+                            leetcode-easy
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/leetcode-hard" title="leetcode-hard">
+                            leetcode-hard
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/leetcode-medium" title="leetcode-medium">
+                            leetcode-medium
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mongodb" title="mongodb">
+                            mongodb
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/reading" title="reading">
+                            reading
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tech" title="tech">
+                            tech
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/terraform" title="terraform">
+                            terraform
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
         </div>
-        <div id="disqus_thread"></div>
-    <script type="text/javascript">
-    (function() {
-      
-      
-      if (window.location.hostname === 'localhost') return;
-
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      var disqus_shortname = 'alanzhan-dev';
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-  
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:rsesst60313@gmail.com" class="iconfont icon-email" title="email"></a>
-      <a href="https://www.facebook.com/alanzhan0513/" class="iconfont icon-facebook" title="facebook"></a>
-      <a href="https://www.linkedin.com/in/alanzhan0513/" class="iconfont icon-linkedin" title="linkedin"></a>
-      <a href="https://github.com/alanzhan0513/" class="iconfont icon-github" title="github"></a>
-  <a href="https://alanzhan.dev/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
-
-<div class="copyright">
-  <span class="power-by">
-    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
-  </span>
-  <span class="division">|</span>
-  <span class="theme-info">
-    Theme - 
-    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
-
-  
-
-  <span class="copyright-year">
-    &copy; 
-    2020 - 
-    2023
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">Alan Zhan</span>
-  </span>
-</div>
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
     </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+</article>
 
 
 
-<script type="text/javascript" src="/js/main.min.9e3db4166f5901c11faec00349b7b03ae36c12a6e820a208cf498f1aee812258.js"></script>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan Blog 2023
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-174975293-1', 'auto');
-	ga('set', 'anonymizeIp', true);
-	ga('send', 'pageview');
-}
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
 </script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
 
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 
