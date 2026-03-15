@@ -74,17 +74,20 @@
 
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-BENK03VM06', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
 
 
 
@@ -172,49 +175,14 @@ if (!doNotTrack) {
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/header.jpg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/docker" title="docker">
-                            docker
-                        </a>
-                        
-                        <a class="tag" href="/tags/dockerfile" title="dockerfile">
-                            dockerfile
-                        </a>
-                        
-                        <a class="tag" href="/tags/tech" title="tech">
-                            tech
-                        </a>
-                        
-                    </div>
-                    <h1>10 個 Dockerfile 的最佳實踐</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                Alan Zhan
-                             
-                            on 
-                            Sunday, January 16, 2022
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
             </div>
         </div>
@@ -227,14 +195,14 @@ if (!doNotTrack) {
 <article>
     <div class="container">
         <div class="row">
-
             
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
                 <p>最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。</p>
 <h1 id="容器應該是短暫的">容器應該是短暫的</h1>
 <p>通過 <code>Dockerfile</code> 構建的鏡像所啟動的容器，應該盡可能的短暫，這邊的短暫意思是：很快速的啟動，並且很快速的終止。</p>
@@ -248,23 +216,23 @@ if (!doNotTrack) {
 <p>用法和 git 中的 .gitignore 很像，以 git 來說，是為了避免無意義的文件被提交到 git 鍊上，而 .dockerignore 是為了確保 context 越小越好。</p>
 <h1 id="借助-stdin-管道傳輸-dockerfile">借助 stdin 管道傳輸 dockerfile</h1>
 <p>如果你的鏡像只是臨時性的話，你又懶得撰寫 Dockerfile，你可以通過 stdin 管道，建構鏡像。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> -e <span style="color:#f1fa8c">&#39;FROM busybox\nRUN echo &#34;hello world&#34;&#39;</span> | docker build -
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker build -<span style="color:#f1fa8c">&lt;&lt;EOF
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> -e <span style="color:#f1fa8c">&#39;FROM busybox\nRUN echo &#34;hello world&#34;&#39;</span> | docker build -
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker build -<span style="color:#f1fa8c">&lt;&lt;EOF
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">FROM busybox
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">RUN echo &#34;hello world&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
 </span></span></code></pre></div><h1 id="使用多階段建構">使用多階段建構</h1>
 <p>使用多階段建構，能夠大幅度減少你最終的鏡像大小，而且你就可以不需要考慮優化非最終鏡像的 dockerfile 內的聲明語句。</p>
 <p>以下依 golang 為例，在建構的過程中，我們需要 SDK 的鏡像來協助我們打包成二進位文件，而打包完畢之後，我們只需要把文件放到一個極度輕量的鏡像即可，這樣就可以確保最終鏡像是很輕量的。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#6272a4"># build stage</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">FROM</span><span style="color:#f1fa8c"> golang:alpine AS build</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#6272a4"># build stage</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">FROM</span> <span style="color:#f1fa8c">golang:alpine</span> <span style="color:#ff79c6">AS</span> <span style="color:#f1fa8c">build</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> apk --no-cache add build-base git bzr mercurial gcc
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">ADD</span> . /src
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> /src <span style="color:#ff79c6">&amp;&amp;</span> go build -o main
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#6272a4"># final stage</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">FROM</span><span style="color:#f1fa8c"> alpine</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">WORKDIR</span><span style="color:#f1fa8c"> /app</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">FROM</span> <span style="color:#f1fa8c">alpine</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">WORKDIR</span> <span style="color:#f1fa8c">/app</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">COPY</span> --from<span style="color:#ff79c6">=</span>build /src/main /app/
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">ENTRYPOINT</span> ./main
 </span></span></code></pre></div><h1 id="減少安裝不必要的包">減少安裝不必要的包</h1>
@@ -286,13 +254,13 @@ if (!doNotTrack) {
 </ul>
 <h1 id="將多行參數排序">將多行參數排序</h1>
 <p>將多行參數按照字母排序，譬如：要安裝多個包時。可以避免重複安裝到同一個包，更新包列表時也更容易維護。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
-</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  bzr <span style="color:#f1fa8c">\
-</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  cvs <span style="color:#f1fa8c">\
-</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  git <span style="color:#f1fa8c">\
-</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  mercurial <span style="color:#f1fa8c">\
-</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  subversion <span style="color:#f1fa8c">\
-</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>  <span style="color:#ff79c6">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  bzr <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  cvs <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  git <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  mercurial <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  subversion <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
 </span></span></code></pre></div><h1 id="利用建構緩存">利用建構緩存</h1>
 <p>在鏡像的建構過中，Docker 會遍歷 Dockerfile 文堅中的指令，然後按照順序執行。每條指令在執行前， Docker 都會在緩存中尋找是否已經存在可用的重複鏡像，如果有就使用現有的鏡像，不重覆創建。</p>
 <blockquote>
@@ -312,173 +280,219 @@ if (!doNotTrack) {
 <p><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile Best Practices</a></p>
 <p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
+            
+             
+            
 
-                
 
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/post/2022-01-09-github-pages-custom-domain/" data-toggle="tooltip" data-placement="top" title="Github Pages Custom Domain - Github Blog 自訂域名">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/post/2022-01-24-golang-goroutine/" data-toggle="tooltip" data-placement="top" title="Golang Goroutine 與 GMP 原理全面分析">Next
-                            Post &rarr;</a>
-                    </li>
-                    
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
                 </ul>
-                
-
-                
-
-
-
             </div>
-
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
             
             
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
+               
+                    <a href="/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
             
-
+               
+                    <a href="/tags/docker" title="docker">
+                        docker
+                    </a>
+               
             
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
+               
+                    <a href="/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
 
-                
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                        
-                        
-                        <a href="/tags/algorithm" title="algorithm">
-                            algorithm
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/docker" title="docker">
-                            docker
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/dockerfile" title="dockerfile">
-                            dockerfile
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/dynamic-programing" title="dynamic-programing">
-                            dynamic-programing
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/gc" title="gc">
-                            gc
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/golang" title="golang">
-                            golang
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/index" title="index">
-                            index
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/invest" title="invest">
-                            invest
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/kubernetes" title="kubernetes">
-                            kubernetes
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode" title="leetcode">
-                            leetcode
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-easy" title="leetcode-easy">
-                            leetcode-easy
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-hard" title="leetcode-hard">
-                            leetcode-hard
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-medium" title="leetcode-medium">
-                            leetcode-medium
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/mongodb" title="mongodb">
-                            mongodb
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/reading" title="reading">
-                            reading
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/tech" title="tech">
-                            tech
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/terraform" title="terraform">
-                            terraform
-                        </a>
-                        
-                        
-                    </div>
-                </section>
-                
+    
+    
+    
+</div>
 
-                
-                
-            </div>
         </div>
     </div>
 </article>
@@ -549,6 +563,7 @@ if (!doNotTrack) {
             
             
            
+           
                    <li>
                        <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
                            <span class="fa-stack fa-lg">
@@ -560,7 +575,7 @@ if (!doNotTrack) {
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2023
+                    Copyright &copy; Alan Zhan Blog 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

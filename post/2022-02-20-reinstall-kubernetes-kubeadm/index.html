@@ -74,17 +74,20 @@
 
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-BENK03VM06', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
 
 
 
@@ -172,45 +175,14 @@ if (!doNotTrack) {
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/header.jpg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/kubernetes" title="kubernetes">
-                            kubernetes
-                        </a>
-                        
-                        <a class="tag" href="/tags/tech" title="tech">
-                            tech
-                        </a>
-                        
-                    </div>
-                    <h1>安裝兩次的 Kubernetes Kubeadm</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                Alan Zhan
-                             
-                            on 
-                            Sunday, February 20, 2022
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
             </div>
         </div>
@@ -223,14 +195,14 @@ if (!doNotTrack) {
 <article>
     <div class="container">
         <div class="row">
-
             
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
                 <p>想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但是安裝的過程不是那麼順遂，這篇就分享一下我遇到的問題跟如何解決。</p>
 <h1 id="第一次安裝-kubeadm">第一次安裝 Kubeadm</h1>
 <ol>
@@ -238,20 +210,20 @@ if (!doNotTrack) {
 <li>安裝 Docker。
 <ol>
 <li>修改 Docker 的 cgroup 的設定，這個修改是為了讓 K8s 與 container runtime 的 cgroup driver 一致，可以避免系統會出現不穩定的狀況。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vim /etc/docker/daemon.json
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vim /etc/docker/daemon.json
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;exec-opts&#34;</span>: [<span style="color:#f1fa8c">&#34;native.cgroupdriver=systemd&#34;</span>]
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div></li>
 <li>重啟 Docker
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl restart docker
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl restart docker
 </span></span></code></pre></div></li>
 </ol>
 </li>
 <li>安裝 Kubeadm 。
 <ol>
 <li>允許 iptables 檢查橋接流量 (bridged traffic) 。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">br_netfilter
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
 </span></span><span style="display:flex;"><span>
@@ -262,28 +234,28 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>sudo sysctl --system
 </span></span></code></pre></div></li>
 <li>更新 apt 與 K8s 所需要的包。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y apt-transport-https ca-certificates curl
 </span></span></code></pre></div></li>
 <li>下載 Google Cloud 公開簽名密鑰。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 </span></span></code></pre></div></li>
 <li>添加 K8s 的 apt 倉庫。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> | sudo tee /etc/apt/sources.list.d/kubernetes.list
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> | sudo tee /etc/apt/sources.list.d/kubernetes.list
 </span></span></code></pre></div></li>
 <li>更新 apt 包的索引，便且安裝 kubelet 、 kubeadmi 和 kubectl ，並鎖定版本。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y kubelet kubeadm kubectl
 </span></span><span style="display:flex;"><span>sudo apt-mark hold kubelet kubeadm kubectl
 </span></span></code></pre></div></li>
 <li>啟動 k8s 。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm init
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm init
 </span></span></code></pre></div></li>
 <li>加入 worker node
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
 </span></span></code></pre></div></li>
 <li>複製 kubeconfig
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube
 </span></span><span style="display:flex;"><span>sudo cp -i /etc/kubernetes/admin.conf <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube/config
 </span></span><span style="display:flex;"><span>sudo chown <span style="color:#ff79c6">$(</span>id -u<span style="color:#ff79c6">)</span>:<span style="color:#ff79c6">$(</span>id -g<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube/config
 </span></span></code></pre></div></li>
@@ -292,13 +264,13 @@ if (!doNotTrack) {
 </ol>
 <h2 id="k8s-nodes-not-ready">K8s Nodes Not Ready</h2>
 <p>我終於安裝好了，那我把 Worker Node 加入到集群內吧，加入完畢之後，正當我準備開始使用 K8s 的時候，我卻看到 nodes 的狀態均為 NotReady，。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alan@k8s-01:~$ kubectl get nodes
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alan@k8s-01:~$ kubectl get nodes
 </span></span><span style="display:flex;"><span>NAME     STATUS     ROLES                  AGE     VERSION
 </span></span><span style="display:flex;"><span>k8s-03   NotReady   &lt;none&gt;                 7m17s   v1.23.4
 </span></span><span style="display:flex;"><span>k8s-01   NotReady   control-plane,master   7m45s   v1.23.4
 </span></span><span style="display:flex;"><span>k8s-02   NotReady   &lt;none&gt;                 7m24s   v1.23.4
 </span></span></code></pre></div><p>原因是因為我沒有設定 CNI (container network interface) 插件，<a href="https://stackoverflow.com/questions/44086826/kubeadm-master-node-never-ready">kubeadm: master node never ready</a>，於是我就 apply flannel 上去。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 </span></span><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
 </span></span></code></pre></div><p>但是裝完之後我還是一樣節點處於不可用狀態啊，到底又是怎麼了，一查之後才發現 flannel 需要 pod netwokr CIDR (Classless Inter-Domain Routing) 設定，好吧，那我重作好了。</p>
 <h1 id="第二次安裝">第二次安裝</h1>
@@ -307,20 +279,20 @@ if (!doNotTrack) {
 <li>安裝 Docker。
 <ol>
 <li>修改 Docker 的 cgroup 的設定，這個修改是為了讓 K8s 與 container runtime 的 cgroup driver 一致，可以避免系統會出現不穩定的狀況。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vim /etc/docker/daemon.json
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vim /etc/docker/daemon.json
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;exec-opts&#34;</span>: [<span style="color:#f1fa8c">&#34;native.cgroupdriver=systemd&#34;</span>]
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div></li>
 <li>重啟 Docker
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl restart docker
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl restart docker
 </span></span></code></pre></div></li>
 </ol>
 </li>
 <li>安裝 Kubeadm 。
 <ol>
 <li>允許 iptables 檢查橋接流量 (bridged traffic) 。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">br_netfilter
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
 </span></span><span style="display:flex;"><span>
@@ -331,40 +303,40 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>sudo sysctl --system
 </span></span></code></pre></div></li>
 <li>更新 apt 與 K8s 所需要的包。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y apt-transport-https ca-certificates curl
 </span></span></code></pre></div></li>
 <li>下載 Google Cloud 公開簽名密鑰。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 </span></span></code></pre></div></li>
 <li>添加 K8s 的 apt 倉庫。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> | sudo tee /etc/apt/sources.list.d/kubernetes.list
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> | sudo tee /etc/apt/sources.list.d/kubernetes.list
 </span></span></code></pre></div></li>
 <li>更新 apt 包的索引，便且安裝 kubelet 、 kubeadmi 和 kubectl ，並鎖定版本。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y kubelet kubeadm kubectl
 </span></span><span style="display:flex;"><span>sudo apt-mark hold kubelet kubeadm kubectl
 </span></span></code></pre></div></li>
 <li>啟動 k8s 。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm init --pod-network-cidr<span style="color:#ff79c6">=</span>10.244.0.0/16
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm init --pod-network-cidr<span style="color:#ff79c6">=</span>10.244.0.0/16
 </span></span></code></pre></div></li>
 <li>複製 kubeconfig
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube
 </span></span><span style="display:flex;"><span>sudo cp -i /etc/kubernetes/admin.conf <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube/config
 </span></span><span style="display:flex;"><span>sudo chown <span style="color:#ff79c6">$(</span>id -u<span style="color:#ff79c6">)</span>:<span style="color:#ff79c6">$(</span>id -g<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube/config
 </span></span></code></pre></div></li>
 <li>設定 CNI 。
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 </span></span><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
 </span></span></code></pre></div></li>
 <li>加入 worker node
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
 </span></span></code></pre></div></li>
 </ol>
 </li>
 </ol>
 <p>搞定！收工下課！</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>zhan@k8s-01:~$ kubectl get nodes
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>zhan@k8s-01:~$ kubectl get nodes
 </span></span><span style="display:flex;"><span>NAME     STATUS   ROLES                  AGE   VERSION
 </span></span><span style="display:flex;"><span>k82-03   Ready    &lt;none&gt;                 25h   v1.23.4
 </span></span><span style="display:flex;"><span>k8s-01   Ready    control-plane,master   25h   v1.23.4
@@ -379,173 +351,219 @@ if (!doNotTrack) {
 <li><a href="https://stackoverflow.com/questions/50833616/kube-flannel-cant-get-cidr-although-podcidr-available-on-node">Kube-Flannel cant get CIDR although PodCIDR available on node</a></li>
 </ul>
 
+            
+             
+            
 
-                
 
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/post/2022-02-14-kubernetes-introduction/" data-toggle="tooltip" data-placement="top" title="Kubernetes 基礎介紹">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/post/2022-02-28-kubetnetes-etcd/" data-toggle="tooltip" data-placement="top" title="Kubernetes 核心介紹 Etcd">Next
-                            Post &rarr;</a>
-                    </li>
-                    
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
                 </ul>
-                
-
-                
-
-
-
             </div>
-
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
             
             
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
+               
+                    <a href="/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
             
-
+               
+                    <a href="/tags/docker" title="docker">
+                        docker
+                    </a>
+               
             
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
+               
+                    <a href="/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
 
-                
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                        
-                        
-                        <a href="/tags/algorithm" title="algorithm">
-                            algorithm
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/docker" title="docker">
-                            docker
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/dockerfile" title="dockerfile">
-                            dockerfile
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/dynamic-programing" title="dynamic-programing">
-                            dynamic-programing
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/gc" title="gc">
-                            gc
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/golang" title="golang">
-                            golang
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/index" title="index">
-                            index
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/invest" title="invest">
-                            invest
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/kubernetes" title="kubernetes">
-                            kubernetes
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode" title="leetcode">
-                            leetcode
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-easy" title="leetcode-easy">
-                            leetcode-easy
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-hard" title="leetcode-hard">
-                            leetcode-hard
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-medium" title="leetcode-medium">
-                            leetcode-medium
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/mongodb" title="mongodb">
-                            mongodb
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/reading" title="reading">
-                            reading
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/tech" title="tech">
-                            tech
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/terraform" title="terraform">
-                            terraform
-                        </a>
-                        
-                        
-                    </div>
-                </section>
-                
+    
+    
+    
+</div>
 
-                
-                
-            </div>
         </div>
     </div>
 </article>
@@ -616,6 +634,7 @@ if (!doNotTrack) {
             
             
            
+           
                    <li>
                        <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
                            <span class="fa-stack fa-lg">
@@ -627,7 +646,7 @@ if (!doNotTrack) {
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2023
+                    Copyright &copy; Alan Zhan Blog 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

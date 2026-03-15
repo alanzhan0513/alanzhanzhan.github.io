@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="leetcode" />
-    <meta property="og:title" content="leetcode" />
-    <meta property="twitter:title" content="leetcode" />
+    <meta name="title" content="" />
+    <meta property="og:title" content="" />
+    <meta property="twitter:title" content="" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>leetcode | Alan Zhan Blog</title>
+    <title>Leetcode | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/tags/leetcode/">
 
@@ -74,17 +74,20 @@
 
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-BENK03VM06', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
 
 
 
@@ -204,20 +207,22 @@ if (!doNotTrack) {
 <div data-pagefind-ignore="all">
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-06-23-leetcode-200/">
+    <a href="https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/">
         <h2 class="post-title">
-            白話解 Leetcode - 200 Number of Islands
+            Interpolation Search Algorithm - 插補搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            200. Number of Islands https://leetcode.com/problems/number-of-islands/ 題意 給你一個二維的陣列， 1 代表陸地， 0 代表是水，島嶼四面環水，島嶼是由上下左右連接組合而成的，請問這個二維陣列中有幾個島嶼？ 解題思
+            <p>繼續使用猜數字當範例， 1 ~ 100 的數字，但是這次你已經知道結果了，你如果還是繼續使用二元搜尋法，那麼效率不會那麼好，那我們該用甚麼方式解決呢？</p>
+<h1 id="概念">概念</h1>
+<p>插補搜尋法 (Interpolation Search)：是一個基於二元搜尋法的演算法，<code>被搜尋的清單是需要事先先被排序過的</code>，而且資料的分布狀態最好是呈現<code>線性</code>的，如果不是呈現線性分布，那麼在搜尋的過程中，將有可能會得到 O(n) 的結果，可能會比二元搜尋法還更耗時。</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Thursday, June 23, 2022
+        Posted by Alan Zhan on Tuesday, July 13, 2021
         
         
     
@@ -227,20 +232,21 @@ if (!doNotTrack) {
 <hr>
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-06-20-leetcode-78/">
+    <a href="https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/">
         <h2 class="post-title">
-            白話解 Leetcode - 78 Subsets
+            Jump Search Algorithm - 跳躍搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            78. Subsets https://leetcode.com/problems/subsets/ 題意 傳入一個數值陣列，將元素與元素之間的所有有可能發生的組合回傳。 解題思路 可以把每個元素想像為取或者不取，如果取了就把元素塞入 stack 中，如
+            <p>延續猜數字遊戲，1 ~ 100 我們是不是可以換個猜法呢？</p>
+<p>如果我們從一開始，只要每次沒猜中，我們就往後面 +10 繼續猜，直到最大值範圍值變成我們所猜的數值後，往回開始找值，這樣做，在數值較小的時候，將會更有效率。</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Monday, June 20, 2022
+        Posted by Alan Zhan on Sunday, July 11, 2021
         
         
     
@@ -250,20 +256,21 @@ if (!doNotTrack) {
 <hr>
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-06-16-leetcode-111/">
+    <a href="https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/">
         <h2 class="post-title">
-            白話解 Leetcode - 111 Minimum Depth of Binary Tree
+            Binary Search Algorithm - 二元搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            111. Minimum Depth of Binary Tree https://leetcode.com/problems/minimum-depth-of-binary-tree/ 題意 尋找這棵樹最小的節點，他的深度為何？ 解題思路 這次的題目與 104 Maximum Depth of Binary Tree 相似，這次當然也要使用不同的思路解題，這次就使用迴圈的
+            <p>我們來玩猜數字遊戲，1 ~ 100 中的整數，你必須猜中我腦海中的數字，而且我們必須在最少的布數內猜到答案，那麼你會怎麼猜呢？</p>
+<p>答案很簡單，你一定會從 50 開始猜，如果沒猜中的話，太高你就會從 25 開始猜，太低你就會從 75 開始猜，以此類推，你每次操作的過程，你都會從中剖一半來猜測，其實你所使用的就是 Binary Search。</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Thursday, June 16, 2022
+        Posted by Alan Zhan on Saturday, July 10, 2021
         
         
     
@@ -273,20 +280,22 @@ if (!doNotTrack) {
 <hr>
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-06-14-leetcode-104/">
+    <a href="https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/">
         <h2 class="post-title">
-            白話解 Leetcode - 104 Maximum Depth of Binary Tree
+            Linear Search Algorithm - 線性搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            104. Maximum Depth of Binary Tree https://leetcode.com/problems/maximum-depth-of-binary-tree/ 題意 尋找這棵樹最深的節點，他的深度為何？ 解題思路 這次的題目與 226 Invert Binary Tree 相似，這次也採用遞歸的做法，不過思路換一套方法。 一樣把每個
+            <p>在查找一個元素是否存在的時候，我們最常使用的方式是甚麼呢？答案是 for 或者是 while 迴圈，恭喜你！已經學習完 Linear Search 了！</p>
+<h1 id="概念">概念</h1>
+<p>線性搜尋 (Linear Search)：這個演算法會<code>訪問每個元素</code>，確認元素在陣列中的哪個位置，如果找不到元素則會回傳 -1。</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Tuesday, June 14, 2022
+        Posted by Alan Zhan on Saturday, July 10, 2021
         
         
     
@@ -296,20 +305,63 @@ if (!doNotTrack) {
 <hr>
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-06-12-leetcode-226/">
+    <a href="https://alanzhan.dev/post/2021-07-07-divide-and-conquer/">
         <h2 class="post-title">
-            白話解 Leetcode - 226 Invert Binary Tree
+            Divide and Conquer - 分而治之
         </h2>
 	
         <div class="post-content-preview">
 	
-            226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ 題意 將整棵樹的所有左右節點互相對調。 解題思路 我們可以把每個節點都視為是一個 root 節後，然後遍例所有的 root 節點，並且將每個 root 節點的左右節點
+            <h1 id="分而治之">分而治之</h1>
+<p>從字面上看起來，就是把一個複雜的問題分解成兩個或者很多個相同或者相似的問題，讓小問題可以被解決，再將最終結果合併求出問題的答案。</p>
+<h2 id="優點">優點</h2>
+<ol>
+<li>解決問題的難度降低。</li>
+<li>可以提升執行效率。</li>
+<li>有些時候能夠平行處理，增進性能。</li>
+</ol>
+<h2 id="使用步驟">使用步驟</h2>
+<ol>
+<li>分解：將一個問題分解成若干個較小的問題，相對獨立，與原先問題形式相同的子問題。</li>
+<li>解決：若子問題規模較小並且容易解決時，就直接解決。否則，就遞迴的方式解決子問題。</li>
+<li>合併：將個子問題的解合併成為原問題的解。</li>
+</ol>
+<p>Resources:</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Sunday, June 12, 2022
+        Posted by Alan Zhan on Wednesday, July 7, 2021
+        
+        
+    
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://alanzhan.dev/post/2021-07-06-big-o-notation/">
+        <h2 class="post-title">
+            Big O Notation - Big O 符號
+        </h2>
+	
+        <div class="post-content-preview">
+	
+            <h1 id="如何選擇演算法來解決問題">如何選擇演算法來解決問題</h1>
+<p>同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞：</p>
+<ul>
+<li>時間複雜度 (花的時間)</li>
+<li>空間複雜度 (花的記憶體)</li>
+</ul>
+<p>所以花費的時間越少、花費的記憶體越少，通常就是越好的演算法，但是演算法的時間複雜度分析又可以細分為以下三種：</p>
+       
+        </div>
+    </a>
+    <p class="post-meta">
+    
+        Posted by Alan Zhan on Tuesday, July 6, 2021
         
         
     
@@ -329,10 +381,6 @@ if (!doNotTrack) {
         <a href="/tags/leetcode/">&larr; Newer Posts</a>
     </li>
     
-    
-    <li class="next">
-        <a href="/tags/leetcode/page/3/">Older Posts &rarr;</a>
-    </li>
     
 </ul>
 
@@ -412,6 +460,7 @@ if (!doNotTrack) {
                
             
             
+               
                
                
                
@@ -611,6 +660,7 @@ if (!doNotTrack) {
             
             
            
+           
                    <li>
                        <a href='/tags/leetcode/index.xml' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
                            <span class="fa-stack fa-lg">
@@ -622,7 +672,7 @@ if (!doNotTrack) {
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2023
+                    Copyright &copy; Alan Zhan Blog 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

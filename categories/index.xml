@@ -4,35 +4,30 @@
     <title>Categories on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/categories/</link>
     <description>Recent content in Categories on Alan Zhan Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>tech</title>
+      <title>Tech</title>
       <link>https://alanzhan.dev/categories/tech/</link>
       <pubDate>Sun, 12 Mar 2023 18:04:41 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/categories/tech/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Reading</title>
       <link>https://alanzhan.dev/categories/reading/</link>
       <pubDate>Sun, 02 Oct 2022 20:20:53 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/categories/reading/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>algorithm</title>
+      <title>Algorithm</title>
       <link>https://alanzhan.dev/categories/algorithm/</link>
       <pubDate>Sun, 28 Aug 2022 14:22:55 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/categories/algorithm/</guid>
       <description></description>
     </item>
-    
   </channel>
 </rss>

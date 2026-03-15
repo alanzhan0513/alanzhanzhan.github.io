@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>leetcode-hard on Alan Zhan Blog</title>
+    <title>Leetcode-Hard on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/leetcode-hard/</link>
-    <description>Recent content in leetcode-hard on Alan Zhan Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Leetcode-Hard on Alan Zhan Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Aug 2022 14:22:55 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/leetcode-hard/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Aug 2022 14:22:55 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/tags/leetcode-hard/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>白話解 Leetcode - 25 Reverse Nodes in k-Group</title>
       <link>https://alanzhan.dev/post/2022-08-28-leetcode-25/</link>
       <pubDate>Sun, 28 Aug 2022 14:22:55 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/post/2022-08-28-leetcode-25/</guid>
-      <description>25. Reverse Nodes in k-Group https://leetcode.com/problems/reverse-nodes-in-k-group/ 題意 有一個 Linked List ，將 k 個節點為一組，並且將這一組內部的元素進行反轉，如果節點總數不足 k 個就不用反轉，最後回傳反轉後的結果。 解題思路</description>
+      <description>&lt;h1 id=&#34;25-reverse-nodes-in-k-group&#34;&gt;25. Reverse Nodes in k-Group&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/reverse-nodes-in-k-group/&#34;&gt;https://leetcode.com/problems/reverse-nodes-in-k-group/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;有一個 Linked List ，將 k 個節點為一組，並且將這一組內部的元素進行反轉，如果節點總數不足 k 個就不用反轉，最後回傳反轉後的結果。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>白話解 Leetcode - 23  Merge k Sorted Lists</title>
       <link>https://alanzhan.dev/post/2022-06-25-leetcode-23/</link>
       <pubDate>Sat, 25 Jun 2022 23:29:46 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/post/2022-06-25-leetcode-23/</guid>
-      <description>23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/ 題意 將 k 個已經排好順序的 linked list 合併成為一個排好序的 list。 解題思路 如果一個一個合併匯總成一個 list ，這樣暴力破解，相當的的沒效率，所</description>
+      <description>&lt;h1 id=&#34;23-merge-k-sorted-lists&#34;&gt;23. Merge k Sorted Lists&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/merge-k-sorted-lists/&#34;&gt;https://leetcode.com/problems/merge-k-sorted-lists/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;將 k 個已經排好順序的 linked list 合併成為一個排好序的 list。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -74,17 +74,20 @@
 
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-BENK03VM06', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
 
 
 
@@ -172,49 +175,14 @@ if (!doNotTrack) {
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/header.jpg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/kubernetes" title="kubernetes">
-                            kubernetes
-                        </a>
-                        
-                        <a class="tag" href="/tags/terraform" title="terraform">
-                            terraform
-                        </a>
-                        
-                        <a class="tag" href="/tags/tech" title="tech">
-                            tech
-                        </a>
-                        
-                    </div>
-                    <h1>透過 Terraform 建立私有 GKE Cluster</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                Alan Zhan
-                             
-                            on 
-                            Sunday, March 12, 2023
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
             </div>
         </div>
@@ -227,14 +195,14 @@ if (!doNotTrack) {
 <article>
     <div class="container">
         <div class="row">
-
             
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
                 <p>讓我們一起來花個十分鐘，我會手把手地教你使用 Terraform ，建立私有的 GKE Cluster ！</p>
 <h2 id="設定-gcp">設定 GCP</h2>
 <p>
@@ -250,51 +218,51 @@ if (!doNotTrack) {
 <h3 id="1-設定變數">1. 設定變數</h3>
 <p>我們開始撰寫 Terraform 啦！</p>
 <p>我們先來設定一些變數，提供等下讓你可以快速複製貼上將 GKE 建立起來。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#6272a4"># GCP 的 Project ID
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;gcp_project_id&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">default</span> = <span style="color:#f1fa8c">&#34;alan-zhan-proj&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#6272a4"># GCP 的 Project ID
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;gcp_project_id&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;alan-zhan-proj&#34;</span>
 </span></span><span style="display:flex;"><span>}<span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># GKE 的建立位置
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;gcp_region&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">default</span> = <span style="color:#f1fa8c">&#34;asia-east1&#34;</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;gcp_region&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;asia-east1&#34;</span>
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;subnet_cidr&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">default</span> = <span style="color:#f1fa8c">&#34;10.0.0.0/24&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;subnet_cidr&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.0.0/24&#34;</span>
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;pod_cidr&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">default</span> = <span style="color:#f1fa8c">&#34;10.0.8.0/21&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;pod_cidr&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.8.0/21&#34;</span>
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;service_cidr&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">default</span> = <span style="color:#f1fa8c">&#34;10.0.1.0/24&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;service_cidr&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.1.0/24&#34;</span>
 </span></span><span style="display:flex;"><span>}<span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># master 的 CIDR 必須是 /28
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;master_cidr&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">default</span> = <span style="color:#f1fa8c">&#34;10.0.2.0/28&#34;</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;master_cidr&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.2.0/28&#34;</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="2-設定-provider">2. 設定 Provider</h3>
 <p>再來建立一個 <code>provider.tf</code> 檔案，並且將下面內容填入。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span>terraform {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span>terraform {
 </span></span><span style="display:flex;"><span>  required_providers {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">google</span> = {
-</span></span><span style="display:flex;"><span>      <span style="color:#50fa7b">source</span> = <span style="color:#f1fa8c">&#34;hashicorp/google&#34;</span>
+</span></span><span style="display:flex;"><span>    google <span style="color:#ff79c6">=</span> {
+</span></span><span style="display:flex;"><span>      source <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hashicorp/google&#34;</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">provider</span> <span style="color:#f1fa8c">&#34;google&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">project</span> = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">region</span>  = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region<span style="color:#6272a4">
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">provider</span> <span style="color:#f1fa8c">&#34;google&#34;</span> {
+</span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
+</span></span><span style="display:flex;"><span>  region  <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region<span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  # 這邊填入你的剛剛下載下來的 key
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>  <span style="color:#50fa7b">credentials</span> = <span style="color:#f1fa8c">&#34;./xxx.json&#34;</span>
+</span></span></span><span style="display:flex;"><span>  credentials <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;./xxx.json&#34;</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="3-init-project">3. Init Project</h3>
 <p>第二步，透過 <code>terraform init</code> 將 Terraform 專案初始化。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>terraform init
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>terraform init
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>Initializing the backend...
 </span></span><span style="display:flex;"><span>
@@ -319,181 +287,181 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>commands will detect it and remind you to <span style="color:#ff79c6">do</span> so <span style="color:#ff79c6">if</span> necessary.
 </span></span></code></pre></div><h3 id="4-設定-service-api">4. 設定 Service API</h3>
 <p>Private GKE 在建立的時候，會需要 Compute 以及 Container 這兩個 Service ，所以我們建立一個 <code>service.tf</code> ，並且把下面內容填入。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_project_service&#34;</span> <span style="color:#f1fa8c">&#34;compute&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">project</span> = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">service</span> = <span style="color:#f1fa8c">&#34;compute.googleapis.com&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_project_service&#34;</span> <span style="color:#f1fa8c">&#34;compute&#34;</span> {
+</span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
+</span></span><span style="display:flex;"><span>  service <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;compute.googleapis.com&#34;</span>
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_project_service&#34;</span> <span style="color:#f1fa8c">&#34;container&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">project</span> = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">service</span> = <span style="color:#f1fa8c">&#34;container.googleapis.com&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_project_service&#34;</span> <span style="color:#f1fa8c">&#34;container&#34;</span> {
+</span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
+</span></span><span style="display:flex;"><span>  service <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;container.googleapis.com&#34;</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="5-設定-network">5. 設定 Network</h3>
 <p>建立一個 <code>network.tf</code> ，並且設定 Network 相關的設定。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_network&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">name</span> = <span style="color:#f1fa8c">&#34;gke&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">auto_create_subnetworks</span> = <span style="color:#ff79c6">false</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">delete_default_routes_on_create</span> = <span style="color:#ff79c6">false</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">mtu</span> = <span style="color:#bd93f9">1460</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">routing_mode</span> = <span style="color:#f1fa8c">&#34;REGIONAL&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_network&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;gke&#34;</span>
+</span></span><span style="display:flex;"><span>  auto_create_subnetworks <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>  delete_default_routes_on_create <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>  mtu <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1460</span>
+</span></span><span style="display:flex;"><span>  routing_mode <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;REGIONAL&#34;</span>
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_subnetwork&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">name</span>          = <span style="color:#f1fa8c">&#34;gke-subnet&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">ip_cidr_range</span> = <span style="color:#8be9fd;font-style:italic">var</span>.subnet_cidr
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">region</span>        = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">network</span>       = google_compute_network.gke.id
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">private_ip_google_access</span> = <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_subnetwork&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name          <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;gke-subnet&#34;</span>
+</span></span><span style="display:flex;"><span>  ip_cidr_range <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.subnet_cidr
+</span></span><span style="display:flex;"><span>  region        <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>  network       <span style="color:#ff79c6">=</span> google_compute_network.gke.id
+</span></span><span style="display:flex;"><span>  private_ip_google_access <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  secondary_ip_range {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">range_name</span>    = <span style="color:#f1fa8c">&#34;k8s-pod-range&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">ip_cidr_range</span> = <span style="color:#8be9fd;font-style:italic">var</span>.pod_cidr
+</span></span><span style="display:flex;"><span>    range_name    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;k8s-pod-range&#34;</span>
+</span></span><span style="display:flex;"><span>    ip_cidr_range <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.pod_cidr
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  secondary_ip_range {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">range_name</span>    = <span style="color:#f1fa8c">&#34;k8s-service-range&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">ip_cidr_range</span> = <span style="color:#8be9fd;font-style:italic">var</span>.service_cidr
+</span></span><span style="display:flex;"><span>    range_name    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;k8s-service-range&#34;</span>
+</span></span><span style="display:flex;"><span>    ip_cidr_range <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.service_cidr
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_router&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">name</span>    = <span style="color:#f1fa8c">&#34;gke&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">region</span>  = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">network</span> = google_compute_network.gke.id
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_router_nat&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">name</span>   = <span style="color:#f1fa8c">&#34;nat&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">router</span> = google_compute_router.gke.name
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">region</span> = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">source_subnetwork_ip_ranges_to_nat</span> = <span style="color:#f1fa8c">&#34;LIST_OF_SUBNETWORKS&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">nat_ip_allocate_option</span>             = <span style="color:#f1fa8c">&#34;MANUAL_ONLY&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_router&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;gke&#34;</span>
+</span></span><span style="display:flex;"><span>  region  <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>  network <span style="color:#ff79c6">=</span> google_compute_network.gke.id
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_router_nat&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name   <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;nat&#34;</span>
+</span></span><span style="display:flex;"><span>  router <span style="color:#ff79c6">=</span> google_compute_router.gke.name
+</span></span><span style="display:flex;"><span>  region <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  source_subnetwork_ip_ranges_to_nat <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;LIST_OF_SUBNETWORKS&#34;</span>
+</span></span><span style="display:flex;"><span>  nat_ip_allocate_option             <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;MANUAL_ONLY&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  subnetwork {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">name</span>                    = google_compute_subnetwork.gke.id
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">source_ip_ranges_to_nat</span> = [<span style="color:#f1fa8c">&#34;ALL_IP_RANGES&#34;</span>]
+</span></span><span style="display:flex;"><span>    name                    <span style="color:#ff79c6">=</span> google_compute_subnetwork.gke.id
+</span></span><span style="display:flex;"><span>    source_ip_ranges_to_nat <span style="color:#ff79c6">=</span> [<span style="color:#f1fa8c">&#34;ALL_IP_RANGES&#34;</span>]
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">nat_ips</span> = [google_compute_address.gke.self_link]
+</span></span><span style="display:flex;"><span>  nat_ips <span style="color:#ff79c6">=</span> [google_compute_address.gke.self_link]
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_address&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">name</span>         = <span style="color:#f1fa8c">&#34;nat&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">address_type</span> = <span style="color:#f1fa8c">&#34;EXTERNAL&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">network_tier</span> = <span style="color:#f1fa8c">&#34;PREMIUM&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">region</span> = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">depends_on</span> = [google_project_service.compute]
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_address&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name         <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;nat&#34;</span>
+</span></span><span style="display:flex;"><span>  address_type <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;EXTERNAL&#34;</span>
+</span></span><span style="display:flex;"><span>  network_tier <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;PREMIUM&#34;</span>
+</span></span><span style="display:flex;"><span>  region <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  depends_on <span style="color:#ff79c6">=</span> [google_project_service.compute]
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="6-service-account">6. Service Account</h3>
 <p>建立 <code>service-account.tf</code> ，建立一個給 GKE node 專用的 service account 。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_service_account&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">account_id</span> = <span style="color:#f1fa8c">&#34;kubernetes&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_service_account&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  account_id <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;kubernetes&#34;</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="7-gke">7. GKE</h3>
 <p>建立 <code>container.tf</code> ，最後我們來建立 GKE 吧！不過我會順便建立 spot 的 node 。</p>
 <p>在 Terraform 建立 GKE 的過程中，一定會建立預設的 Node ，不管你是不是有設定 <code>remove_default_node_pool = true</code>，在 GKE 建立成功後才會刪除預設的 Node。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_cluster&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">name</span>                     = <span style="color:#f1fa8c">&#34;primary&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">location</span>                 = <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">remove_default_node_pool</span> = <span style="color:#ff79c6">true</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">initial_node_count</span>       = <span style="color:#bd93f9">1</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">network</span>                  = google_compute_network.gke.self_link
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">subnetwork</span>               = google_compute_subnetwork.gke.self_link
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">logging_service</span>          = <span style="color:#f1fa8c">&#34;logging.googleapis.com/kubernetes&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">monitoring_service</span>       = <span style="color:#f1fa8c">&#34;monitoring.googleapis.com/kubernetes&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">networking_mode</span>          = <span style="color:#f1fa8c">&#34;VPC_NATIVE&#34;</span><span style="color:#6272a4">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_cluster&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name                     <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;primary&#34;</span>
+</span></span><span style="display:flex;"><span>  location                 <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>  remove_default_node_pool <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>  initial_node_count       <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>  network                  <span style="color:#ff79c6">=</span> google_compute_network.gke.self_link
+</span></span><span style="display:flex;"><span>  subnetwork               <span style="color:#ff79c6">=</span> google_compute_subnetwork.gke.self_link
+</span></span><span style="display:flex;"><span>  logging_service          <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;logging.googleapis.com/kubernetes&#34;</span>
+</span></span><span style="display:flex;"><span>  monitoring_service       <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;monitoring.googleapis.com/kubernetes&#34;</span>
+</span></span><span style="display:flex;"><span>  networking_mode          <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;VPC_NATIVE&#34;</span><span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  # 選填，可以客制 node 的位置
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  node_locations = [
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#    &#34;&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  ]
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  addons_config {
 </span></span><span style="display:flex;"><span>    http_load_balancing {
-</span></span><span style="display:flex;"><span>      <span style="color:#50fa7b">disabled</span> = <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>      disabled <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    horizontal_pod_autoscaling {
-</span></span><span style="display:flex;"><span>      <span style="color:#50fa7b">disabled</span> = <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>      disabled <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  release_channel {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">channel</span> = <span style="color:#f1fa8c">&#34;REGULAR&#34;</span>
+</span></span><span style="display:flex;"><span>    channel <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;REGULAR&#34;</span>
 </span></span><span style="display:flex;"><span>  }<span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  workload_identity_config {
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     # 這個是給 Pod 在做 
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#    workload_pool = &#34;xxx.svc.id.goog&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  }
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  ip_allocation_policy {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">cluster_secondary_range_name</span>  = <span style="color:#f1fa8c">&#34;k8s-pod-range&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">services_secondary_range_name</span> = <span style="color:#f1fa8c">&#34;k8s-service-range&#34;</span>
+</span></span><span style="display:flex;"><span>    cluster_secondary_range_name  <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;k8s-pod-range&#34;</span>
+</span></span><span style="display:flex;"><span>    services_secondary_range_name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;k8s-service-range&#34;</span>
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  private_cluster_config {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">enable_private_nodes</span>    = <span style="color:#ff79c6">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">enable_private_endpoint</span> = <span style="color:#ff79c6">false</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">master_ipv4_cidr_block</span>  = <span style="color:#8be9fd;font-style:italic">var</span>.master_cidr
+</span></span><span style="display:flex;"><span>    enable_private_nodes    <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    enable_private_endpoint <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>    master_ipv4_cidr_block  <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.master_cidr
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_node_pool&#34;</span> <span style="color:#f1fa8c">&#34;general&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">name</span>       = <span style="color:#f1fa8c">&#34;general&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">cluster</span>    = google_container_cluster.gke.id
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">node_count</span> = <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_node_pool&#34;</span> <span style="color:#f1fa8c">&#34;general&#34;</span> {
+</span></span><span style="display:flex;"><span>  name       <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;general&#34;</span>
+</span></span><span style="display:flex;"><span>  cluster    <span style="color:#ff79c6">=</span> google_container_cluster.gke.id
+</span></span><span style="display:flex;"><span>  node_count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  management {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">auto_repair</span>  = <span style="color:#ff79c6">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">auto_upgrade</span> = <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    auto_repair  <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    auto_upgrade <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  node_config {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">preemptible</span>  = <span style="color:#ff79c6">false</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">machine_type</span> = <span style="color:#f1fa8c">&#34;e2-small&#34;</span>
+</span></span><span style="display:flex;"><span>    preemptible  <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>    machine_type <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;e2-small&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">labels</span> = {
-</span></span><span style="display:flex;"><span>      <span style="color:#50fa7b">role</span> = <span style="color:#f1fa8c">&#34;general&#34;</span>
+</span></span><span style="display:flex;"><span>    labels <span style="color:#ff79c6">=</span> {
+</span></span><span style="display:flex;"><span>      role <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;general&#34;</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">service_account</span> = google_service_account.gke.email
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">oauth_scopes</span> = [
+</span></span><span style="display:flex;"><span>    service_account <span style="color:#ff79c6">=</span> google_service_account.gke.email
+</span></span><span style="display:flex;"><span>    oauth_scopes <span style="color:#ff79c6">=</span> [
 </span></span><span style="display:flex;"><span>      <span style="color:#f1fa8c">&#34;https://www.googleapis.com/auth/cloud-platform&#34;</span>
 </span></span><span style="display:flex;"><span>    ]
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">
-</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_node_pool&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">name</span>    = <span style="color:#f1fa8c">&#34;spot&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#50fa7b">cluster</span> = google_container_cluster.gke.id
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_node_pool&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;spot&#34;</span>
+</span></span><span style="display:flex;"><span>  cluster <span style="color:#ff79c6">=</span> google_container_cluster.gke.id
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  management {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">auto_repair</span>  = <span style="color:#ff79c6">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">auto_upgrade</span> = <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    auto_repair  <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    auto_upgrade <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  autoscaling {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">min_node_count</span> = <span style="color:#bd93f9">0</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">max_node_count</span> = <span style="color:#bd93f9">10</span>
+</span></span><span style="display:flex;"><span>    min_node_count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>    max_node_count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">10</span>
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  node_config {
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">preemptible</span>  = <span style="color:#ff79c6">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">machine_type</span> = <span style="color:#f1fa8c">&#34;e2-small&#34;</span>
+</span></span><span style="display:flex;"><span>    preemptible  <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    machine_type <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;e2-small&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">labels</span> = {
-</span></span><span style="display:flex;"><span>      <span style="color:#50fa7b">team</span> = <span style="color:#f1fa8c">&#34;spot&#34;</span>
+</span></span><span style="display:flex;"><span>    labels <span style="color:#ff79c6">=</span> {
+</span></span><span style="display:flex;"><span>      team <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;spot&#34;</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    taint {
-</span></span><span style="display:flex;"><span>      <span style="color:#50fa7b">key</span>    = <span style="color:#f1fa8c">&#34;instance_type&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#50fa7b">value</span>  = <span style="color:#f1fa8c">&#34;spot&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#50fa7b">effect</span> = <span style="color:#f1fa8c">&#34;NO_SCHEDULE&#34;</span>
+</span></span><span style="display:flex;"><span>      key    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;instance_type&#34;</span>
+</span></span><span style="display:flex;"><span>      value  <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;spot&#34;</span>
+</span></span><span style="display:flex;"><span>      effect <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;NO_SCHEDULE&#34;</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">service_account</span> = google_service_account.gke.email
-</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">oauth_scopes</span> = [
+</span></span><span style="display:flex;"><span>    service_account <span style="color:#ff79c6">=</span> google_service_account.gke.email
+</span></span><span style="display:flex;"><span>    oauth_scopes <span style="color:#ff79c6">=</span> [
 </span></span><span style="display:flex;"><span>      <span style="color:#f1fa8c">&#34;https://www.googleapis.com/auth/cloud-platform&#34;</span>
 </span></span><span style="display:flex;"><span>    ]
 </span></span><span style="display:flex;"><span>  }
@@ -509,168 +477,219 @@ if (!doNotTrack) {
 <p>最後有興趣的朋友可以到這邊複製貼上： <a href="https://github.com/alanzhan0513/alan-zhan-sample-code/tree/main/terraform/private-gke">Github Source Code</a></p>
 <p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
+            
+             
+            
 
-                
 
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/post/2022-10-02-lifelong-growth/" data-toggle="tooltip" data-placement="top" title="終身成長">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
                 </ul>
-                
-
-                
-
-
-
             </div>
-
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
             
             
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
+               
+                    <a href="/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
             
-
+               
+                    <a href="/tags/docker" title="docker">
+                        docker
+                    </a>
+               
             
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
+               
+                    <a href="/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
 
-                
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                        
-                        
-                        <a href="/tags/algorithm" title="algorithm">
-                            algorithm
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/docker" title="docker">
-                            docker
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/dockerfile" title="dockerfile">
-                            dockerfile
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/dynamic-programing" title="dynamic-programing">
-                            dynamic-programing
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/gc" title="gc">
-                            gc
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/golang" title="golang">
-                            golang
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/index" title="index">
-                            index
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/invest" title="invest">
-                            invest
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/kubernetes" title="kubernetes">
-                            kubernetes
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode" title="leetcode">
-                            leetcode
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-easy" title="leetcode-easy">
-                            leetcode-easy
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-hard" title="leetcode-hard">
-                            leetcode-hard
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-medium" title="leetcode-medium">
-                            leetcode-medium
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/mongodb" title="mongodb">
-                            mongodb
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/reading" title="reading">
-                            reading
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/tech" title="tech">
-                            tech
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/terraform" title="terraform">
-                            terraform
-                        </a>
-                        
-                        
-                    </div>
-                </section>
-                
+    
+    
+    
+</div>
 
-                
-                
-            </div>
         </div>
     </div>
 </article>
@@ -741,6 +760,7 @@ if (!doNotTrack) {
             
             
            
+           
                    <li>
                        <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
                            <span class="fa-stack fa-lg">
@@ -752,7 +772,7 @@ if (!doNotTrack) {
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2023
+                    Copyright &copy; Alan Zhan Blog 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

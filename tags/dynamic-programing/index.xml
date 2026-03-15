@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>dynamic-programing on Alan Zhan Blog</title>
+    <title>Dynamic-Programing on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/dynamic-programing/</link>
-    <description>Recent content in dynamic-programing on Alan Zhan Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Dynamic-Programing on Alan Zhan Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Jul 2022 22:22:58 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/dynamic-programing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Jul 2022 22:22:58 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/tags/dynamic-programing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>白話解 Leetcode - 70 Climbing Stairs</title>
       <link>https://alanzhan.dev/post/2022-07-13-leetcode-70/</link>
       <pubDate>Wed, 13 Jul 2022 22:22:58 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/post/2022-07-13-leetcode-70/</guid>
-      <description>70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/ 題意 你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？ 解題思路 我們使用動態處理，爬第一階的話，一定是 1 種方法，爬第二階的話，我</description>
+      <description>&lt;h1 id=&#34;70-climbing-stairs&#34;&gt;70. Climbing Stairs&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/climbing-stairs/&#34;&gt;https://leetcode.com/problems/climbing-stairs/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

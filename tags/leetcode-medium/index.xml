@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>leetcode-medium on Alan Zhan Blog</title>
+    <title>Leetcode-Medium on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/leetcode-medium/</link>
-    <description>Recent content in leetcode-medium on Alan Zhan Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Leetcode-Medium on Alan Zhan Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Jun 2022 23:55:43 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/leetcode-medium/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 28 Jun 2022 23:55:43 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/tags/leetcode-medium/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>白話解 Leetcode - 433 Minimum Genetic Mutation</title>
       <link>https://alanzhan.dev/post/2022-06-28-leetcode-433/</link>
       <pubDate>Tue, 28 Jun 2022 23:55:43 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/post/2022-06-28-leetcode-433/</guid>
-      <description>433. Minimum Genetic Mutation https://leetcode.com/problems/minimum-genetic-mutation/ 題意 每一段字串代表一個基因序列，基因在變化的時候，每次只會變化一個字，只要變化的過程以及變化結束的時候，都在 bank 庫中找得到就好，最後</description>
+      <description>&lt;h1 id=&#34;433-minimum-genetic-mutation&#34;&gt;433. Minimum Genetic Mutation&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/minimum-genetic-mutation/&#34;&gt;https://leetcode.com/problems/minimum-genetic-mutation/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;每一段字串代表一個基因序列，基因在變化的時候，每次只會變化一個字，只要變化的過程以及變化結束的時候，都在 bank 庫中找得到就好，最後要回傳基因變化了幾次，如果不在庫中的話，要回傳 -1 。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>白話解 Leetcode - 200 Number of Islands</title>
       <link>https://alanzhan.dev/post/2022-06-23-leetcode-200/</link>
       <pubDate>Thu, 23 Jun 2022 23:50:13 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/post/2022-06-23-leetcode-200/</guid>
-      <description>200. Number of Islands https://leetcode.com/problems/number-of-islands/ 題意 給你一個二維的陣列， 1 代表陸地， 0 代表是水，島嶼四面環水，島嶼是由上下左右連接組合而成的，請問這個二維陣列中有幾個島嶼？ 解題思</description>
+      <description>&lt;h1 id=&#34;200-number-of-islands&#34;&gt;200. Number of Islands&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/number-of-islands/&#34;&gt;https://leetcode.com/problems/number-of-islands/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;給你一個二維的陣列， 1 代表陸地， 0 代表是水，島嶼四面環水，島嶼是由上下左右連接組合而成的，請問這個二維陣列中有幾個島嶼？&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>白話解 Leetcode - 78 Subsets</title>
       <link>https://alanzhan.dev/post/2022-06-20-leetcode-78/</link>
       <pubDate>Mon, 20 Jun 2022 18:00:00 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/post/2022-06-20-leetcode-78/</guid>
-      <description>78. Subsets https://leetcode.com/problems/subsets/ 題意 傳入一個數值陣列，將元素與元素之間的所有有可能發生的組合回傳。 解題思路 可以把每個元素想像為取或者不取，如果取了就把元素塞入 stack 中，如</description>
+      <description>&lt;h1 id=&#34;78-subsets&#34;&gt;78. Subsets&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/subsets/&#34;&gt;https://leetcode.com/problems/subsets/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;傳入一個數值陣列，將元素與元素之間的所有有可能發生的組合回傳。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

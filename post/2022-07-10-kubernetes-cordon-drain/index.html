@@ -74,17 +74,20 @@
 
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-BENK03VM06', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
 
 
 
@@ -172,45 +175,14 @@ if (!doNotTrack) {
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/header.jpg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/kubernetes" title="kubernetes">
-                            kubernetes
-                        </a>
-                        
-                        <a class="tag" href="/tags/tech" title="tech">
-                            tech
-                        </a>
-                        
-                    </div>
-                    <h1>Kubernetes - Node 維護 Pod 遷移</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                Alan Zhan
-                             
-                            on 
-                            Sunday, July 10, 2022
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
             </div>
         </div>
@@ -223,14 +195,14 @@ if (!doNotTrack) {
 <article>
     <div class="container">
         <div class="row">
-
             
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
                 <p>敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使用 Cordon + Drain 或者手動刪除 Pod ，讓 Pod 重新長在新的 Node Pool 上，當然在 GKE 上直接刪除舊的 Node Pool 也可以達到一樣的效果，只是我們選用了更安全的做法。</p>
 <p>上述的做法，其實就是將 Node 標記為不可調度，然後再讓 Pod 生長在預期的主機上，今天就來説說當機器遇到故障或者需要升級的時候，我們該怎麼安全的處理。</p>
 <h1 id="情境">情境</h1>
@@ -238,18 +210,18 @@ if (!doNotTrack) {
 <h1 id="作法">作法</h1>
 <h2 id="1-讓該節點停止調度">1. 讓該節點停止調度</h2>
 <p>我們使用 <code>cordon</code> 先將目標節點打上不可調度，此時只會將 Node 狀態變成 SchedulingDisabled ，之後再創建的 Pod ，都不會再調度到該節點上，舊有的 Pod 不會受到影響，依然可以繼續提供服務。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl cordon &lt;node-name&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl cordon &lt;node-name&gt;
 </span></span></code></pre></div><h2 id="2-驅逐在這節點的-pod">2. 驅逐在這節點的 Pod</h2>
 <p>接下來我們要將 Pod 從 Node 上驅逐，這邊有兩個做法。</p>
 <p>第一種作法是直接將節點上的所有 Pod 驅逐，但是如果你的一個 Deployment 內的 Pod 都活在此節點上的話，你的服務是有機會中斷的。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl drain &lt;node-name&gt; --force --ignore-daemonsets
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl drain &lt;node-name&gt; --force --ignore-daemonsets
 </span></span></code></pre></div><p>第二種作法是手動的一個一個將 Pod 在節點上刪除，此做法較為安全。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl delete pod &lt;pod-name&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl delete pod &lt;pod-name&gt;
 </span></span></code></pre></div><h2 id="3-恢復該節點的調度或者刪除節點">3. 恢復該節點的調度或者刪除節點</h2>
 <p>當你升級完畢你的節點後，你就可以將節點標記為可調度狀態。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl uncordon &lt;node-name&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl uncordon &lt;node-name&gt;
 </span></span></code></pre></div><p>當你的節點確定硬體異常的話，就直接刪除節點吧。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl delete node &lt;node-name&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl delete node &lt;node-name&gt;
 </span></span></code></pre></div><h1 id="注意事項">注意事項</h1>
 <ul>
 <li>要驅逐的 Pod 的 replica 必須大於 1 ， 不然你的服務會有中斷發生。</li>
@@ -260,173 +232,219 @@ if (!doNotTrack) {
 <p>在 production 上，如果沒有十足的信心，建議在將 Pod 轉移到新的 Node 的處理過程中，一個一個手動刪除 Pod 吧。</p>
 <p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
+            
+             
+            
 
-                
 
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/post/2022-06-30-leetcode-69/" data-toggle="tooltip" data-placement="top" title="白話解 Leetcode - 69 Sqrt(x)">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/post/2022-07-13-leetcode-70/" data-toggle="tooltip" data-placement="top" title="白話解 Leetcode - 70 Climbing Stairs">Next
-                            Post &rarr;</a>
-                    </li>
-                    
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
                 </ul>
-                
-
-                
-
-
-
             </div>
-
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
             
             
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
+               
+                    <a href="/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
             
-
+               
+                    <a href="/tags/docker" title="docker">
+                        docker
+                    </a>
+               
             
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
+               
+                    <a href="/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
 
-                
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                        
-                        
-                        <a href="/tags/algorithm" title="algorithm">
-                            algorithm
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/docker" title="docker">
-                            docker
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/dockerfile" title="dockerfile">
-                            dockerfile
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/dynamic-programing" title="dynamic-programing">
-                            dynamic-programing
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/gc" title="gc">
-                            gc
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/golang" title="golang">
-                            golang
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/index" title="index">
-                            index
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/invest" title="invest">
-                            invest
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/kubernetes" title="kubernetes">
-                            kubernetes
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode" title="leetcode">
-                            leetcode
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-easy" title="leetcode-easy">
-                            leetcode-easy
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-hard" title="leetcode-hard">
-                            leetcode-hard
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/leetcode-medium" title="leetcode-medium">
-                            leetcode-medium
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/mongodb" title="mongodb">
-                            mongodb
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/reading" title="reading">
-                            reading
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/tech" title="tech">
-                            tech
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/terraform" title="terraform">
-                            terraform
-                        </a>
-                        
-                        
-                    </div>
-                </section>
-                
+    
+    
+    
+</div>
 
-                
-                
-            </div>
         </div>
     </div>
 </article>
@@ -497,6 +515,7 @@ if (!doNotTrack) {
             
             
            
+           
                    <li>
                        <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
                            <span class="fa-stack fa-lg">
@@ -508,7 +527,7 @@ if (!doNotTrack) {
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2023
+                    Copyright &copy; Alan Zhan Blog 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

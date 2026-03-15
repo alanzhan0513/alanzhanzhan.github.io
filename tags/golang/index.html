@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="golang" />
-    <meta property="og:title" content="golang" />
-    <meta property="twitter:title" content="golang" />
+    <meta name="title" content="" />
+    <meta property="og:title" content="" />
+    <meta property="twitter:title" content="" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>golang | Alan Zhan Blog</title>
+    <title>Golang | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/tags/golang/">
 
@@ -74,17 +74,20 @@
 
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-BENK03VM06', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
 
 
 
@@ -211,7 +214,8 @@ if (!doNotTrack) {
 	
         <div class="post-content-preview">
 	
-            新的一年又到來了，在這邊祝大家虎頭虎尾，所以這個年還沒過完，我得好好的繼續整理技術文章給大家了，這樣有好的開始！ 上次分析完 Golang Goroutine 與 GMP 原理全面分
+            <p>新的一年又到來了，在這邊祝大家虎頭虎尾，所以這個年還沒過完，我得好好的繼續整理技術文章給大家了，這樣有好的開始！</p>
+<p>上次分析完 <a href="/post/2022-01-24-golang-goroutine">Golang Goroutine 與 GMP 原理全面分析</a> 之後，對 golang 這個語言有了更全面的了解，但是這些有了 GMP 的相關知識之後，是不是還缺少了記憶體管理這個面向呀？那麼今天就來好好的了解 golang 是如何管理他的記憶體吧。</p>
        
         </div>
     </a>
@@ -234,7 +238,7 @@ if (!doNotTrack) {
 	
         <div class="post-content-preview">
 	
-            最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能
+            <p>最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能要先來認識一下歷史，這樣我們才能更全面的認識 goroutine 的原理與設計思想。</p>
        
         </div>
     </a>
@@ -330,6 +334,7 @@ if (!doNotTrack) {
                
             
             
+               
                
                
                
@@ -529,6 +534,7 @@ if (!doNotTrack) {
             
             
            
+           
                    <li>
                        <a href='/tags/golang/index.xml' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
                            <span class="fa-stack fa-lg">
@@ -540,7 +546,7 @@ if (!doNotTrack) {
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2023
+                    Copyright &copy; Alan Zhan Blog 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

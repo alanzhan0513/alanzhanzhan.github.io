@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>terraform on Alan Zhan Blog</title>
+    <title>Terraform on Alan Zhan Blog</title>
     <link>https://alanzhan.dev/tags/terraform/</link>
-    <description>Recent content in terraform on Alan Zhan Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Terraform on Alan Zhan Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate><atom:link href="https://alanzhan.dev/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>透過 Terraform 建立私有 GKE Cluster</title>
       <link>https://alanzhan.dev/post/2023-03-12-terraform-private-gke/</link>
       <pubDate>Sun, 12 Mar 2023 18:04:41 +0800</pubDate>
-      
       <guid>https://alanzhan.dev/post/2023-03-12-terraform-private-gke/</guid>
-      <description>讓我們一起來花個十分鐘，我會手把手地教你使用 Terraform ，建立私有的 GKE Cluster ！ 設定 GCP 建立 Service Account 首先我們會需要先到 Google Cloud 的頁面上，建立一個 Service Account 給 Terraform 使用，位置可以</description>
+      <description>&lt;p&gt;讓我們一起來花個十分鐘，我會手把手地教你使用 Terraform ，建立私有的 GKE Cluster ！&lt;/p&gt;&#xA;&lt;h2 id=&#34;設定-gcp&#34;&gt;設定 GCP&lt;/h2&gt;&#xA;&lt;p&gt;&#xA;  &lt;img src=&#34;https://alanzhan.dev/2023-03-12-terraform-private-gke/create-service-account.jpg&#34; alt=&#34;建立 Service Account 與 Key&#34;&gt;&#xA;&#xA;&lt;/p&gt;&#xA;&lt;h3 id=&#34;建立-service-account&#34;&gt;建立 Service Account&lt;/h3&gt;&#xA;&lt;p&gt;首先我們會需要先到 Google Cloud 的頁面上，建立一個 Service Account 給 Terraform 使用，位置可以參考上圖的第 1 2 3 步驟，如果你已經有 Service Account 的話，你可以跳過這個步驟。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

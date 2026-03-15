@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.111.3">
+	<meta name="generator" content="Hugo 0.157.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,17 +75,20 @@
 
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-BENK03VM06', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
 
 
 
@@ -205,20 +208,21 @@ if (!doNotTrack) {
 <div data-pagefind-ignore="all">
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-06-13-winners-take-all/">
+    <a href="https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/">
         <h2 class="post-title">
-            如何在贏者全拿的職場中生存
+            Binary Search Algorithm - 二元搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            贏者全拿，從字面上的大家應該就會懂了，在我們生活中也時常發生，舉一個最簡單的例子：在民主社會中，每幾年就會有一次總統大選，只有獲得最高票的那
+            <p>我們來玩猜數字遊戲，1 ~ 100 中的整數，你必須猜中我腦海中的數字，而且我們必須在最少的布數內猜到答案，那麼你會怎麼猜呢？</p>
+<p>答案很簡單，你一定會從 50 開始猜，如果沒猜中的話，太高你就會從 25 開始猜，太低你就會從 75 開始猜，以此類推，你每次操作的過程，你都會從中剖一半來猜測，其實你所使用的就是 Binary Search。</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Monday, June 13, 2022
+        Posted by Alan Zhan on Saturday, July 10, 2021
         
         
     
@@ -228,20 +232,22 @@ if (!doNotTrack) {
 <hr>
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-06-12-leetcode-226/">
+    <a href="https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/">
         <h2 class="post-title">
-            白話解 Leetcode - 226 Invert Binary Tree
+            Linear Search Algorithm - 線性搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/ 題意 將整棵樹的所有左右節點互相對調。 解題思路 我們可以把每個節點都視為是一個 root 節後，然後遍例所有的 root 節點，並且將每個 root 節點的左右節點
+            <p>在查找一個元素是否存在的時候，我們最常使用的方式是甚麼呢？答案是 for 或者是 while 迴圈，恭喜你！已經學習完 Linear Search 了！</p>
+<h1 id="概念">概念</h1>
+<p>線性搜尋 (Linear Search)：這個演算法會<code>訪問每個元素</code>，確認元素在陣列中的哪個位置，如果找不到元素則會回傳 -1。</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Sunday, June 12, 2022
+        Posted by Alan Zhan on Saturday, July 10, 2021
         
         
     
@@ -251,20 +257,34 @@ if (!doNotTrack) {
 <hr>
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/">
+    <a href="https://alanzhan.dev/post/2021-07-07-divide-and-conquer/">
         <h2 class="post-title">
-            Kubernetes 核心介紹 Scheduler
+            Divide and Conquer - 分而治之
         </h2>
 	
         <div class="post-content-preview">
 	
-            Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。 Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的
+            <h1 id="分而治之">分而治之</h1>
+<p>從字面上看起來，就是把一個複雜的問題分解成兩個或者很多個相同或者相似的問題，讓小問題可以被解決，再將最終結果合併求出問題的答案。</p>
+<h2 id="優點">優點</h2>
+<ol>
+<li>解決問題的難度降低。</li>
+<li>可以提升執行效率。</li>
+<li>有些時候能夠平行處理，增進性能。</li>
+</ol>
+<h2 id="使用步驟">使用步驟</h2>
+<ol>
+<li>分解：將一個問題分解成若干個較小的問題，相對獨立，與原先問題形式相同的子問題。</li>
+<li>解決：若子問題規模較小並且容易解決時，就直接解決。否則，就遞迴的方式解決子問題。</li>
+<li>合併：將個子問題的解合併成為原問題的解。</li>
+</ol>
+<p>Resources:</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Monday, May 16, 2022
+        Posted by Alan Zhan on Wednesday, July 7, 2021
         
         
     
@@ -274,20 +294,26 @@ if (!doNotTrack) {
 <hr>
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/">
+    <a href="https://alanzhan.dev/post/2021-07-06-big-o-notation/">
         <h2 class="post-title">
-            Kubernetes 核心介紹 Api Server
+            Big O Notation - Big O 符號
         </h2>
 	
         <div class="post-content-preview">
 	
-            API Server kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能： 提供集群管理的 REST API ，包括認證、授權、數據檢驗以及集群狀態變更等 認證 Authentication 授權 Authorization 准入 Admission (Mutating &amp; Valiating) 提供
+            <h1 id="如何選擇演算法來解決問題">如何選擇演算法來解決問題</h1>
+<p>同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞：</p>
+<ul>
+<li>時間複雜度 (花的時間)</li>
+<li>空間複雜度 (花的記憶體)</li>
+</ul>
+<p>所以花費的時間越少、花費的記憶體越少，通常就是越好的演算法，但是演算法的時間複雜度分析又可以細分為以下三種：</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Sunday, April 24, 2022
+        Posted by Alan Zhan on Tuesday, July 6, 2021
         
         
     
@@ -297,20 +323,55 @@ if (!doNotTrack) {
 <hr>
 
 <div class="post-preview">
-    <a href="https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/">
+    <a href="https://alanzhan.dev/post/2021-06-26-emotional-blackmail/">
         <h2 class="post-title">
-            Mongodb Index 最佳實踐
+            Emotional Blackmail - 情緒勒索
         </h2>
 	
         <div class="post-content-preview">
 	
-            自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重
+            <h1 id="什麼是情緒勒索">什麼是情緒勒索？</h1>
+<p>在探討情緒勒索之前，我們得先搞清楚什麼是情緒勒索？</p>
+<p>情緒勒索者可能在有意識或者無意識當中，使用要求、威脅、施壓、沉默等間接或直接的「<code>勒索</code>」手段，讓被勒索者產生各種負面情緒，譬如：挫折感、罪惡感、恐懼感等等，這些感受就會在被勒索者的心中發酵造成傷害。</p>
        
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Alan Zhan on Sunday, April 10, 2022
+        Posted by Alan Zhan on Saturday, June 26, 2021
+        
+        
+    
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://alanzhan.dev/post/2021-06-13-atomic-habits/">
+        <h2 class="post-title">
+            Atomic Habits - 原子習慣
+        </h2>
+	
+        <div class="post-content-preview">
+	
+            <p>
+  <img src="/2021-06-13-atomic-habits/2021-06-13-atomic-habits_01.png" alt="原子習慣">
+
+</p>
+<h1 id="複利">複利</h1>
+<p>「複利」這個詞貫穿了整部本書，我們可以說它是世界第八大奇蹟，一點也不為過。</p>
+<ul>
+<li>你每天只進步 1% ，持續了之後一年 (1.01 ^ 365 = 37.78)，你將進步 37 倍。</li>
+<li>你每天持續退步了 1% ，持續了一年 (0.99 ^ 365 = 0.03) ，你將退步到趨近 0 。</li>
+</ul>
+<p>所以習慣就是自我改善這一件事情的複利威力。</p>
+       
+        </div>
+    </a>
+    <p class="post-meta">
+    
+        Posted by Alan Zhan on Sunday, June 13, 2021
         
         
     
@@ -330,10 +391,6 @@ if (!doNotTrack) {
         <a href="/page/3/">&larr; Newer Posts</a>
     </li>
     
-    
-    <li class="next">
-        <a href="/page/5/">Older Posts &rarr;</a>
-    </li>
     
 </ul>
 
@@ -413,6 +470,7 @@ if (!doNotTrack) {
                
             
             
+               
                
                
                
@@ -612,6 +670,7 @@ if (!doNotTrack) {
             
             
            
+           
                    <li>
                        <a href='/index.xml' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
                            <span class="fa-stack fa-lg">
@@ -623,7 +682,7 @@ if (!doNotTrack) {
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2023
+                    Copyright &copy; Alan Zhan Blog 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe
