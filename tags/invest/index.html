@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/tags/invest/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -209,12 +209,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-08-14-forrest-gump-invest/">
         <h2 class="post-title">
-            阿甘投資法
+            The Forrest Gump Investment Method
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>還記得我大概在三年前，當時的我是一位股市小白，我剛才了解完畢台灣股市之後，就隨即投入股市交易，當時買的第一張股票是 中信金 2891 ，這個代碼還記得清清楚楚，但是每天上上下下波動，每天都心驚膽跳，最後按耐不住性子就出場了，幸好最後出場有賺到一點點便當錢，不是賠錢，真的是不幸中的大幸，最後在因緣際會下，接觸到阿甘投資法這本書，就此展開了我的指數投資人生，今天就來跟大家好好介紹這本書。</p>
+            I remember about three years ago, when I was a complete stock market beginner. Right after learning about the Taiwan stock market, I jumped straight into trading. My first stock was CTBC Financial …
        
         </div>
     </a>

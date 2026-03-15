@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Leetcode-Hard on Alan Zhan 部落格</title>
+    <link>https://alanzhan.dev/zh-tw/tags/leetcode-hard/</link>
+    <description>Recent content in Leetcode-Hard on Alan Zhan 部落格</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 28 Aug 2022 14:22:55 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/zh-tw/tags/leetcode-hard/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>白話解 Leetcode - 25 Reverse Nodes in k-Group</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-08-28-leetcode-25/</link>
+      <pubDate>Sun, 28 Aug 2022 14:22:55 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-08-28-leetcode-25/</guid>
+      <description>&lt;h1 id=&#34;25-reverse-nodes-in-k-group&#34;&gt;25. Reverse Nodes in k-Group&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/reverse-nodes-in-k-group/&#34;&gt;https://leetcode.com/problems/reverse-nodes-in-k-group/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Hard&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given the &lt;code&gt;head&lt;/code&gt; of a linked list, reverse the nodes of the list &lt;code&gt;k&lt;/code&gt; at a time, and return &lt;em&gt;the modified list&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;k&lt;/code&gt; is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of &lt;code&gt;k&lt;/code&gt; then left-out nodes, in the end, should remain as it is.&lt;/p&gt;&#xA;&lt;p&gt;You may not alter the values in the list&#39;s nodes, only nodes themselves may be changed.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 23  Merge k Sorted Lists</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-25-leetcode-23/</link>
+      <pubDate>Sat, 25 Jun 2022 23:29:46 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-25-leetcode-23/</guid>
+      <description>&lt;h1 id=&#34;23-merge-k-sorted-lists&#34;&gt;23. Merge k Sorted Lists&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/merge-k-sorted-lists/&#34;&gt;https://leetcode.com/problems/merge-k-sorted-lists/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Hard&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;You are given an array of &lt;code&gt;k&lt;/code&gt; linked-lists &lt;code&gt;lists&lt;/code&gt;, each linked-list is sorted in ascending order.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Merge all the linked-lists into one sorted linked-list and return it.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; lists = [[1,4,5],[1,3,4],[2,6]]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; [1,1,2,3,4,4,5,6]&#xA;&lt;strong&gt;Explanation:&lt;/strong&gt; The linked-lists are:&#xA;[&#xA;  1-&amp;gt;4-&amp;gt;5,&#xA;  1-&amp;gt;3-&amp;gt;4,&#xA;  2-&amp;gt;6&#xA;]&#xA;merging them into one sorted list:&#xA;1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;4-&amp;gt;5-&amp;gt;6&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; lists = []&#xA;&lt;strong&gt;Output:&lt;/strong&gt; []&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 3:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; lists = [[]]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; []&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

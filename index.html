@@ -109,7 +109,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -131,13 +130,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -146,9 +153,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -157,17 +161,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -210,19 +210,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2023-03-12-terraform-private-gke/">
         <h2 class="post-title">
-            透過 Terraform 建立私有 GKE Cluster
+            Building a Private GKE Cluster with Terraform
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>讓我們一起來花個十分鐘，我會手把手地教你使用 Terraform ，建立私有的 GKE Cluster ！</p>
-<h2 id="設定-gcp">設定 GCP</h2>
-<p>
-  <img src="/2023-03-12-terraform-private-gke/create-service-account.jpg" alt="建立 Service Account 與 Key">
-
-</p>
-<h3 id="建立-service-account">建立 Service Account</h3>
-<p>首先我們會需要先到 Google Cloud 的頁面上，建立一個 Service Account 給 Terraform 使用，位置可以參考上圖的第 1 2 3 步驟，如果你已經有 Service Account 的話，你可以跳過這個步驟。</p>
+            Let&rsquo;s spend about ten minutes together — I&rsquo;ll walk you through using Terraform to build a private GKE Cluster step by step!
+Setting Up GCP Create a Service Account First, go to the Google …
        
         </div>
     </a>
@@ -240,13 +234,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-10-02-lifelong-growth/">
         <h2 class="post-title">
-            終身成長
+            Mindset: The New Psychology of Success
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h2 id="思維模式">思維模式</h2>
-<p>你今天去上了一門對你來說是很重要的課程，而且你非常喜歡這門課。你的教授公佈了期中考的考試成績，然而你考試的成績只獲得了 60 分。你非常的失望，等到晚上準備要回家的時候，你發現你錯過了最後一班捷運，導致你必須走回家。當你感到非常生氣的時候，打電話給你最好的朋友想要傾訴，然而卻沒有打通。</p>
+            Mindset Types Imagine you took a course that was very important to you and that you really enjoyed. Your professor announces the midterm results, and you only scored 60. You&rsquo;re very …
        
         </div>
     </a>
@@ -264,25 +257,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/">
         <h2 class="post-title">
-            Kubernetes 核心介紹 Kubelet
+            Kubernetes Core Component: Kubelet
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="kubelet-架構">Kubelet 架構</h1>
-<p>如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成：</p>
-<ul>
-<li>Kubelet API，包括 10250  port 的認證 API、4194  port 的 cAdvisor API、10255  port 的只讀 API 以及 10248  port 的健康檢查 API 。</li>
-<li>syncLoop：從 API 或者 manifest 目錄接收 Pod 更新，發送到 podWorkers 處理，大量使用 channel 處理來處理異步請求 。</li>
-<li>輔助的 manager，如 cAdvisor、PLEG、Volume Manager 等，處理 syncLoop 以外的其他工作 。</li>
-<li>CRI：容器執行引擎接口，負責與 container runtime shim 通信 。</li>
-<li>容器執行引擎，如 dockershim、rkt 等 。</li>
-<li>網絡插件，目前支持 CNI 和 kubenet 。</li>
-</ul>
-<p>
-  <img src="/2022-08-30-kubernetes-kubelet/architecture.png" alt="kubelet 架構圖">
-
-</p>
+            Kubelet Architecture As shown in the kubelet internal component structure diagram below, Kubelet is composed of many internal components:
+Kubelet API: Including the authenticated API on port 10250, …
        
         </div>
     </a>
@@ -300,23 +281,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-08-28-leetcode-25/">
         <h2 class="post-title">
-            白話解 Leetcode - 25 Reverse Nodes in k-Group
+            Plain English Leetcode - 25 Reverse Nodes in k-Group
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="25-reverse-nodes-in-k-group">25. Reverse Nodes in k-Group</h1>
-<p><a href="https://leetcode.com/problems/reverse-nodes-in-k-group/">https://leetcode.com/problems/reverse-nodes-in-k-group/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>有一個 Linked List ，將 k 個節點為一組，並且將這一組內部的元素進行反轉，如果節點總數不足 k 個就不用反轉，最後回傳反轉後的結果。</p>
+            25. Reverse Nodes in k-Group https://leetcode.com/problems/reverse-nodes-in-k-group/
+HardGiven the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+k is …
        
         </div>
     </a>
@@ -334,12 +306,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-08-14-forrest-gump-invest/">
         <h2 class="post-title">
-            阿甘投資法
+            The Forrest Gump Investment Method
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>還記得我大概在三年前，當時的我是一位股市小白，我剛才了解完畢台灣股市之後，就隨即投入股市交易，當時買的第一張股票是 中信金 2891 ，這個代碼還記得清清楚楚，但是每天上上下下波動，每天都心驚膽跳，最後按耐不住性子就出場了，幸好最後出場有賺到一點點便當錢，不是賠錢，真的是不幸中的大幸，最後在因緣際會下，接觸到阿甘投資法這本書，就此展開了我的指數投資人生，今天就來跟大家好好介紹這本書。</p>
+            I remember about three years ago, when I was a complete stock market beginner. Right after learning about the Taiwan stock market, I jumped straight into trading. My first stock was CTBC Financial …
        
         </div>
     </a>
@@ -357,12 +329,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/">
         <h2 class="post-title">
-            Kubernetes 核心介紹 Controller Manager
+            Kubernetes Core Component: Controller Manager
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop ，負責通過 api-server 監聽其相對應的資源，根據對象狀態來決定接下來的動作，使其達到預期的狀態。</p>
+            Controller Manager is the automation control center of a Kubernetes cluster, containing over 30 controllers that manage Pod-related, network-related, storage-related operations, and more. Most …
        
         </div>
     </a>
@@ -380,25 +352,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-07-13-leetcode-70/">
         <h2 class="post-title">
-            白話解 Leetcode - 70 Climbing Stairs
+            Plain English Leetcode - 70 Climbing Stairs
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="70-climbing-stairs">70. Climbing Stairs</h1>
-<p><a href="https://leetcode.com/problems/climbing-stairs/">https://leetcode.com/problems/climbing-stairs/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？</p>
+            70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/
+EasyYou are climbing a staircase. It takes n steps to reach the top.
+Each time you can either climb 1 or 2 steps. In how many …
        
         </div>
     </a>
@@ -416,12 +377,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/">
         <h2 class="post-title">
-            Kubernetes - Node 維護 Pod 遷移
+            Kubernetes - Node Maintenance and Pod Migration
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使用 Cordon + Drain 或者手動刪除 Pod ，讓 Pod 重新長在新的 Node Pool 上，當然在 GKE 上直接刪除舊的 Node Pool 也可以達到一樣的效果，只是我們選用了更安全的做法。</p>
+            Our company recently discovered machines on GKE with particularly low resource utilization. Those unused resources are still costing money, so we created a new Node Pool with lower and cheaper …
        
         </div>
     </a>
@@ -439,26 +400,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-30-leetcode-69/">
         <h2 class="post-title">
-            白話解 Leetcode - 69 Sqrt(x)
+            Plain English Leetcode - 69 Sqrt(x)
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="69-sqrtx">69. Sqrt(x)</h1>
-<p><a href="https://leetcode.com/problems/sqrtx/">https://leetcode.com/problems/sqrtx/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>對 x 開根號後的整數為為多少？</p>
+            69. Sqrt(x) https://leetcode.com/problems/sqrtx/
+EasyGiven a non-negative integer x,&nbsp;compute and return the square root of x.
+Since the return type&nbsp;is an integer, the decimal digits are …
        
         </div>
     </a>
@@ -476,32 +425,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-28-leetcode-433/">
         <h2 class="post-title">
-            白話解 Leetcode - 433 Minimum Genetic Mutation
+            Plain English Leetcode - 433 Minimum Genetic Mutation
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="433-minimum-genetic-mutation">433. Minimum Genetic Mutation</h1>
-<p><a href="https://leetcode.com/problems/minimum-genetic-mutation/">https://leetcode.com/problems/minimum-genetic-mutation/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>每一段字串代表一個基因序列，基因在變化的時候，每次只會變化一個字，只要變化的過程以及變化結束的時候，都在 bank 庫中找得到就好，最後要回傳基因變化了幾次，如果不在庫中的話，要回傳 -1 。</p>
+            433. Minimum Genetic Mutation https://leetcode.com/problems/minimum-genetic-mutation/
+MediumA gene string can be represented by an 8-character long string, with choices from 'A', 'C', 'G', and 'T'. …
        
         </div>
     </a>

@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Divide and Conquer - 分而治之" />
-    <meta property="og:title" content="Divide and Conquer - 分而治之" />
-    <meta property="twitter:title" content="Divide and Conquer - 分而治之" />
+    <meta name="title" content="Divide and Conquer" />
+    <meta property="og:title" content="Divide and Conquer" />
+    <meta property="twitter:title" content="Divide and Conquer" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Divide and Conquer - 分而治之 | Alan Zhan Blog</title>
+    <title>Divide and Conquer | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2021-07-07-divide-and-conquer/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2021-07-07-divide-and-conquer/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -203,25 +203,25 @@
             col-xs-12
             post-container">
             
-                <h1 id="分而治之">分而治之</h1>
-<p>從字面上看起來，就是把一個複雜的問題分解成兩個或者很多個相同或者相似的問題，讓小問題可以被解決，再將最終結果合併求出問題的答案。</p>
-<h2 id="優點">優點</h2>
+                <h1 id="divide-and-conquer">Divide and Conquer</h1>
+<p>As the name suggests, this approach breaks a complex problem into two or more identical or similar subproblems, solves the smaller problems, and then combines the results to produce the final answer.</p>
+<h2 id="advantages">Advantages</h2>
 <ol>
-<li>解決問題的難度降低。</li>
-<li>可以提升執行效率。</li>
-<li>有些時候能夠平行處理，增進性能。</li>
+<li>Reduces the difficulty of solving the problem.</li>
+<li>Can improve execution efficiency.</li>
+<li>In some cases, enables parallel processing to boost performance.</li>
 </ol>
-<h2 id="使用步驟">使用步驟</h2>
+<h2 id="steps">Steps</h2>
 <ol>
-<li>分解：將一個問題分解成若干個較小的問題，相對獨立，與原先問題形式相同的子問題。</li>
-<li>解決：若子問題規模較小並且容易解決時，就直接解決。否則，就遞迴的方式解決子問題。</li>
-<li>合併：將個子問題的解合併成為原問題的解。</li>
+<li>Divide: Break the problem into several smaller subproblems that are relatively independent and share the same form as the original problem.</li>
+<li>Conquer: If the subproblem is small enough and easy to solve, solve it directly. Otherwise, solve the subproblems recursively.</li>
+<li>Combine: Merge the solutions of the subproblems into the solution for the original problem.</li>
 </ol>
 <p>Resources:</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm">https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm</a></li>
 </ul>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
 
             
              

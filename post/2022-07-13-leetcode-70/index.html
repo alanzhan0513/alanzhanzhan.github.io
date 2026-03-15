@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="白話解 Leetcode - 70 Climbing Stairs" />
-    <meta property="og:title" content="白話解 Leetcode - 70 Climbing Stairs" />
-    <meta property="twitter:title" content="白話解 Leetcode - 70 Climbing Stairs" />
+    <meta name="title" content="Plain English Leetcode - 70 Climbing Stairs" />
+    <meta property="og:title" content="Plain English Leetcode - 70 Climbing Stairs" />
+    <meta property="twitter:title" content="Plain English Leetcode - 70 Climbing Stairs" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>白話解 Leetcode - 70 Climbing Stairs | Alan Zhan Blog</title>
+    <title>Plain English Leetcode - 70 Climbing Stairs | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-07-13-leetcode-70/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-07-13-leetcode-70/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -205,21 +205,35 @@
             
                 <h1 id="70-climbing-stairs">70. Climbing Stairs</h1>
 <p><a href="https://leetcode.com/problems/climbing-stairs/">https://leetcode.com/problems/climbing-stairs/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？</p>
-<h2 id="解題思路">解題思路</h2>
-<p>我們使用動態處理，爬第一階的話，一定是 1 種方法，爬第二階的話，我們可以爬 1 + 1 或者 2 的方式，所以有兩種方法，爬三階的話其實就是第一階與第二階的方法加總，以此類推，就可以推出我們的答案了。</p>
-<h2 id="原始碼">原始碼</h2>
+<h3>Easy</h3><hr><div><p>You are climbing a staircase. It takes <code>n</code> steps to reach the top.</p>
+<p>Each time you can either climb <code>1</code> or <code>2</code> steps. In how many distinct ways can you climb to the top?</p>
+<p>&nbsp;</p>
+<p><strong>Example 1:</strong></p>
+<pre><strong>Input:</strong> n = 2
+<strong>Output:</strong> 2
+<strong>Explanation:</strong> There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+</pre>
+<p><strong>Example 2:</strong></p>
+<pre><strong>Input:</strong> n = 3
+<strong>Output:</strong> 3
+<strong>Explanation:</strong> There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+</pre>
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+<ul>
+	<li><code>1 &lt;= n &lt;= 45</code></li>
+</ul>
+</div>
+<h2 id="problem">Problem</h2>
+<p>You&rsquo;re climbing stairs. You can climb 1 or 2 steps at a time. How many distinct ways can you reach the top?</p>
+<h2 id="approach">Approach</h2>
+<p>We use dynamic programming. Step 1 has 1 way, step 2 has 2 ways (1+1 or 2). Step 3 is the sum of step 1 and step 2. And so on — giving us our answer.</p>
+<h2 id="source-code">Source Code</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">climbStairs</span>(n <span style="color:#8be9fd">int</span>) <span style="color:#8be9fd">int</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> (n <span style="color:#ff79c6">==</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> n <span style="color:#ff79c6">==</span> <span style="color:#bd93f9">1</span>) {
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> n
@@ -232,9 +246,9 @@
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> res[n]
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="結尾">結尾</h1>
-<p>你有更好或更簡單的解決方案嗎？</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+</span></span></code></pre></div><h1 id="closing">Closing</h1>
+<p>Do you have a better or simpler solution?</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
 
             
              

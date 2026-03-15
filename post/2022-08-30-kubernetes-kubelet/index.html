@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Kubernetes 核心介紹 Kubelet" />
-    <meta property="og:title" content="Kubernetes 核心介紹 Kubelet" />
-    <meta property="twitter:title" content="Kubernetes 核心介紹 Kubelet" />
+    <meta name="title" content="Kubernetes Core Component: Kubelet" />
+    <meta property="og:title" content="Kubernetes Core Component: Kubelet" />
+    <meta property="twitter:title" content="Kubernetes Core Component: Kubelet" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Kubernetes 核心介紹 Kubelet | Alan Zhan Blog</title>
+    <title>Kubernetes Core Component: Kubelet | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-08-30-kubernetes-kubelet/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-08-30-kubernetes-kubelet/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -203,90 +203,89 @@
             col-xs-12
             post-container">
             
-                <h1 id="kubelet-架構">Kubelet 架構</h1>
-<p>如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成：</p>
+                <h1 id="kubelet-architecture">Kubelet Architecture</h1>
+<p>As shown in the kubelet internal component structure diagram below, Kubelet is composed of many internal components:</p>
 <ul>
-<li>Kubelet API，包括 10250  port 的認證 API、4194  port 的 cAdvisor API、10255  port 的只讀 API 以及 10248  port 的健康檢查 API 。</li>
-<li>syncLoop：從 API 或者 manifest 目錄接收 Pod 更新，發送到 podWorkers 處理，大量使用 channel 處理來處理異步請求 。</li>
-<li>輔助的 manager，如 cAdvisor、PLEG、Volume Manager 等，處理 syncLoop 以外的其他工作 。</li>
-<li>CRI：容器執行引擎接口，負責與 container runtime shim 通信 。</li>
-<li>容器執行引擎，如 dockershim、rkt 等 。</li>
-<li>網絡插件，目前支持 CNI 和 kubenet 。</li>
+<li>Kubelet API: Including the authenticated API on port 10250, cAdvisor API on port 4194, read-only API on port 10255, and health check API on port 10248.</li>
+<li>syncLoop: Receives Pod updates from the API or manifest directories, sends them to podWorkers for processing, extensively using channels for async request handling.</li>
+<li>Auxiliary managers: Such as cAdvisor, PLEG, Volume Manager, etc., handling work outside of syncLoop.</li>
+<li>CRI: Container Runtime Interface, responsible for communicating with container runtime shims.</li>
+<li>Container runtimes: Such as dockershim, rkt, etc.</li>
+<li>Network plugins: Currently supports CNI and kubenet.</li>
 </ul>
 <p>
-  <img src="/2022-08-30-kubernetes-kubelet/architecture.png" alt="kubelet 架構圖">
+  <img src="/2022-08-30-kubernetes-kubelet/architecture.png" alt="kubelet architecture">
 
 </p>
-<h1 id="kubelet-管理-pod-核心流程">kubelet 管理 Pod 核心流程</h1>
+<h1 id="kubelet-core-pod-management-flow">Kubelet Core Pod Management Flow</h1>
 <p>
-  <img src="/2022-08-30-kubernetes-kubelet/manage-pod-flow.png" alt="kubelet 管理 Pod 核心流程">
+  <img src="/2022-08-30-kubernetes-kubelet/manage-pod-flow.png" alt="kubelet Pod management core flow">
 
 </p>
-<p>每個節點都運行一個 kubelete 服務進程，默認監聽 port  10250。</p>
+<p>Each node runs a kubelet service process, listening on port 10250 by default.</p>
 <ul>
-<li>接收並執行 master 發來的指令</li>
-<li>管理 Pod 及 Pod 中的容器</li>
-<li>每個 kubelet 進程會在 API Server 上註冊節點自身信息，定期向 master 節點會報節點資源使用情控，並通過 cAdvisor 監控節點和容器的資源。</li>
+<li>Receives and executes instructions from the master</li>
+<li>Manages Pods and containers within Pods</li>
+<li>Each kubelet process registers its node information on the API Server, periodically reports resource usage to the master, and monitors node and container resources through cAdvisor.</li>
 </ul>
-<h2 id="node-管理">Node 管理</h2>
-<p>節點管理主要是節點自註冊和節點狀態更新</p>
+<h2 id="node-management">Node Management</h2>
+<p>Node management primarily involves node self-registration and node status updates:</p>
 <ul>
-<li>kubelet 可以通過設置啟動參數 —register-node 來確定是否向 API Server 註冊自己。</li>
-<li>如果 kuberlet 沒有選擇自註冊模式，則用戶需要自己配置 Node 資源訊息，同時需要告知 kubelet 集群上的 API Server 的位置。</li>
-<li>kubelet 在啟動時，通過 API Server 註冊節點訊息，並定時向 API Server 發送節點新消息，API Server 在接收到新消息後，將訊息寫入 etcd。</li>
+<li>kubelet can determine whether to register itself with the API Server via the &ndash;register-node startup parameter.</li>
+<li>If kubelet doesn&rsquo;t use self-registration mode, users need to manually configure Node resource information and inform kubelet of the API Server&rsquo;s location.</li>
+<li>At startup, kubelet registers node information via the API Server and periodically sends node updates. The API Server writes this information to etcd.</li>
 </ul>
-<h2 id="pod-管理">Pod 管理</h2>
-<h3 id="獲取-pod-清單">獲取 Pod 清單</h3>
-<p>Kubelet 以 PodSpec 的方式工作。 PodSpec 是描述一個 Pod 的 YAML 或 JSON 對象。 kubelet 採用一組通過各種機制提供的 PodSpecs（主要通過 apiserver），並確保這些 PodSpecs 中描述的 Pod 正常健康運行。</p>
-<p>向 Kubelet 提供節點上需要運行的 Pod 清單的方法：</p>
+<h2 id="pod-management">Pod Management</h2>
+<h3 id="getting-the-pod-list">Getting the Pod List</h3>
+<p>Kubelet works with PodSpecs — YAML or JSON objects describing a Pod. Kubelet takes PodSpecs provided through various mechanisms (primarily through the apiserver) and ensures the Pods described in those PodSpecs are running and healthy.</p>
+<p>Methods for providing the Pod list to Kubelet:</p>
 <ul>
-<li>文件：啟動參數 &ndash;config 指定的配置目錄下的文件 (默認 / etc/kubernetes/manifests/)。該文件每 20 秒重新檢查一次（可配置）。</li>
-<li>HTTP endpoint (URL)：啟動參數 &ndash;manifest-url 設置。每 20 秒檢查一次這個端點（可配置）。</li>
-<li>API Server：通過 API Server 監聽 etcd 目錄，同步 Pod 清單。</li>
-<li>HTTP server：kubelet 偵聽 HTTP 請求，並響應簡單的 API 以提交新的 Pod 清單。</li>
+<li>File: Files in the config directory specified by &ndash;config (default /etc/kubernetes/manifests/). Rechecked every 20 seconds (configurable).</li>
+<li>HTTP endpoint (URL): Set via &ndash;manifest-url. Checked every 20 seconds (configurable).</li>
+<li>API Server: Watches the etcd directory via API Server, syncing the Pod list.</li>
+<li>HTTP server: Kubelet listens for HTTP requests and responds to simple APIs for submitting new Pod lists.</li>
 </ul>
-<h3 id="通過-api-server-獲取-pod-清單及創建-pod-的過程">通過 API Server 獲取 Pod 清單及創建 Pod 的過程</h3>
-<p>Kubelet 通過 API Server Client(Kubelet 啟動時創建)使用 Watch 加 List 的方式監聽 <code>/registry/nodes/$ 當前節點名</code> 和 <code>/registry/pods</code> 目錄，將獲取的信息同步到本地緩存中。</p>
-<p>Kubelet 監聽 etcd，所有針對 Pod 的操作都將會被 Kubelet 監聽到。如果發現有新的綁定到本節點的 Pod，則按照 Pod 清單的要求創建該 Pod。</p>
-<p>如果發現本地的 Pod 被修改，則 Kubelet 會做出相應的修改，比如刪除 Pod 中某個容器時，則通過 Docker Client 刪除該容器。如果發現刪除本節點的 Pod，則刪除相應的 Pod，並通過 Docker Client 刪除 Pod 中的容器。</p>
-<p>Kubelet 讀取監聽到的信息，如果是創建和修改 Pod 任務，則執行如下處理：</p>
+<h3 id="getting-pod-list-and-creating-pods-via-api-server">Getting Pod List and Creating Pods via API Server</h3>
+<p>Kubelet uses the API Server Client (created at kubelet startup) with Watch and List to monitor <code>/registry/nodes/$current-node-name</code> and <code>/registry/pods</code> directories, syncing information to the local cache.</p>
+<p>Kubelet watches etcd — all Pod operations are captured by Kubelet. If a new Pod is bound to this node, it creates the Pod per the Pod list requirements.</p>
+<p>If a local Pod is modified, Kubelet makes corresponding changes — for example, deleting a container within a Pod via Docker Client. If a Pod on this node is deleted, it deletes the corresponding Pod and its containers via Docker Client.</p>
+<p>When Kubelet reads creation or modification tasks, it processes them as follows:</p>
 <ul>
-<li>為該 Pod 創建一個數據目錄。</li>
-<li>從 API Server 讀取該 Pod 清單。</li>
-<li>為該 Pod 掛載外部 Volume 。</li>
-<li>下載 Pod 用到的 Secret 。</li>
-<li>檢查已經在節點上運行的 Pod，如果該 Pod 沒有容器或 Pause 容器沒有啟動，則先停止 Pod 裡所有容器的進程。如果在 Pod 中有需要刪除的容器，則刪除這些容器。</li>
-<li>用 <code>kubernetes/pause</code> 鏡像為每個 Pod 創建一個容器。 Pause 容器用於接管 Pod 中所有其他容器的網絡。每創建一個新的 Pod，Kubelet 都會先創建一個 Pause 容器，然後創建其他容器。</li>
-<li>為 Pod 中的每個容器做如下處理：
+<li>Creates a data directory for the Pod.</li>
+<li>Reads the Pod list from the API Server.</li>
+<li>Mounts external Volumes for the Pod.</li>
+<li>Downloads Secrets used by the Pod.</li>
+<li>Checks Pods already running on the node. If the Pod has no containers or the Pause container hasn&rsquo;t started, stops all container processes in the Pod. Deletes containers that need to be removed.</li>
+<li>Creates a container for each Pod using the <code>kubernetes/pause</code> image. The Pause container takes over networking for all other containers in the Pod. For each new Pod, Kubelet first creates a Pause container, then creates the other containers.</li>
+<li>For each container in the Pod:
 <ol>
-<li>為容器計算一個 hash 值，然後用容器的名字去 Docker 查詢對應容器的 hash 值。若查找到容器，且兩者 hash 值不同，則停止 Docker 中容器的進程，並停止與之關聯的 Pause 容器的進程。若兩者相同，則不做任何處理。</li>
-<li>如果容器被終止了，且容器沒有指定的 restartPolicy，則不做任何處理。</li>
-<li>調用 Docker Client 下載容器鏡像，調用 Docker Client 運行容器。</li>
+<li>Computes a hash value, then queries Docker for the container&rsquo;s hash by name. If found with a different hash, stops the Docker container and its associated Pause container. If identical, does nothing.</li>
+<li>If the container was terminated and has no specified restartPolicy, does nothing.</li>
+<li>Calls Docker Client to download the container image and run the container.</li>
 </ol>
 </li>
 </ul>
 <h3 id="static-pod">Static Pod</h3>
-<p>所有以非 API Server 方式創建的 Pod 都叫 Static Pod。 Kubelet 將 Static Pod 的狀態匯報給 API Server，API Server 為該 Static Pod 創建一個 Mirror Pod 和其相匹配。 Mirror Pod 的狀態將真實反映 Static Pod 的狀態。當 Static Pod 被刪除時，與之相對應的 Mirror Pod 也會被刪除。</p>
-<h2 id="容器健康檢查">容器健康檢查</h2>
-<p>Pod 通過兩類探針檢查容器的健康狀態:</p>
+<p>All Pods created through non-API-Server methods are called Static Pods. Kubelet reports Static Pod status to the API Server, which creates a matching Mirror Pod. The Mirror Pod&rsquo;s status reflects the Static Pod&rsquo;s actual status. When a Static Pod is deleted, its corresponding Mirror Pod is also deleted.</p>
+<h2 id="container-health-checks">Container Health Checks</h2>
+<p>Pods check container health through two types of probes:</p>
 <ul>
-<li>(1) LivenessProbe 探針：用於判斷容器是否健康，告訴 Kubelet 一個容器什麼時候處於不健康的狀態。如果 LivenessProbe 探針探測到容器不健康，則 Kubelet 將刪除該容器，並根據容器的重啟策略做相應的處理。如果一個容器不包含 LivenessProbe 探針，那麼 Kubelet 認為該容器的 LivenessProbe 探針返回的值永遠是 <code>Success</code>。</li>
-<li>(2)ReadinessProbe：用於判斷容器是否啟動完成且準備接收請求。如果 ReadinessProbe 探針探測到失敗，則 Pod 的狀態將被修改。 Endpoint Controller 將從 Service 的 Endpoint 中刪除包含該容器所在 Pod 的 IP 地址的 Endpoint 條目。</li>
+<li>(1) LivenessProbe: Determines if a container is healthy, telling Kubelet when a container is in an unhealthy state. If LivenessProbe detects an unhealthy container, Kubelet deletes it and handles it according to the container&rsquo;s restart policy. If a container doesn&rsquo;t include a LivenessProbe, Kubelet considers its LivenessProbe value to always be <code>Success</code>.</li>
+<li>(2) ReadinessProbe: Determines if a container has started and is ready to receive requests. If ReadinessProbe detects failure, the Pod&rsquo;s status is modified. The Endpoint Controller removes the Endpoint entry containing the Pod&rsquo;s IP from the Service&rsquo;s Endpoints.</li>
 </ul>
-<p>Kubelet 定期調用容器中的 LivenessProbe 探針來診斷容器的健康狀況。 LivenessProbe 包含如下三種實現方式：</p>
+<p>Kubelet periodically calls LivenessProbe to diagnose container health. LivenessProbe has three implementations:</p>
 <ul>
-<li>ExecAction：在容器內部執行一個命令，如果該命令的退出狀態碼為 0，則表明容器健康。</li>
-<li>TCPSocketAction：通過容器的 IP 地址和 port 號執行 TCP 檢查，如果 port 能被訪問，則表明容器健康。</li>
-<li>HTTPGetAction：通過容器的 IP 地址和 port 號及路徑調用 HTTP GET 方法，如果響應的狀態碼大於等於 200 且小於 400，則認為容器狀態健康。</li>
+<li>ExecAction: Executes a command inside the container. If the exit code is 0, the container is healthy.</li>
+<li>TCPSocketAction: Performs a TCP check via the container&rsquo;s IP and port. If the port is accessible, the container is healthy.</li>
+<li>HTTPGetAction: Calls HTTP GET via the container&rsquo;s IP, port, and path. If the response status code is &gt;= 200 and &lt; 400, the container is healthy.</li>
 </ul>
-<p>LivenessProbe 和 ReadinessProbe 探針包含在 Pod 定義的 spec.containers.{某個容器} 中。</p>
-<h2 id="cadvisor-資源監控">cAdvisor 資源監控</h2>
-<p>Kubernetes 集群中，應用程序的執行情況可以在不同的級別上監測到，這些級別包括：容器、Pod、Service 和整個集群。 Heapster 項目為 Kubernetes 提供了一個基本的監控平台，它是集群級別的監控和事件數據集成器 (Aggregator)。 Heapster 以 Pod 的方式運行在集群中，Heapster 通過 Kubelet 發現所有運行在集群中的節點，並查看來自這些節點的資源使用情況。 Kubelet 通過 cAdvisor 獲取其所在節點及容器的數據。 Heapster 通過帶著關聯標籤的 Pod 分組這些信息，這些數據將被推到一個可配置的後端，用於存儲和可視化展示。支持的後端包括 InfluxDB(使用 Grafana 實現可視化) 和 Google Cloud Monitoring。</p>
-<p>cAdvisor 是一個開源的分析容器資源使用率和性能特性的代理工具，集成到 Kubelet中，當Kubelet啟動時會同時啟動cAdvisor，且一個cAdvisor只監控一個Node節點的信息。 cAdvisor 自動查找所有在其所在節點上的容器，自動採集 CPU、內存、文件系統和網絡使用的統計信息。 cAdvisor 通過它所在節點機的 Root 容器，採集並分析該節點機的全面使用情況。</p>
-<p>cAdvisor 通過其所在節點機的 4194  port 暴露一個簡單的 UI。</p>
+<h2 id="cadvisor-resource-monitoring">cAdvisor Resource Monitoring</h2>
+<p>In Kubernetes clusters, application performance can be monitored at different levels: containers, Pods, Services, and the entire cluster. The Heapster project provides a basic monitoring platform — a cluster-level monitoring and event data Aggregator. Heapster runs as a Pod, discovers all running nodes through Kubelet, and checks resource usage. Kubelet obtains node and container data through cAdvisor. Heapster groups this information by Pod with associated labels, then pushes data to configurable backends for storage and visualization, including InfluxDB (with Grafana) and Google Cloud Monitoring.</p>
+<p>cAdvisor is an open-source agent for analyzing container resource usage and performance characteristics, integrated into Kubelet. It starts with Kubelet and monitors a single node. cAdvisor automatically discovers all containers on its node and collects CPU, memory, filesystem, and network usage statistics.</p>
+<p>cAdvisor exposes a simple UI on port 4194.</p>
 <h2 id="kubelet-eviction">Kubelet Eviction</h2>
-<p>Kubelet 會監控資源的使用情況，並使用驅逐機制防止計算和存儲資源耗盡。在驅逐時，Kubelet 將 Pod 的所有容器停止，並將 PodPhase 設置為 Failed。</p>
-<p>Kubelet 定期（<code>housekeeping-interval</code>）檢查系統的資源是否達到了預先配置的驅逐閾值，包括</p>
+<p>Kubelet monitors resource usage and uses eviction mechanisms to prevent compute and storage resource exhaustion. During eviction, Kubelet stops all containers in the Pod and sets PodPhase to Failed.</p>
+<p>Kubelet periodically (<code>housekeeping-interval</code>) checks whether system resources have reached pre-configured eviction thresholds:</p>
 <table>
   <thead>
       <tr>
@@ -298,83 +297,83 @@
   <tbody>
       <tr>
           <td>memory.available</td>
-          <td>MemoryPressue</td>
-          <td>memory.available := node.status.capacity[memory] - node.stats.memory.workingSet </td>
+          <td>MemoryPressure</td>
+          <td>memory.available := node.status.capacity[memory] - node.stats.memory.workingSet</td>
       </tr>
       <tr>
           <td>nodefs.available</td>
           <td>DiskPressure</td>
-          <td>nodefs.available := node.stats.fs.available</td>
+          <td>nodefs.available := node.stats.fs.available</td>
       </tr>
       <tr>
           <td>nodefs.inodesFree</td>
           <td>DiskPressure</td>
-          <td>nodefs.inodesFree := node.stats.fs.inodesFree</td>
+          <td>nodefs.inodesFree := node.stats.fs.inodesFree</td>
       </tr>
       <tr>
           <td>imagefs.available</td>
           <td>DiskPressure</td>
-          <td>imagefs.available := node.stats.runtime.imagefs.available</td>
+          <td>imagefs.available := node.stats.runtime.imagefs.available</td>
       </tr>
       <tr>
           <td>imagefs.inodesFree</td>
           <td>DiskPressure</td>
-          <td>imagefs.inodesFree := node.stats.runtime.imagefs.inodesFree</td>
+          <td>imagefs.inodesFree := node.stats.runtime.imagefs.inodesFree</td>
       </tr>
   </tbody>
 </table>
-<p>驅逐信號可以分為軟驅逐和硬驅逐</p>
+<p>Eviction signals can be divided into soft and hard eviction:</p>
 <ul>
-<li>軟驅逐（Soft Eviction）：配合驅逐寬限期（eviction-soft-grace-period和eviction-max-pod-grace-period）一起使用。系統資源達到軟驅逐閾值並在超過寬限期之後才會執行驅逐動作。</li>
-<li>硬驅逐（Hard Eviction ）：系統資源達到硬驅逐閾值時立即執行驅逐動作。</li>
+<li>Soft Eviction: Used with eviction grace periods (eviction-soft-grace-period and eviction-max-pod-grace-period). Eviction only occurs after the grace period expires when the soft threshold is reached.</li>
+<li>Hard Eviction: Eviction executes immediately when the hard threshold is reached.</li>
 </ul>
-<p>驅逐動作包括回收節點資源和驅逐用戶 Pod 兩種：</p>
+<p>Eviction actions include reclaiming node resources and evicting user Pods:</p>
 <ul>
-<li>回收節點資源
+<li>Reclaiming node resources
 <ul>
-<li>配置了 imagefs 閾值時
+<li>When imagefs threshold is configured:
 <ul>
-<li>達到 nodefs 閾值：刪除已停止的 Pod</li>
-<li>達到 imagefs 閾值：刪除未使用的鏡像</li>
-</ul>
-</li>
-<li>未配置 imagefs 閾值時
-<ul>
-<li>達到 nodefs閾值時，按照刪除已停止的 Pod 和刪除未使用鏡像的順序清理資源</li>
+<li>nodefs threshold reached: Delete stopped Pods</li>
+<li>imagefs threshold reached: Delete unused images</li>
 </ul>
 </li>
-</ul>
-</li>
-<li>驅逐用戶 Pod
+<li>When imagefs threshold is not configured:
 <ul>
-<li>驅逐順序為：BestEffort、Burstable、Guaranteed</li>
-<li>配置了 imagefs 閾值時
-<ul>
-<li>達到 nodefs 閾值，基於 nodefs 用量驅逐（local volume + logs）</li>
-<li>達到 imagefs 閾值，基於 imagefs 用量驅逐（容器可寫層）</li>
-</ul>
-</li>
-<li>未配置 imagefs 閾值時
-<ul>
-<li>達到 nodefs 閾值時，按照總磁盤使用驅逐（local volume + logs + 容器可寫層）</li>
+<li>nodefs threshold reached: Clean resources by deleting stopped Pods, then unused images</li>
 </ul>
 </li>
 </ul>
 </li>
+<li>Evicting user Pods
+<ul>
+<li>Eviction order: BestEffort, Burstable, Guaranteed</li>
+<li>When imagefs threshold is configured:
+<ul>
+<li>nodefs threshold reached: Evict based on nodefs usage (local volume + logs)</li>
+<li>imagefs threshold reached: Evict based on imagefs usage (container writable layer)</li>
 </ul>
-<h1 id="pod-啟動流程">Pod 啟動流程</h1>
+</li>
+<li>When imagefs threshold is not configured:
+<ul>
+<li>nodefs threshold reached: Evict based on total disk usage (local volume + logs + container writable layer)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="pod-startup-flow">Pod Startup Flow</h1>
 <p>
-  <img src="/2022-08-30-kubernetes-kubelet/create-pod-flow.png" alt="Pod 啟動流程">
+  <img src="/2022-08-30-kubernetes-kubelet/create-pod-flow.png" alt="Pod startup flow">
 
 </p>
-<h1 id="kubelet-啟動-pod-的流程">kubelet 啟動 Pod 的流程</h1>
+<h1 id="kubelet-pod-startup-flow">Kubelet Pod Startup Flow</h1>
 <p>
-  <img src="/2022-08-30-kubernetes-kubelet/create-pod-by-kubectl-flow.png" alt="kubelet 啟動 Pod 的流程">
+  <img src="/2022-08-30-kubernetes-kubelet/create-pod-by-kubectl-flow.png" alt="kubelet Pod startup flow">
 
 </p>
-<h1 id="總結">總結</h1>
-<p>Kubelet 看來就是 WorkNode 最重要的組件了，沒有想到一個 kubelet 懶了那麼多的事情呢，你也長知識了嗎？</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Kubelet appears to be the most important component on the Worker Node. I didn&rsquo;t expect a single kubelet to handle so much! Did you learn something new too?</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
 
             
              

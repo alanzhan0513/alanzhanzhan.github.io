@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Kubernetes 核心介紹 Controller Manager" />
-    <meta property="og:title" content="Kubernetes 核心介紹 Controller Manager" />
-    <meta property="twitter:title" content="Kubernetes 核心介紹 Controller Manager" />
+    <meta name="title" content="Kubernetes Core Component: Controller Manager" />
+    <meta property="og:title" content="Kubernetes Core Component: Controller Manager" />
+    <meta property="twitter:title" content="Kubernetes Core Component: Controller Manager" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Kubernetes 核心介紹 Controller Manager | Alan Zhan Blog</title>
+    <title>Kubernetes Core Component: Controller Manager | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-07-30-kubenetes-controller-manager/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-07-30-kubenetes-controller-manager/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -203,31 +203,31 @@
             col-xs-12
             post-container">
             
-                <p>Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop ，負責通過 api-server 監聽其相對應的資源，根據對象狀態來決定接下來的動作，使其達到預期的狀態。</p>
+                <p>Controller Manager is the automation control center of a Kubernetes cluster, containing over 30 controllers that manage Pod-related, network-related, storage-related operations, and more. Most controllers work similarly — each controller is a control loop responsible for watching its corresponding resources through the API server, deciding on the next action based on the object&rsquo;s state, and driving it toward the desired state.</p>
 <ul>
-<li>Controller Manager 是集群的大腦，是確保集群動起來的關鍵。</li>
-<li>作用是確保 Kubernetes 遵循聲明式系統規範，確保系統的真實狀態 (Actual State) 與用戶定義的期望狀態 (Desired State) 一致。</li>
-<li>Controller Manager 是多個 Controller 的組合，每個 Controller 事實上都是一個 control loop，負責監聽其管控對象，當對象發生變更時完成配置。</li>
-<li>Controller 配置失敗通常會觸發自動重試，整個集群會在 Controller 不斷重試的機制下，確保最終一致性 (Eventual Consistency)。</li>
+<li>Controller Manager is the brain of the cluster and the key to keeping it running.</li>
+<li>Its role is to ensure Kubernetes follows the declarative system specification, keeping the system&rsquo;s Actual State consistent with the user-defined Desired State.</li>
+<li>Controller Manager is a combination of multiple controllers. Each controller is a control loop responsible for watching its managed objects and completing configuration when objects change.</li>
+<li>Failed controller configurations typically trigger automatic retries. Through the controller&rsquo;s continuous retry mechanism, the entire cluster ensures Eventual Consistency.</li>
 </ul>
-<h1 id="controller-工作流程">Controller 工作流程</h1>
+<h1 id="controller-workflow">Controller Workflow</h1>
 <p>
   <img src="/2022-07-30-kubenetes-controller-manager/controller-flow.png" alt="">
 
 </p>
-<h1 id="informer-的內部機制">Informer 的內部機制</h1>
+<h1 id="informer-internal-mechanism">Informer Internal Mechanism</h1>
 <p>
   <img src="/2022-07-30-kubenetes-controller-manager/informer.png" alt="">
 
 </p>
-<h1 id="controller-的協同工作原理">Controller 的協同工作原理</h1>
+<h1 id="controller-collaborative-work-principle">Controller Collaborative Work Principle</h1>
 <p>
   <img src="/2022-07-30-kubenetes-controller-manager/controller-collaborative-work.png" alt="">
 
 </p>
-<h1 id="常見的-controller">常見的 Controller</h1>
+<h1 id="common-controllers">Common Controllers</h1>
 <ol>
-<li>必須啟動的 Controller
+<li>Required Controllers
 <ul>
 <li>EndpointController</li>
 <li>ReplicationController</li>
@@ -249,7 +249,7 @@
 <li>TTLController</li>
 </ul>
 </li>
-<li>默認啟動的可選 Controller ，可通過選項設置是否開啟
+<li>Default-enabled Optional Controllers (can be toggled via options)
 <ul>
 <li>TokenController</li>
 <li>NodeController</li>
@@ -259,7 +259,7 @@
 <li>AttachDetachController</li>
 </ul>
 </li>
-<li>默認禁止的可選 Controller ，可通過選項設置是否開啟
+<li>Default-disabled Optional Controllers (can be toggled via options)
 <ul>
 <li>BootstrapSignerController</li>
 <li>TokenCleanerController</li>
@@ -267,63 +267,63 @@
 </li>
 </ol>
 <h1 id="cloud-controller-manager">Cloud Controller Manager</h1>
-<p>甚麼時候需要 cloud controller manager?</p>
-<p>Cloud Controller Manager 自 Kubernetes 1.6 開始，從 kube-controller-manager 中分離出來，主要因為 Cloud Controller Manager 往往需要和企業的 Cloud 做深度結合，release cycle 跟 kubernetes 相對獨立。</p>
-<p>與 kubernetes 核心管理組件一起升級是一件費時費力的事情。</p>
-<p>通常 cloud controller manager 需要:</p>
+<p>When do you need Cloud Controller Manager?</p>
+<p>Cloud Controller Manager was separated from kube-controller-manager starting in Kubernetes 1.6, mainly because Cloud Controller Manager often needs deep integration with enterprise clouds, and its release cycle is relatively independent from Kubernetes.</p>
+<p>Upgrading it together with Kubernetes core management components is time-consuming and labor-intensive.</p>
+<p>Typically, Cloud Controller Manager needs:</p>
 <ul>
-<li>認證授權: 企業 cloud 往往需要認證訊息， kubernetes 要與 cloud API，需要獲取 cloud 系統裡的 Service Account。</li>
-<li>cloud controller manager 本身作為一個用戶泰的 component ，需要 kubernetes 中有正確的 RBAC 設置，獲取資源操作權限。</li>
-<li>高可用: 需要通過 leader election 來確保 cloud controller manager 高可用。</li>
+<li>Authentication/Authorization: Enterprise clouds often require authentication credentials. For Kubernetes to interact with cloud APIs, it needs to obtain Service Accounts from the cloud system.</li>
+<li>Cloud Controller Manager itself, as a user-space component, needs proper RBAC settings in Kubernetes to obtain resource operation permissions.</li>
+<li>High Availability: Leader election is needed to ensure Cloud Controller Manager&rsquo;s high availability.</li>
 </ul>
-<p>Cloud Controller Manager 是從老版本的 API Server 分離出來的。</p>
+<p>Cloud Controller Manager was separated from the old version of the API Server.</p>
 <ul>
-<li>kuber-apiserver 和 kube-controller-manager 中一定不能指定 cloud-provider，否則會加載內置的 cloud controller manager。</li>
-<li>kuberlet 要配置 &ndash;cloud-provider=external。</li>
+<li>kube-apiserver and kube-controller-manager must NOT specify cloud-provider, otherwise the built-in cloud controller manager will be loaded.</li>
+<li>kubelet needs to be configured with &ndash;cloud-provider=external.</li>
 </ul>
-<p>Cloud Controller Manager 主要支持：</p>
+<p>Cloud Controller Manager mainly supports:</p>
 <ul>
-<li>Node Controller: 訪問 cloud API ，來更新 node 狀態，在 cloud 刪除該節點以後，從 kubernetes 刪除 node。</li>
-<li>Route Controller: 在 cloud 環境配置路由。</li>
-<li>Service Controller: 負責配置為 loadbalancer 類型的服務配置 LB VIP。</li>
+<li>Node Controller: Accesses the cloud API to update node status and deletes nodes from Kubernetes after they&rsquo;re deleted in the cloud.</li>
+<li>Route Controller: Configures routes in the cloud environment.</li>
+<li>Service Controller: Configures LB VIPs for LoadBalancer-type services.</li>
 </ul>
-<h2 id="需要客製的-cloud-controller">需要客製的 Cloud Controller</h2>
+<h2 id="custom-cloud-controllers-needed">Custom Cloud Controllers Needed</h2>
 <ul>
-<li>Ingress controller</li>
-<li>Service controller</li>
-<li>自主研發的 controller
+<li>Ingress Controller</li>
+<li>Service Controller</li>
+<li>Self-developed Controllers
 <ul>
-<li>RBAC controller</li>
+<li>RBAC Controller</li>
 <li>Account Controller</li>
 </ul>
 </li>
 </ul>
-<h1 id="高可用">高可用</h1>
-<p>在啟動時設置 <code>--leader-elect=true</code> 後，controller manager 會使用多節點選主的方式選擇主節點。只有主節點才會調用 <code>StartControllers()</code> 啟動所有 Controller ，而其他從節點則僅執行選主算法。</p>
-<p>多節點選主的實現方法見 <a href="https://github.com/kubernetes/client-go/blob/master/tools/leaderelection/leaderelection.go">leaderelection.go</a>。它實現了兩種資源鎖（Endpoint 或 ConfigMap，kube-controller-manager 和 cloud-controller-manager 都使用 Endpoint 鎖），通過更新資源的 Annotation（<code>control-plane.alpha.kubernetes.io/leader</code>），來確定 master slave 關係。</p>
-<h1 id="高性能">高性能</h1>
-<p>從 Kubernetes 1.7 開始，所有需要監控資源變化情況的調用均推薦使用 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go">Informer</a>。 Informer 提供了基於事件通知的只讀緩存機制，可以註冊資源變化的回調函數，並可以極大減少 API 的調用。</p>
-<p>Informer 的使用方法可以參考 <a href="https://github.com/feiskyer/kubernetes-handbook/tree/master/examples/client/informer">這裡</a>。</p>
+<h1 id="high-availability">High Availability</h1>
+<p>When started with <code>--leader-elect=true</code>, the controller manager uses multi-node leader election to select a primary node. Only the primary node calls <code>StartControllers()</code> to start all controllers, while other secondary nodes only execute the election algorithm.</p>
+<p>The multi-node leader election implementation can be found in <a href="https://github.com/kubernetes/client-go/blob/master/tools/leaderelection/leaderelection.go">leaderelection.go</a>. It implements two resource locks (Endpoint or ConfigMap; both kube-controller-manager and cloud-controller-manager use Endpoint locks), determining master-slave relationships by updating the resource&rsquo;s Annotation (<code>control-plane.alpha.kubernetes.io/leader</code>).</p>
+<h1 id="high-performance">High Performance</h1>
+<p>Starting from Kubernetes 1.7, all calls that need to monitor resource changes are recommended to use <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go">Informer</a>. Informer provides an event-notification-based read-only caching mechanism that allows registering callback functions for resource changes and dramatically reduces API calls.</p>
+<p>For Informer usage examples, see <a href="https://github.com/feiskyer/kubernetes-handbook/tree/master/examples/client/informer">here</a>.</p>
 <h1 id="node-eviction">Node Eviction</h1>
-<p>Node Controller 在節點異常後，會按照默認的速率（<code>--node-eviction-rate=0.1</code>，即每10秒一個節點的速率）進行 Node 的驅逐。 Node Controller 按照 Zone 將節點劃分為不同的組，再跟進 Zone 的狀態進行速率調整：</p>
+<p>When a node becomes abnormal, Node Controller evicts nodes at the default rate (<code>--node-eviction-rate=0.1</code>, i.e., one node every 10 seconds). Node Controller divides nodes into different groups by Zone and adjusts the rate based on Zone status:</p>
 <ul>
-<li>Normal：所有節點都 Ready，默認速率驅逐。</li>
-<li>PartialDisruption：即超過33% 的節點 NotReady 的狀態。當異常節點比例大於 <code>-unhealthy-zone-threshold=0.55</code> 時開始減慢速率：
+<li>Normal: All nodes are Ready, evict at default rate.</li>
+<li>PartialDisruption: More than 33% of nodes are NotReady. When the abnormal node ratio exceeds <code>--unhealthy-zone-threshold=0.55</code>, the rate slows:
 <ul>
-<li>小集群（即節點數量小於 <code>-large-cluster-size-threshold=50</code>）：停止驅逐</li>
-<li>大集群，減慢速率為 <code>-secondary-node-eviction-rate=0.01</code></li>
+<li>Small clusters (node count &lt; <code>--large-cluster-size-threshold=50</code>): Stop eviction</li>
+<li>Large clusters: Slow rate to <code>--secondary-node-eviction-rate=0.01</code></li>
 </ul>
 </li>
-<li>FullDisruption：所有節點都 NotReady，返回使用默認速率驅逐。但當所有 Zone 都處在 FullDisruption 時，停止驅逐。</li>
+<li>FullDisruption: All nodes are NotReady, return to default eviction rate. But when all Zones are in FullDisruption, stop eviction.</li>
 </ul>
-<h2 id="leader-election-的工作機制">Leader Election 的工作機制</h2>
+<h2 id="leader-election-mechanism">Leader Election Mechanism</h2>
 <p>
   <img src="/2022-07-30-kubenetes-controller-manager/leader-eviction.png" alt="">
 
 </p>
-<h1 id="總結">總結</h1>
-<p>每個 controller 都扮演著自己該負責的事情，這樣的每個 controller 之間的職責都分離的很乾淨，讚讚！</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Each controller plays its designated role, with clean separation of responsibilities between them. Well done!</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
 
             
              

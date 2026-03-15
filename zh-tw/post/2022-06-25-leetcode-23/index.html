@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan 部落格">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
+    <meta property="og:title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
+    <meta property="twitter:title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>白話解 Leetcode - 23  Merge k Sorted Lists | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/zh-tw/post/2022-06-25-leetcode-23/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/zh-tw/">Alan Zhan 部落格</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/zh-tw/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/zh-tw/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/zh-tw/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-06-25-leetcode-23/">English</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan 部落格 </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <h1 id="23-merge-k-sorted-lists">23. Merge k Sorted Lists</h1>
+<p><a href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></p>
+<h3>Hard</h3><hr><div><p>You are given an array of <code>k</code> linked-lists <code>lists</code>, each linked-list is sorted in ascending order.</p>
+<p><em>Merge all the linked-lists into one sorted linked-list and return it.</em></p>
+<p>&nbsp;</p>
+<p><strong>Example 1:</strong></p>
+<pre><strong>Input:</strong> lists = [[1,4,5],[1,3,4],[2,6]]
+<strong>Output:</strong> [1,1,2,3,4,4,5,6]
+<strong>Explanation:</strong> The linked-lists are:
+[
+  1-&gt;4-&gt;5,
+  1-&gt;3-&gt;4,
+  2-&gt;6
+]
+merging them into one sorted list:
+1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6
+</pre>
+<p><strong>Example 2:</strong></p>
+<pre><strong>Input:</strong> lists = []
+<strong>Output:</strong> []
+</pre>
+<p><strong>Example 3:</strong></p>
+<pre><strong>Input:</strong> lists = [[]]
+<strong>Output:</strong> []
+</pre>
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+<ul>
+	<li><code>k == lists.length</code></li>
+	<li><code>0 &lt;= k &lt;= 10<sup>4</sup></code></li>
+	<li><code>0 &lt;= lists[i].length &lt;= 500</code></li>
+	<li><code>-10<sup>4</sup> &lt;= lists[i][j] &lt;= 10<sup>4</sup></code></li>
+	<li><code>lists[i]</code> is sorted in <strong>ascending order</strong>.</li>
+	<li>The sum of <code>lists[i].length</code> will not exceed <code>10<sup>4</sup></code>.</li>
+</ul>
+</div>
+<h2 id="題意">題意</h2>
+<p>將 k 個已經排好順序的 linked list 合併成為一個排好序的 list。</p>
+<h2 id="解題思路">解題思路</h2>
+<p>如果一個一個合併匯總成一個 list ，這樣暴力破解，相當的的沒效率，所以我們來換個思路來解這一題。</p>
+<p>如果我一次合併兩個 list ，然後再將每兩個 list 得出的 list 再次合併呢？速度是不是快多了！</p>
+<ol>
+<li>我們先將兩個 list 合併的方法撰寫出來。</li>
+<li>我們來撰寫一個方法，每次合併會將低位與中位的 list 合併，並且還會將 中位 + 1 與高位的 list 合併。</li>
+<li>然後在呼叫自己遞歸，重複上述得動作。</li>
+<li>然後再將第二步與第三部得到的 list 合併起來，結果就出來了啦。</li>
+</ol>
+<h2 id="原始碼">原始碼</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#6272a4">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * Definition for singly-linked list.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * type ListNode struct {
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> *     Val int
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> *     Next *ListNode
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * }
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">mergeKLists</span>(lists []<span style="color:#ff79c6">*</span>ListNode) <span style="color:#ff79c6">*</span>ListNode {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> <span style="color:#50fa7b">mergeLists</span>(lists, <span style="color:#bd93f9">0</span>, <span style="color:#8be9fd;font-style:italic">len</span>(lists) <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">mergeLists</span>(lists []<span style="color:#ff79c6">*</span>ListNode, low, high <span style="color:#8be9fd">int</span>) <span style="color:#ff79c6">*</span>ListNode {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> low <span style="color:#ff79c6">==</span> high {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> lists[low]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> low &gt; high {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">nil</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    mid <span style="color:#ff79c6">:=</span> (low <span style="color:#ff79c6">+</span> high) <span style="color:#ff79c6">/</span> <span style="color:#bd93f9">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> <span style="color:#50fa7b">merge</span>(<span style="color:#50fa7b">mergeLists</span>(lists, low, mid), <span style="color:#50fa7b">mergeLists</span>(lists, mid <span style="color:#ff79c6">+</span> <span style="color:#bd93f9">1</span>, high))
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">merge</span>(list1, list2 <span style="color:#ff79c6">*</span>ListNode) <span style="color:#ff79c6">*</span>ListNode {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> list1 <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> list2
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> list2 <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> list1
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    sentinel <span style="color:#ff79c6">:=</span> <span style="color:#ff79c6">&amp;</span>ListNode{}
+</span></span><span style="display:flex;"><span>    last <span style="color:#ff79c6">:=</span> sentinel
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span> list1 <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">nil</span> <span style="color:#ff79c6">&amp;&amp;</span> list2 <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> list1.Val &gt; list2.Val {
+</span></span><span style="display:flex;"><span>            last.Next = list2
+</span></span><span style="display:flex;"><span>            list2 = list2.Next
+</span></span><span style="display:flex;"><span>        } <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span>            last.Next = list1
+</span></span><span style="display:flex;"><span>            list1 = list1.Next
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        last = last.Next
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> list1 <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">nil</span> {
+</span></span><span style="display:flex;"><span>        last.Next = list1
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> list2 <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">nil</span> {
+</span></span><span style="display:flex;"><span>        last.Next = list2
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> sentinel.Next
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="結尾">結尾</h1>
+<p>你有更好或更簡單的解決方案嗎？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/zh-tw/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/zh-tw/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan 部落格 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

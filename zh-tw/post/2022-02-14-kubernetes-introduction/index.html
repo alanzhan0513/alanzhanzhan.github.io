@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan 部落格">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="Kubernetes 基礎介紹" />
+    <meta property="og:title" content="Kubernetes 基礎介紹" />
+    <meta property="twitter:title" content="Kubernetes 基礎介紹" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Kubernetes 基礎介紹 | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/zh-tw/post/2022-02-14-kubernetes-introduction/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/zh-tw/">Alan Zhan 部落格</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/zh-tw/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/zh-tw/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/zh-tw/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-02-14-kubernetes-introduction/">English</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan 部落格 </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <p>終於要來好好深入探討 Kubernetes ，因為 Kubernetes 是基於 golang 這門語言開發的，所以在稍早已經先針對 golang 深度研究了，不過對於 Docker 與 container 技術有經有深入研究過了，小弟就就不針對 Docker 技術展開了，如果也想看的話，歡迎敲碗，接下來就會好好的針對 Kubernetes 有一系列的文章介紹。</p>
+<h1 id="kubernetes">Kubernetes</h1>
+<p>甚麼是 Kubernetes (k8s)？ K8s 是 Kubernetes 的縮寫，因為 K 到 s 中間有八個字母，所以稱為 Kubernetes ，它是 Google 的開源容器集群管理系統，是 Google 多年大規模容器管理技術 Borg 的開源版本，主要功能包括：</p>
+<ul>
+<li>基於容器的應用佈署、維護和滾動升級。</li>
+<li>附載均衡和服務發現。</li>
+<li>跨機器與跨地區的集群調度。</li>
+<li>自動擴展。</li>
+<li>無狀態服務和有狀態服務。</li>
+<li>插件機制保證擴展性。</li>
+</ul>
+<h2 id="imperative-vs-declarative">Imperative VS Declarative</h2>
+<ul>
+<li>Imperative : 命令式系統，是寫出解決某個問題、完成某個任務或者達到某個目標的明確步驟。此方法明確寫出系統應該執行某個指令，並且期待系統返回期望結果。像是電視機遙控器對電視的命令。</li>
+<li>Declarative : 聲明式系統，關注的是做甚麼，而不是怎麼做。僅限於描述要達到甚麼目的，如何達到該目的就交給系統處理就好。像是冷氣遙控器對冷氣操作。</li>
+</ul>
+<p>聰明的你應該會覺得很奇怪，我不是要學習 Kubernetes 嗎？幹嘛跟我說這個？會在這邊說是因為 Kubernetes 是基於聲明式的方式而打造出來的系統，那命令式與聲明式的優缺點，這邊就不深入探討各自的優缺點了，有興趣的同學可以自己深入探討。</p>
+<h2 id="核心物件">核心物件</h2>
+<ul>
+<li><a href="/zh-tw/post/2022-02-14-kubernetes-introduction/#pod">Pod</a> : 用來描述應用的實例，包括鏡像地址、資源需求等。Kubernetes 中最核心的物件，也是打通應用和基礎架構的秘密武器。</li>
+<li><a href="/zh-tw/post/2022-02-14-kubernetes-introduction/#namespace">Namespace</a> : 資源隔離的基本單位，可以理解為文件系統中的目錄結構或者程式語言中的 namespace 。</li>
+<li><a href="/zh-tw/post/2022-02-14-kubernetes-introduction/#node">Node</a> : 計算節點的抽象，用來描述計算節點的資源抽象、健康狀態等。</li>
+<li><a href="/zh-tw/post/2022-02-14-kubernetes-introduction/#service">Service</a> : 服務如何將應用發布成為服務，實質上是附載均衡與域名服務的聲明。</li>
+</ul>
+<h3 id="pod">Pod</h3>
+<p>Pod 本身的意思是豆莢，為什麼會取名為這個呢？因為豆莢會把很多個豆子包覆在一起，使得這些豆子成為一體。</p>
+<ul>
+<li>Pod 是一組緊密關聯的容器集合，他們共享 PID 、 IPC 、 Network 和 UTS namespace ，是 Kubernetes 調度的基本單位。</li>
+<li>Pod 的設計裡面是支持多個容器在一個 Pod 中共享網路和文件系統，可以通過進程之間通信和文件共享，簡單又高效的方式組合完成服務。</li>
+<li>同一個 Pod 中不同容器可以共享資源
+<ul>
+<li>共享網路 namespace</li>
+<li>通過掛載 Volumn 共享儲存</li>
+<li>共享 Security Context</li>
+</ul>
+</li>
+</ul>
+<h3 id="namespace">Namespace</h3>
+<p>Namespace 是對一組資源和物件的抽象集合，可以用來將系統內部的物件劃分不同的群組或用戶組。</p>
+<p>常見的 pods 、 services 、 replication controllers 和 deployments 都是屬於某一個 namespace 的 (默認 default)，而 Node 、 persistentVolumes 等則不屬於任何 Namespace。</p>
+<h3 id="node">Node</h3>
+<p>在 Kubernetes 的世界中，Node 通常就代表著一台實體機或者虛擬機，用來運行 Pod，為了管理 Pod ，每個 Node 至少需要運行 container runtime 、 kubelet 和 kube-proxy。Node 可以分為 master node 跟 worker node。</p>
+<ul>
+<li>master node : Kubernetes 的指揮中心，負責管理所以的 node，這個主節點還有以下較為重要的組件。
+<ul>
+<li>kube-apiserver
+<ul>
+<li>管理整個 kubernetes 所需要的 API 。</li>
+<li>負責跟 node 之間的溝通橋樑。</li>
+<li>負責跟 kubernetes 中的請求身分認證和授權。</li>
+</ul>
+</li>
+<li>etcd
+<ul>
+<li>一個強大的、穩定的、高可用的 key/value 存儲庫，被 kubernetes 用於長久儲存所有的 API 物件。</li>
+</ul>
+</li>
+<li>kube-controller-manager
+<ul>
+<li>運行著著所以處理 cluster 日常任務的控制器，包括 Node Controller、Replication Controller 等等。</li>
+<li>controller manager 的監視與嘗試更新，都蓄要通過訪問 kube-apiserver。</li>
+</ul>
+</li>
+<li>kube-scheduler
+<ul>
+<li>scheduler 會監控新建的 pods，並且將其分配給 node。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>worker node :
+<ul>
+<li>kubelet
+<ul>
+<li>該 node 的管理員，負責管理該 node 上的所有 Pods 的狀態，並且與 master 溝通。</li>
+</ul>
+</li>
+<li>kube-proxy
+<ul>
+<li>該 Node 的傳訊員，負責更新該 Node 的 iptables ，讓 Kubernetes 中部在該 Node 上的其他物件，可以得知該 Node 上所以 Pods 的最新狀態。</li>
+</ul>
+</li>
+<li>Container Runtime
+<ul>
+<li>可以運行 container 的執行程式，例如 ： Docker 。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="service">Service</h3>
+<p>Service 是應用服務的抽象，通過 labels 為應用提供附載均衡和服務發現。match labels 的 Pods IP 和 port 列表組成 endpoints ，由 kube-proxy 負責將服務 IP 負載均衡到這些 endpoint 上。</p>
+<p>每一個 Service 都會自動分配一個 cluster IP (僅只能在 Cluster 內部訪問的虛擬地址) 和 DNS 名，其他容器可以通過該地址或者 DNS 來訪問服務，而不需要了解背後容器的運行。</p>
+<h1 id="總結">總結</h1>
+<p>今天先初步分享 kubernetes 的基礎組件與一些知識，如果有興趣的同學可以自己安裝 kubernetes ，之後會再展開一系列的文章，就讓我們繼續看下去。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="參考">參考</h2>
+<ul>
+<li><a href="https://kubernetes.io/zh/docs/concepts/overview/components/">Kubernetes 组件</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/">使用 Kubernetes 对象
+</a></li>
+<li><a href="https://cwhu.medium.com/kubernetes-basic-concept-tutorial-e033e3504ec0">Kubernetes 基礎教學（一）原理介紹
+</a></li>
+</ul>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/zh-tw/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/zh-tw/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan 部落格 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

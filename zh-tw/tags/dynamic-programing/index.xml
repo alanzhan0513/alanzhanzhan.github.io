@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dynamic-Programing on Alan Zhan 部落格</title>
+    <link>https://alanzhan.dev/zh-tw/tags/dynamic-programing/</link>
+    <description>Recent content in Dynamic-Programing on Alan Zhan 部落格</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Wed, 13 Jul 2022 22:22:58 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/zh-tw/tags/dynamic-programing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>白話解 Leetcode - 70 Climbing Stairs</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-07-13-leetcode-70/</link>
+      <pubDate>Wed, 13 Jul 2022 22:22:58 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-07-13-leetcode-70/</guid>
+      <description>&lt;h1 id=&#34;70-climbing-stairs&#34;&gt;70. Climbing Stairs&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/climbing-stairs/&#34;&gt;https://leetcode.com/problems/climbing-stairs/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Easy&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;You are climbing a staircase. It takes &lt;code&gt;n&lt;/code&gt; steps to reach the top.&lt;/p&gt;&#xA;&lt;p&gt;Each time you can either climb &lt;code&gt;1&lt;/code&gt; or &lt;code&gt;2&lt;/code&gt; steps. In how many distinct ways can you climb to the top?&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; n = 2&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 2&#xA;&lt;strong&gt;Explanation:&lt;/strong&gt; There are two ways to climb to the top.&#xA;1. 1 step + 1 step&#xA;2. 2 steps&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; n = 3&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 3&#xA;&lt;strong&gt;Explanation:&lt;/strong&gt; There are three ways to climb to the top.&#xA;1. 1 step + 1 step + 1 step&#xA;2. 1 step + 2 steps&#xA;3. 2 steps + 1 step&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

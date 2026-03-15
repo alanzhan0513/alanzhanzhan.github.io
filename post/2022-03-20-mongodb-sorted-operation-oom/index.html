@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-03-20-mongodb-sorted-operation-oom/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -203,63 +203,63 @@
             col-xs-12
             post-container">
             
-                <p>這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下：</p>
+                <p>This is a rare case where I learned by working backward from a problem — I&rsquo;d better document it well. Recently, our production environment hit a MongoDB sort operation limit with this specific error:</p>
 <p>MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by :: Executor error during find command :: caused by :: Sort operation used more than the maximum 33554432 bytes of RAM.</p>
-<p>好吧！問題都發生了，我們先來解決問題，所以我們就先加了 index 上去應急，至於甚麼是 mongoDB 的 index 呢？</p>
-<h1 id="什麼是-mongodb-index-呢">什麼是 MongoDB Index 呢？</h1>
-<p>如果你剛好是 DB 的設計者，你會怎麼找資料返回你的 Client 呢？</p>
-<p>這個問題不是很簡單嘛！我就一條一條一條資料過濾，然後再一口氣一起排序，再把你需要的資料返回給你。這個在資料量很小的狀態下，在使用的體驗上是不會有任何感覺的，會覺得資料很快速就拿到了，然而只要資料量一大起來，這樣的查找資料的方式，是不是很低效呢？</p>
-<p>在一般正常狀況下，如果你的資料量越大，那麼你的資料量與查詢效率是呈正比的，所以這時候我們就需要 index 來幫助我們解決資料查詢會造成的查詢效率低落的問題，那甚麼是 index 呢？</p>
-<p>Index 是用來解決查詢效率低落的問題，同時它也是把雙面刃，在添增 index 的同時，它會有額外的開銷，所以在使用上我們還是要理性的添加 index ：</p>
+<p>Well, the problem has occurred. Let&rsquo;s solve it first — so we added an index as an immediate fix. But what exactly is a MongoDB index?</p>
+<h1 id="what-is-a-mongodb-index">What is a MongoDB Index?</h1>
+<p>If you were a database designer, how would you find data and return it to your client?</p>
+<p>Isn&rsquo;t that simple? Just filter through data one record at a time, sort everything at once, and return what&rsquo;s needed. With small datasets, this feels perfectly fine — data comes back quickly. But once the data volume grows, isn&rsquo;t this approach incredibly inefficient?</p>
+<p>Under normal circumstances, the larger your dataset, the worse your query performance scales proportionally. This is where indexes come in to solve the query performance problem. So what is an index?</p>
+<p>An index solves the problem of poor query efficiency. At the same time, it&rsquo;s a double-edged sword — adding indexes introduces additional overhead, so we should add them judiciously:</p>
 <ul>
 <li>Pros
 <ol>
-<li>加速查詢效率。</li>
-<li>可利用 index 的唯一性來控制資料重複的問題。</li>
-<li>使用 index 可以在排序時，加速的排序時間與減少記憶體花費。</li>
+<li>Speeds up query efficiency.</li>
+<li>Can use index uniqueness to control data duplication.</li>
+<li>Indexes can speed up sorting time and reduce memory consumption during sort operations.</li>
 </ol>
 </li>
 <li>Cons
 <ol>
-<li>Index 會讓資料寫入時的速度降低。</li>
-<li>Index 會需要額外的空間儲存。</li>
+<li>Indexes slow down data write operations.</li>
+<li>Indexes require additional storage space.</li>
 </ol>
 </li>
 </ul>
-<p>了解完畢 index 後，我們來看看官方對於 index 怎麼說， <a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manaul Index</a> 。</p>
+<p>After understanding indexes, let&rsquo;s see what the official documentation says: <a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manual Index</a>.</p>
 <p>
   <img src="/2022-03-20-mongodb-index/mongodb-index-btree.jpg" alt="mongodb index btree">
 
 </p>
-<p>原來你是使用 Btree 來設計的啊，簡單來說 Btree 時間複雜度是不固定的，與 key 在樹中的哪個位置有關，但最好的情況是 O(1) 。那 MongoDB 有哪些 Index 種類呢？</p>
-<h1 id="mongodb-index-種類">MongoDB Index 種類</h1>
+<p>So it uses a B-tree design. Simply put, B-tree time complexity varies depending on where the key is in the tree, but the best case is O(1). What types of indexes does MongoDB offer?</p>
+<h1 id="mongodb-index-types">MongoDB Index Types</h1>
 <ul>
-<li>Unique Index : 唯一 index ，可以確保某個 field 的唯一性。在默認的情況下， MongoDB 在創建 collection 的時候，為 _id 欄位增加的唯一 index 。</li>
-<li>Single Field Index : 單一欄位的 index 。</li>
-<li>Compound Index : 多個欄位的 index 。在日常中，我們比較常會使用這個類型，來建立索引，因為你在查找資料的過程，不太可能只有下一個條件。</li>
-<li>Multikey Index : 有點類似於 single filed index ，不過差別是在 array 的 field 或者是在 array 內的 object 上的 field 建立 index。</li>
-<li>Text Index : 有點類似於 Elasticsearch 上的檢索功能，不過分詞功能沒有想是 Elasticsearch 那麼完善。</li>
-<li>etc</li>
+<li>Unique Index: Ensures uniqueness of a specific field. By default, MongoDB creates a unique index on the _id field when creating a collection.</li>
+<li>Single Field Index: An index on a single field.</li>
+<li>Compound Index: An index on multiple fields. In practice, this is the most commonly used type since queries rarely filter on just one condition.</li>
+<li>Multikey Index: Similar to a single field index, but the difference is it creates an index on array fields or fields within objects inside arrays.</li>
+<li>Text Index: Similar to Elasticsearch&rsquo;s search functionality, though the tokenization isn&rsquo;t as sophisticated as Elasticsearch&rsquo;s.</li>
+<li>etc.</li>
 </ul>
-<p>這邊就先總結比較常用的，當然 MongoDB 也是有推出像是 geo 等等方便的 index，細節可以上官方文件觀看， <a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manaul Index</a> 。</p>
+<p>These are the most commonly used ones. MongoDB also offers convenience indexes like geo indexes. For details, see the official documentation: <a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manual Index</a>.</p>
 <h1 id="oom-sort-operation">OOM Sort Operation</h1>
-<p>稍微了解一下 index 之後，那麼為什麼會發生 OOM Sort 呢？</p>
-<p>我們試著想一下，如果你把所有的資料從 disk 讀取到記憶體中做排序，那麼會發生甚麼是呢？所以 MongoDB 官方會做出這種決定是很正常的。</p>
-<p>那我們總得要解決問題吧？我們又該如何解決呢？</p>
-<h2 id="增加排序可用的記憶體空間">增加排序可用的記憶體空間</h2>
-<p>我們可以增加可用的記憶體空間，這邊的範例是改成 100 MB。</p>
+<p>Now that we have a basic understanding of indexes, why does the OOM Sort error occur?</p>
+<p>Think about it — if you read all the data from disk into memory for sorting, what would happen? So MongoDB&rsquo;s decision to impose this limit makes perfect sense.</p>
+<p>But we still need to solve the problem. How can we fix it?</p>
+<h2 id="increase-the-available-memory-for-sorting">Increase the Available Memory for Sorting</h2>
+<p>We can increase the available memory space. Here&rsquo;s an example setting it to 100 MB:</p>
 <pre tabindex="0"><code class="language-mongo" data-lang="mongo">db.adminCommand({ setParameter: 1, internalQueryExecMaxBlockingSortBytes: 104857600 })
-</code></pre><h2 id="使用-disk-當作記憶體">使用 Disk 當作記憶體</h2>
-<p>如果你使用 aggregation pipeline 的話，你可以使用 <code>allowDiskUse: true</code> 來突破記憶體限制，讓 disk 來幫助你！</p>
-<h2 id="新增-index">新增 index</h2>
-<p>上面兩個方法可以幫你快速解決問題，不過建議還是會使用 index 來解決，<code>記得把 background 設置為 true</code>，不然你在 production 建立 index 的時候，因為資料量過多造成寫入鎖死。</p>
+</code></pre><h2 id="use-disk-as-memory">Use Disk as Memory</h2>
+<p>If you&rsquo;re using the aggregation pipeline, you can use <code>allowDiskUse: true</code> to bypass the memory limit and let disk help you!</p>
+<h2 id="add-an-index">Add an Index</h2>
+<p>The two methods above can quickly solve the problem, but the recommended approach is to use an index. <code>Remember to set background to true</code> — otherwise, building an index in production with a large dataset could cause write lock contention.</p>
 <pre tabindex="0"><code class="language-mongo" data-lang="mongo">db.Foo.createIndex({ &#34;Bar&#34;: 1 }, { background: true })
-</code></pre><h1 id="總結">總結</h1>
-<p>至於 index 要怎麼設計規劃呢？讓我賣賣關子，下幾篇會再給大家好好的解釋清楚。</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
-<h2 id="參考">參考</h2>
+</code></pre><h1 id="conclusion">Conclusion</h1>
+<p>As for how to design and plan indexes — I&rsquo;ll keep you in suspense. I&rsquo;ll explain in detail in upcoming posts.</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<h2 id="references">References</h2>
 <ul>
-<li><a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manaul Index</a></li>
+<li><a href="https://docs.mongodb.com/manual/indexes/">MongoDB Manual Index</a></li>
 </ul>
 
             

@@ -9,11 +9,11 @@
     <lastBuildDate>Sun, 13 Feb 2022 14:42:09 +0800</lastBuildDate>
     <atom:link href="https://alanzhan.dev/tags/gc/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Golang 記憶體管理 GC 全面解析</title>
+      <title>Golang Memory Management and GC In-Depth Analysis</title>
       <link>https://alanzhan.dev/post/2022-02-13-golang-memory-management/</link>
       <pubDate>Sun, 13 Feb 2022 14:42:09 +0800</pubDate>
       <guid>https://alanzhan.dev/post/2022-02-13-golang-memory-management/</guid>
-      <description>&lt;p&gt;新的一年又到來了，在這邊祝大家虎頭虎尾，所以這個年還沒過完，我得好好的繼續整理技術文章給大家了，這樣有好的開始！&lt;/p&gt;&#xA;&lt;p&gt;上次分析完 &lt;a href=&#34;https://alanzhan.dev/post/2022-01-24-golang-goroutine&#34;&gt;Golang Goroutine 與 GMP 原理全面分析&lt;/a&gt; 之後，對 golang 這個語言有了更全面的了解，但是這些有了 GMP 的相關知識之後，是不是還缺少了記憶體管理這個面向呀？那麼今天就來好好的了解 golang 是如何管理他的記憶體吧。&lt;/p&gt;</description>
+      <description>&lt;p&gt;A new year has arrived! After completing the analysis of &lt;a href=&#34;https://alanzhan.dev/post/2022-01-24-golang-goroutine/&#34;&gt;Golang Goroutine and GMP Model In-Depth Analysis&lt;/a&gt;, I gained a much more comprehensive understanding of the Go language. But after learning about GMP, aren&amp;rsquo;t we still missing the memory management aspect? So today, let&amp;rsquo;s dive deep into how Go manages its memory.&lt;/p&gt;&#xA;&lt;h1 id=&#34;the-memory-management-debate&#34;&gt;The Memory Management Debate&lt;/h1&gt;&#xA;&lt;p&gt;When it comes to memory management, there&amp;rsquo;s been a long-standing debate: who should manage memory — the machine or the developer? Whether it&amp;rsquo;s machine-managed or human-managed, everyone agrees that memory management is critically important, but opinions diverge:&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

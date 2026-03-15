@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/tags/leetcode-hard/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -209,23 +209,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-08-28-leetcode-25/">
         <h2 class="post-title">
-            白話解 Leetcode - 25 Reverse Nodes in k-Group
+            Plain English Leetcode - 25 Reverse Nodes in k-Group
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="25-reverse-nodes-in-k-group">25. Reverse Nodes in k-Group</h1>
-<p><a href="https://leetcode.com/problems/reverse-nodes-in-k-group/">https://leetcode.com/problems/reverse-nodes-in-k-group/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>有一個 Linked List ，將 k 個節點為一組，並且將這一組內部的元素進行反轉，如果節點總數不足 k 個就不用反轉，最後回傳反轉後的結果。</p>
+            25. Reverse Nodes in k-Group https://leetcode.com/problems/reverse-nodes-in-k-group/
+HardGiven the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+k is …
        
         </div>
     </a>
@@ -243,28 +234,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-25-leetcode-23/">
         <h2 class="post-title">
-            白話解 Leetcode - 23  Merge k Sorted Lists
+            Plain English Leetcode - 23 Merge k Sorted Lists
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="23-merge-k-sorted-lists">23. Merge k Sorted Lists</h1>
-<p><a href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>將 k 個已經排好順序的 linked list 合併成為一個排好序的 list。</p>
+            23. Merge k Sorted Lists https://leetcode.com/problems/merge-k-sorted-lists/
+HardYou are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+Merge all the …
        
         </div>
     </a>

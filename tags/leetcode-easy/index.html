@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/tags/leetcode-easy/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -209,25 +209,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-07-13-leetcode-70/">
         <h2 class="post-title">
-            白話解 Leetcode - 70 Climbing Stairs
+            Plain English Leetcode - 70 Climbing Stairs
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="70-climbing-stairs">70. Climbing Stairs</h1>
-<p><a href="https://leetcode.com/problems/climbing-stairs/">https://leetcode.com/problems/climbing-stairs/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>你在爬樓梯，一次可以爬一階或兩階，請問你有種爬可以爬完？</p>
+            70. Climbing Stairs https://leetcode.com/problems/climbing-stairs/
+EasyYou are climbing a staircase. It takes n steps to reach the top.
+Each time you can either climb 1 or 2 steps. In how many …
        
         </div>
     </a>
@@ -245,26 +234,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-30-leetcode-69/">
         <h2 class="post-title">
-            白話解 Leetcode - 69 Sqrt(x)
+            Plain English Leetcode - 69 Sqrt(x)
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="69-sqrtx">69. Sqrt(x)</h1>
-<p><a href="https://leetcode.com/problems/sqrtx/">https://leetcode.com/problems/sqrtx/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>對 x 開根號後的整數為為多少？</p>
+            69. Sqrt(x) https://leetcode.com/problems/sqrtx/
+EasyGiven a non-negative integer x,&nbsp;compute and return the square root of x.
+Since the return type&nbsp;is an integer, the decimal digits are …
        
         </div>
     </a>
@@ -282,25 +259,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-16-leetcode-111/">
         <h2 class="post-title">
-            白話解 Leetcode - 111 Minimum Depth of Binary Tree
+            Plain English Leetcode - 111 Minimum Depth of Binary Tree
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="111-minimum-depth-of-binary-tree">111. Minimum Depth of Binary Tree</h1>
-<p><a href="https://leetcode.com/problems/minimum-depth-of-binary-tree/">https://leetcode.com/problems/minimum-depth-of-binary-tree/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<hr>
-<h2 id="題意">題意</h2>
-<p>尋找這棵樹最小的節點，他的深度為何？</p>
+            111. Minimum Depth of Binary Tree https://leetcode.com/problems/minimum-depth-of-binary-tree/
+EasyGiven a binary tree, find its minimum depth.
+The minimum depth is the number of nodes along the …
        
         </div>
     </a>
@@ -318,26 +284,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-14-leetcode-104/">
         <h2 class="post-title">
-            白話解 Leetcode - 104 Maximum Depth of Binary Tree
+            Plain English Leetcode - 104 Maximum Depth of Binary Tree
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="104-maximum-depth-of-binary-tree">104. Maximum Depth of Binary Tree</h1>
-<p><a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/">https://leetcode.com/problems/maximum-depth-of-binary-tree/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<hr>
-<h2 id="題意">題意</h2>
-<p>尋找這棵樹最深的節點，他的深度為何？</p>
-<h2 id="解題思路">解題思路</h2>
-<p>這次的題目與 <a href="/2022-06-12-leetcode-226">226 Invert Binary Tree</a> 相似，這次也採用遞歸的做法，不過思路換一套方法。</p>
+            104. Maximum Depth of Binary Tree https://leetcode.com/problems/maximum-depth-of-binary-tree/
+EasyGiven the root of a binary tree, return its maximum depth.
+A binary tree's maximum depth&nbsp;is the …
        
         </div>
     </a>
@@ -355,26 +309,16 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-12-leetcode-226/">
         <h2 class="post-title">
-            白話解 Leetcode - 226 Invert Binary Tree
+            Plain English Leetcode - 226 Invert Binary Tree
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="226-invert-binary-tree">226. Invert Binary Tree</h1>
-<p><a href="https://leetcode.com/problems/invert-binary-tree/">https://leetcode.com/problems/invert-binary-tree/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<hr>
-<h2 id="題意">題意</h2>
-<p>將整棵樹的所有左右節點互相對調。</p>
-<h2 id="解題思路">解題思路</h2>
-<p>我們可以把每個節點都視為是一個 root 節後，然後遍例所有的 root 節點，並且將每個 root 節點的左右節點互換即可。</p>
+            226. Invert Binary Tree https://leetcode.com/problems/invert-binary-tree/
+EasyGiven the root of a binary tree, invert the tree, and return its root.
+&nbsp;
+Example 1:
+Input: root = [4,2,7,1,3,6,9] …
        
         </div>
     </a>

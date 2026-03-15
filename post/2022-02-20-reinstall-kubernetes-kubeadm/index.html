@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="安裝兩次的 Kubernetes Kubeadm" />
-    <meta property="og:title" content="安裝兩次的 Kubernetes Kubeadm" />
-    <meta property="twitter:title" content="安裝兩次的 Kubernetes Kubeadm" />
+    <meta name="title" content="Installing Kubernetes with Kubeadm - Twice" />
+    <meta property="og:title" content="Installing Kubernetes with Kubeadm - Twice" />
+    <meta property="twitter:title" content="Installing Kubernetes with Kubeadm - Twice" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>安裝兩次的 Kubernetes Kubeadm | Alan Zhan Blog</title>
+    <title>Installing Kubernetes with Kubeadm - Twice | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-02-20-reinstall-kubernetes-kubeadm/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-02-20-reinstall-kubernetes-kubeadm/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -203,26 +203,26 @@
             col-xs-12
             post-container">
             
-                <p>想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但是安裝的過程不是那麼順遂，這篇就分享一下我遇到的問題跟如何解決。</p>
-<h1 id="第一次安裝-kubeadm">第一次安裝 Kubeadm</h1>
+                <p>To better understand K8s through hands-on practice, I wanted to set up a K8s cluster myself. There are increasingly many ways to self-host K8s nowadays — minikube, Kubeadm, and more. I decided to go with Kubeadm, but the installation wasn&rsquo;t exactly smooth. This post shares the problems I encountered and how I solved them.</p>
+<h1 id="first-installation-of-kubeadm">First Installation of Kubeadm</h1>
 <ol>
-<li>安裝 Ubuntu。</li>
-<li>安裝 Docker。
+<li>Install Ubuntu.</li>
+<li>Install Docker.
 <ol>
-<li>修改 Docker 的 cgroup 的設定，這個修改是為了讓 K8s 與 container runtime 的 cgroup driver 一致，可以避免系統會出現不穩定的狀況。
+<li>Modify Docker&rsquo;s cgroup settings to ensure the K8s and container runtime cgroup drivers match, preventing system instability.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vim /etc/docker/daemon.json
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;exec-opts&#34;</span>: [<span style="color:#f1fa8c">&#34;native.cgroupdriver=systemd&#34;</span>]
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div></li>
-<li>重啟 Docker
+<li>Restart Docker
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl restart docker
 </span></span></code></pre></div></li>
 </ol>
 </li>
-<li>安裝 Kubeadm 。
+<li>Install Kubeadm.
 <ol>
-<li>允許 iptables 檢查橋接流量 (bridged traffic) 。
+<li>Allow iptables to inspect bridged traffic.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">br_netfilter
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
@@ -233,28 +233,28 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
 </span></span><span style="display:flex;"><span>sudo sysctl --system
 </span></span></code></pre></div></li>
-<li>更新 apt 與 K8s 所需要的包。
+<li>Update apt and install packages required by K8s.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y apt-transport-https ca-certificates curl
 </span></span></code></pre></div></li>
-<li>下載 Google Cloud 公開簽名密鑰。
+<li>Download the Google Cloud public signing key.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 </span></span></code></pre></div></li>
-<li>添加 K8s 的 apt 倉庫。
+<li>Add the K8s apt repository.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> | sudo tee /etc/apt/sources.list.d/kubernetes.list
 </span></span></code></pre></div></li>
-<li>更新 apt 包的索引，便且安裝 kubelet 、 kubeadmi 和 kubectl ，並鎖定版本。
+<li>Update the apt package index, install kubelet, kubeadm, and kubectl, and pin their versions.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y kubelet kubeadm kubectl
 </span></span><span style="display:flex;"><span>sudo apt-mark hold kubelet kubeadm kubectl
 </span></span></code></pre></div></li>
-<li>啟動 k8s 。
+<li>Initialize K8s.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm init
 </span></span></code></pre></div></li>
-<li>加入 worker node
+<li>Join worker nodes
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
 </span></span></code></pre></div></li>
-<li>複製 kubeconfig
+<li>Copy kubeconfig
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube
 </span></span><span style="display:flex;"><span>sudo cp -i /etc/kubernetes/admin.conf <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube/config
 </span></span><span style="display:flex;"><span>sudo chown <span style="color:#ff79c6">$(</span>id -u<span style="color:#ff79c6">)</span>:<span style="color:#ff79c6">$(</span>id -g<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube/config
@@ -263,35 +263,35 @@
 </li>
 </ol>
 <h2 id="k8s-nodes-not-ready">K8s Nodes Not Ready</h2>
-<p>我終於安裝好了，那我把 Worker Node 加入到集群內吧，加入完畢之後，正當我準備開始使用 K8s 的時候，我卻看到 nodes 的狀態均為 NotReady，。</p>
+<p>I finally got it installed! So I added the worker nodes to the cluster. After joining, just as I was about to start using K8s, I noticed all nodes were in NotReady status.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alan@k8s-01:~$ kubectl get nodes
 </span></span><span style="display:flex;"><span>NAME     STATUS     ROLES                  AGE     VERSION
 </span></span><span style="display:flex;"><span>k8s-03   NotReady   &lt;none&gt;                 7m17s   v1.23.4
 </span></span><span style="display:flex;"><span>k8s-01   NotReady   control-plane,master   7m45s   v1.23.4
 </span></span><span style="display:flex;"><span>k8s-02   NotReady   &lt;none&gt;                 7m24s   v1.23.4
-</span></span></code></pre></div><p>原因是因為我沒有設定 CNI (container network interface) 插件，<a href="https://stackoverflow.com/questions/44086826/kubeadm-master-node-never-ready">kubeadm: master node never ready</a>，於是我就 apply flannel 上去。</p>
+</span></span></code></pre></div><p>The reason was that I hadn&rsquo;t configured a CNI (Container Network Interface) plugin. See <a href="https://stackoverflow.com/questions/44086826/kubeadm-master-node-never-ready">kubeadm: master node never ready</a>. So I applied Flannel.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 </span></span><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
-</span></span></code></pre></div><p>但是裝完之後我還是一樣節點處於不可用狀態啊，到底又是怎麼了，一查之後才發現 flannel 需要 pod netwokr CIDR (Classless Inter-Domain Routing) 設定，好吧，那我重作好了。</p>
-<h1 id="第二次安裝">第二次安裝</h1>
+</span></span></code></pre></div><p>But after installing it, the nodes were still in an unavailable state. What went wrong this time? After investigating, I discovered that Flannel requires a pod network CIDR (Classless Inter-Domain Routing) setting. Fine, time to start over.</p>
+<h1 id="second-installation">Second Installation</h1>
 <ol>
-<li>安裝 Ubuntu。</li>
-<li>安裝 Docker。
+<li>Install Ubuntu.</li>
+<li>Install Docker.
 <ol>
-<li>修改 Docker 的 cgroup 的設定，這個修改是為了讓 K8s 與 container runtime 的 cgroup driver 一致，可以避免系統會出現不穩定的狀況。
+<li>Modify Docker&rsquo;s cgroup settings to ensure K8s and the container runtime cgroup drivers match.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vim /etc/docker/daemon.json
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;exec-opts&#34;</span>: [<span style="color:#f1fa8c">&#34;native.cgroupdriver=systemd&#34;</span>]
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div></li>
-<li>重啟 Docker
+<li>Restart Docker
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl restart docker
 </span></span></code></pre></div></li>
 </ol>
 </li>
-<li>安裝 Kubeadm 。
+<li>Install Kubeadm.
 <ol>
-<li>允許 iptables 檢查橋接流量 (bridged traffic) 。
+<li>Allow iptables to inspect bridged traffic.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">br_netfilter
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
@@ -302,53 +302,53 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
 </span></span><span style="display:flex;"><span>sudo sysctl --system
 </span></span></code></pre></div></li>
-<li>更新 apt 與 K8s 所需要的包。
+<li>Update apt and install packages required by K8s.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y apt-transport-https ca-certificates curl
 </span></span></code></pre></div></li>
-<li>下載 Google Cloud 公開簽名密鑰。
+<li>Download the Google Cloud public signing key.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 </span></span></code></pre></div></li>
-<li>添加 K8s 的 apt 倉庫。
+<li>Add the K8s apt repository.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> | sudo tee /etc/apt/sources.list.d/kubernetes.list
 </span></span></code></pre></div></li>
-<li>更新 apt 包的索引，便且安裝 kubelet 、 kubeadmi 和 kubectl ，並鎖定版本。
+<li>Update the apt package index, install kubelet, kubeadm, and kubectl, and pin their versions.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y kubelet kubeadm kubectl
 </span></span><span style="display:flex;"><span>sudo apt-mark hold kubelet kubeadm kubectl
 </span></span></code></pre></div></li>
-<li>啟動 k8s 。
+<li>Initialize K8s.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm init --pod-network-cidr<span style="color:#ff79c6">=</span>10.244.0.0/16
 </span></span></code></pre></div></li>
-<li>複製 kubeconfig
+<li>Copy kubeconfig
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube
 </span></span><span style="display:flex;"><span>sudo cp -i /etc/kubernetes/admin.conf <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube/config
 </span></span><span style="display:flex;"><span>sudo chown <span style="color:#ff79c6">$(</span>id -u<span style="color:#ff79c6">)</span>:<span style="color:#ff79c6">$(</span>id -g<span style="color:#ff79c6">)</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/.kube/config
 </span></span></code></pre></div></li>
-<li>設定 CNI 。
+<li>Configure CNI.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 </span></span><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
 </span></span></code></pre></div></li>
-<li>加入 worker node
+<li>Join worker nodes
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo kubeadm join 192.168.83.130:6443 --token token....  --discovery-token-ca-cert-hash sha256:......................
 </span></span></code></pre></div></li>
 </ol>
 </li>
 </ol>
-<p>搞定！收工下課！</p>
+<p>Done and done!</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>zhan@k8s-01:~$ kubectl get nodes
 </span></span><span style="display:flex;"><span>NAME     STATUS   ROLES                  AGE   VERSION
 </span></span><span style="display:flex;"><span>k82-03   Ready    &lt;none&gt;                 25h   v1.23.4
 </span></span><span style="display:flex;"><span>k8s-01   Ready    control-plane,master   25h   v1.23.4
 </span></span><span style="display:flex;"><span>k8s-02   Ready    &lt;none&gt;                 25h   v1.23.4
-</span></span></code></pre></div><h1 id="總結">總結</h1>
-<p>終於 K8s 被我自架起來了，之後要來好好一定要來好好探究 K8s ，不然又會遇到奇怪的事情，然後查了半天才解決。</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
-<h2 id="參考">參考</h2>
+</span></span></code></pre></div><h1 id="conclusion">Conclusion</h1>
+<p>I finally got K8s up and running on my own! From here on, I really need to dig deeper into K8s — otherwise I&rsquo;ll keep running into weird issues and spending forever debugging them.</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<h2 id="references">References</h2>
 <ul>
-<li><a href="https://www.cnblogs.com/architectforest/p/12988488.html">为什么要修改docker的cgroup driver?</a></li>
+<li><a href="https://www.cnblogs.com/architectforest/p/12988488.html">Why modify Docker&rsquo;s cgroup driver?</a></li>
 <li><a href="https://stackoverflow.com/questions/44086826/kubeadm-master-node-never-ready">kubeadm: master node never ready</a></li>
-<li><a href="https://stackoverflow.com/questions/50833616/kube-flannel-cant-get-cidr-although-podcidr-available-on-node">Kube-Flannel cant get CIDR although PodCIDR available on node</a></li>
+<li><a href="https://stackoverflow.com/questions/50833616/kube-flannel-cant-get-cidr-although-podcidr-available-on-node">Kube-Flannel can&rsquo;t get CIDR although PodCIDR available on node</a></li>
 </ul>
 
             

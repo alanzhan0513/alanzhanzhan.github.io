@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="白話解 Leetcode - 433 Minimum Genetic Mutation" />
-    <meta property="og:title" content="白話解 Leetcode - 433 Minimum Genetic Mutation" />
-    <meta property="twitter:title" content="白話解 Leetcode - 433 Minimum Genetic Mutation" />
+    <meta name="title" content="Plain English Leetcode - 433 Minimum Genetic Mutation" />
+    <meta property="og:title" content="Plain English Leetcode - 433 Minimum Genetic Mutation" />
+    <meta property="twitter:title" content="Plain English Leetcode - 433 Minimum Genetic Mutation" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>白話解 Leetcode - 433 Minimum Genetic Mutation | Alan Zhan Blog</title>
+    <title>Plain English Leetcode - 433 Minimum Genetic Mutation | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-06-28-leetcode-433/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-06-28-leetcode-433/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -205,45 +205,57 @@
             
                 <h1 id="433-minimum-genetic-mutation">433. Minimum Genetic Mutation</h1>
 <p><a href="https://leetcode.com/problems/minimum-genetic-mutation/">https://leetcode.com/problems/minimum-genetic-mutation/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>每一段字串代表一個基因序列，基因在變化的時候，每次只會變化一個字，只要變化的過程以及變化結束的時候，都在 bank 庫中找得到就好，最後要回傳基因變化了幾次，如果不在庫中的話，要回傳 -1 。</p>
-<h2 id="解題思路">解題思路</h2>
-<p>我們從 start 開始走，每次在 bank 中找看看是否有變化一個字的基因，如果有再塞入 queue 中，然後再檢查 queue 中的值，是否等於 end ，當 queue 被消耗完畢還是沒有訪問到 end 的話，代表找不到回傳 -1 。</p>
+<h3>Medium</h3><hr><div><p>A gene string can be represented by an 8-character long string, with choices from <code>'A'</code>, <code>'C'</code>, <code>'G'</code>, and <code>'T'</code>.</p>
+<p>Suppose we need to investigate a mutation from a gene string <code>start</code> to a gene string <code>end</code> where one mutation is defined as one single character changed in the gene string.</p>
+<ul>
+	<li>For example, <code>"AACCGGTT" --&gt; "AACCGGTA"</code> is one mutation.</li>
+</ul>
+<p>There is also a gene bank <code>bank</code> that records all the valid gene mutations. A gene must be in <code>bank</code> to make it a valid gene string.</p>
+<p>Given the two gene strings <code>start</code> and <code>end</code> and the gene bank <code>bank</code>, return <em>the minimum number of mutations needed to mutate from </em><code>start</code><em> to </em><code>end</code>. If there is no such a mutation, return <code>-1</code>.</p>
+<p>Note that the starting point is assumed to be valid, so it might not be included in the bank.</p>
+<p>&nbsp;</p>
+<p><strong>Example 1:</strong></p>
+<pre><strong>Input:</strong> start = "AACCGGTT", end = "AACCGGTA", bank = ["AACCGGTA"]
+<strong>Output:</strong> 1
+</pre>
+<p><strong>Example 2:</strong></p>
+<pre><strong>Input:</strong> start = "AACCGGTT", end = "AAACGGTA", bank = ["AACCGGTA","AACCGCTA","AAACGGTA"]
+<strong>Output:</strong> 2
+</pre>
+<p><strong>Example 3:</strong></p>
+<pre><strong>Input:</strong> start = "AAAAACCC", end = "AACCCCCC", bank = ["AAAACCCC","AAACCCCC","AACCCCCC"]
+<strong>Output:</strong> 3
+</pre>
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+<ul>
+	<li><code>start.length == 8</code></li>
+	<li><code>end.length == 8</code></li>
+	<li><code>0 &lt;= bank.length &lt;= 10</code></li>
+	<li><code>bank[i].length == 8</code></li>
+	<li><code>start</code>, <code>end</code>, and <code>bank[i]</code> consist of only the characters <code>['A', 'C', 'G', 'T']</code>.</li>
+</ul>
+</div>
+<h2 id="problem">Problem</h2>
+<p>Each string represents a gene sequence. During mutation, only one character changes at a time. Both intermediate and final states must exist in the gene bank. Return the number of mutations needed, or -1 if impossible.</p>
+<h2 id="approach">Approach</h2>
+<p>Starting from <code>start</code>, use BFS to find genes in the bank that differ by exactly one character. Push valid mutations into a queue and check if we&rsquo;ve reached <code>end</code>.</p>
 <ol>
-<li>撰寫一個 contains 方法，用於確認基因序列是不是在 bank 中。</li>
-<li>撰寫一個 canMutate 方法，用於確認基因是不是只有變化一個字。</li>
-<li>宣告一個 queue。</li>
-<li>宣告一個訪問過的元素，用於確保 bank 中的基因，不會被重複訪問。</li>
-<li>宣告一個 ans ，記錄基因變化的次數。</li>
-<li>開始遍歷 queue 中的基因，每次取出一個，只要基因剛好等於 end 時，就回傳 ans 。</li>
-<li>如果基因不等於 end 的話，就把尚未訪問過的 bank 中的基因挑出來，判定一下是否基因的變化只發生一個字，如果是就塞入 queue 中，讓下個循環去判定結果。</li>
+<li>Write a <code>contains</code> method to check if a gene is in the bank.</li>
+<li>Write a <code>canMutate</code> method to verify exactly one character differs.</li>
+<li>Declare a queue and visited map.</li>
+<li>Traverse the queue level by level, counting mutations.</li>
+<li>If we reach <code>end</code>, return the count. If the queue is exhausted, return -1.</li>
 </ol>
-<h2 id="原始碼">原始碼</h2>
+<h2 id="source-code">Source Code</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">minMutation</span>(start <span style="color:#8be9fd">string</span>, end <span style="color:#8be9fd">string</span>, bank []<span style="color:#8be9fd">string</span>) <span style="color:#8be9fd">int</span> {
 </span></span><span style="display:flex;"><span>    queue <span style="color:#ff79c6">:=</span> []<span style="color:#8be9fd">string</span>{}
 </span></span><span style="display:flex;"><span>    visited <span style="color:#ff79c6">:=</span> <span style="color:#8be9fd;font-style:italic">make</span>(<span style="color:#8be9fd;font-style:italic">map</span>[<span style="color:#8be9fd">string</span>]<span style="color:#8be9fd">bool</span>, <span style="color:#bd93f9">0</span>)
-</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> <span style="color:#50fa7b">contains</span>(bank, end) <span style="color:#ff79c6">&amp;&amp;</span> start <span style="color:#ff79c6">==</span> end {
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span>
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    queue = <span style="color:#8be9fd;font-style:italic">append</span>(queue, start)
 </span></span><span style="display:flex;"><span>    visited[start] = <span style="color:#ff79c6">true</span>
 </span></span><span style="display:flex;"><span>    ans <span style="color:#ff79c6">:=</span> <span style="color:#bd93f9">0</span>
@@ -252,11 +264,11 @@
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span> i <span style="color:#ff79c6">:=</span> <span style="color:#bd93f9">0</span>; i &lt; length; i<span style="color:#ff79c6">++</span> {
 </span></span><span style="display:flex;"><span>            current <span style="color:#ff79c6">:=</span> queue[<span style="color:#bd93f9">0</span>]
 </span></span><span style="display:flex;"><span>            queue = queue[<span style="color:#bd93f9">1</span>:]
-</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> current <span style="color:#ff79c6">==</span> end {
 </span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">return</span> ans
 </span></span><span style="display:flex;"><span>            }
-</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">for</span> _, b <span style="color:#ff79c6">:=</span> <span style="color:#ff79c6">range</span> bank {
 </span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">if</span> <span style="color:#50fa7b">canMutate</span>(b, current) <span style="color:#ff79c6">&amp;&amp;</span> !visited[b] {
 </span></span><span style="display:flex;"><span>                    queue = <span style="color:#8be9fd;font-style:italic">append</span>(queue, b)
@@ -287,9 +299,9 @@
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="結尾">結尾</h1>
-<p>你有更好或更簡單的解決方案嗎？</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+</span></span></code></pre></div><h1 id="closing">Closing</h1>
+<p>Do you have a better or simpler solution?</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
 
             
              

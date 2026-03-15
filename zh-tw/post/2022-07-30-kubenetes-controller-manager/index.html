@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan 部落格">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="Kubernetes 核心介紹 Controller Manager" />
+    <meta property="og:title" content="Kubernetes 核心介紹 Controller Manager" />
+    <meta property="twitter:title" content="Kubernetes 核心介紹 Controller Manager" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Kubernetes 核心介紹 Controller Manager | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/zh-tw/post/2022-07-30-kubenetes-controller-manager/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/zh-tw/">Alan Zhan 部落格</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/zh-tw/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/zh-tw/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/zh-tw/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/">English</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan 部落格 </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <p>Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop ，負責通過 api-server 監聽其相對應的資源，根據對象狀態來決定接下來的動作，使其達到預期的狀態。</p>
+<ul>
+<li>Controller Manager 是集群的大腦，是確保集群動起來的關鍵。</li>
+<li>作用是確保 Kubernetes 遵循聲明式系統規範，確保系統的真實狀態 (Actual State) 與用戶定義的期望狀態 (Desired State) 一致。</li>
+<li>Controller Manager 是多個 Controller 的組合，每個 Controller 事實上都是一個 control loop，負責監聽其管控對象，當對象發生變更時完成配置。</li>
+<li>Controller 配置失敗通常會觸發自動重試，整個集群會在 Controller 不斷重試的機制下，確保最終一致性 (Eventual Consistency)。</li>
+</ul>
+<h1 id="controller-工作流程">Controller 工作流程</h1>
+<p>
+  <img src="/2022-07-30-kubenetes-controller-manager/controller-flow.png" alt="">
+
+</p>
+<h1 id="informer-的內部機制">Informer 的內部機制</h1>
+<p>
+  <img src="/2022-07-30-kubenetes-controller-manager/informer.png" alt="">
+
+</p>
+<h1 id="controller-的協同工作原理">Controller 的協同工作原理</h1>
+<p>
+  <img src="/2022-07-30-kubenetes-controller-manager/controller-collaborative-work.png" alt="">
+
+</p>
+<h1 id="常見的-controller">常見的 Controller</h1>
+<ol>
+<li>必須啟動的 Controller
+<ul>
+<li>EndpointController</li>
+<li>ReplicationController</li>
+<li>PodGCController</li>
+<li>ResourceQuotaController</li>
+<li>NamespaceController</li>
+<li>ServiceAccountController</li>
+<li>GarbageCollectorController</li>
+<li>DaemonSetController</li>
+<li>JobController</li>
+<li>DeploymentController</li>
+<li>ReplicaSetController</li>
+<li>HPAController</li>
+<li>DisruptionController</li>
+<li>StatefulSetController</li>
+<li>CronJobController</li>
+<li>CSRSigningController</li>
+<li>CSRApprovingController</li>
+<li>TTLController</li>
+</ul>
+</li>
+<li>默認啟動的可選 Controller ，可通過選項設置是否開啟
+<ul>
+<li>TokenController</li>
+<li>NodeController</li>
+<li>ServiceController</li>
+<li>RouteController</li>
+<li>PVBinderController</li>
+<li>AttachDetachController</li>
+</ul>
+</li>
+<li>默認禁止的可選 Controller ，可通過選項設置是否開啟
+<ul>
+<li>BootstrapSignerController</li>
+<li>TokenCleanerController</li>
+</ul>
+</li>
+</ol>
+<h1 id="cloud-controller-manager">Cloud Controller Manager</h1>
+<p>甚麼時候需要 cloud controller manager?</p>
+<p>Cloud Controller Manager 自 Kubernetes 1.6 開始，從 kube-controller-manager 中分離出來，主要因為 Cloud Controller Manager 往往需要和企業的 Cloud 做深度結合，release cycle 跟 kubernetes 相對獨立。</p>
+<p>與 kubernetes 核心管理組件一起升級是一件費時費力的事情。</p>
+<p>通常 cloud controller manager 需要:</p>
+<ul>
+<li>認證授權: 企業 cloud 往往需要認證訊息， kubernetes 要與 cloud API，需要獲取 cloud 系統裡的 Service Account。</li>
+<li>cloud controller manager 本身作為一個用戶泰的 component ，需要 kubernetes 中有正確的 RBAC 設置，獲取資源操作權限。</li>
+<li>高可用: 需要通過 leader election 來確保 cloud controller manager 高可用。</li>
+</ul>
+<p>Cloud Controller Manager 是從老版本的 API Server 分離出來的。</p>
+<ul>
+<li>kuber-apiserver 和 kube-controller-manager 中一定不能指定 cloud-provider，否則會加載內置的 cloud controller manager。</li>
+<li>kuberlet 要配置 &ndash;cloud-provider=external。</li>
+</ul>
+<p>Cloud Controller Manager 主要支持：</p>
+<ul>
+<li>Node Controller: 訪問 cloud API ，來更新 node 狀態，在 cloud 刪除該節點以後，從 kubernetes 刪除 node。</li>
+<li>Route Controller: 在 cloud 環境配置路由。</li>
+<li>Service Controller: 負責配置為 loadbalancer 類型的服務配置 LB VIP。</li>
+</ul>
+<h2 id="需要客製的-cloud-controller">需要客製的 Cloud Controller</h2>
+<ul>
+<li>Ingress controller</li>
+<li>Service controller</li>
+<li>自主研發的 controller
+<ul>
+<li>RBAC controller</li>
+<li>Account Controller</li>
+</ul>
+</li>
+</ul>
+<h1 id="高可用">高可用</h1>
+<p>在啟動時設置 <code>--leader-elect=true</code> 後，controller manager 會使用多節點選主的方式選擇主節點。只有主節點才會調用 <code>StartControllers()</code> 啟動所有 Controller ，而其他從節點則僅執行選主算法。</p>
+<p>多節點選主的實現方法見 <a href="https://github.com/kubernetes/client-go/blob/master/tools/leaderelection/leaderelection.go">leaderelection.go</a>。它實現了兩種資源鎖（Endpoint 或 ConfigMap，kube-controller-manager 和 cloud-controller-manager 都使用 Endpoint 鎖），通過更新資源的 Annotation（<code>control-plane.alpha.kubernetes.io/leader</code>），來確定 master slave 關係。</p>
+<h1 id="高性能">高性能</h1>
+<p>從 Kubernetes 1.7 開始，所有需要監控資源變化情況的調用均推薦使用 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go">Informer</a>。 Informer 提供了基於事件通知的只讀緩存機制，可以註冊資源變化的回調函數，並可以極大減少 API 的調用。</p>
+<p>Informer 的使用方法可以參考 <a href="https://github.com/feiskyer/kubernetes-handbook/tree/master/examples/client/informer">這裡</a>。</p>
+<h1 id="node-eviction">Node Eviction</h1>
+<p>Node Controller 在節點異常後，會按照默認的速率（<code>--node-eviction-rate=0.1</code>，即每10秒一個節點的速率）進行 Node 的驅逐。 Node Controller 按照 Zone 將節點劃分為不同的組，再跟進 Zone 的狀態進行速率調整：</p>
+<ul>
+<li>Normal：所有節點都 Ready，默認速率驅逐。</li>
+<li>PartialDisruption：即超過33% 的節點 NotReady 的狀態。當異常節點比例大於 <code>-unhealthy-zone-threshold=0.55</code> 時開始減慢速率：
+<ul>
+<li>小集群（即節點數量小於 <code>-large-cluster-size-threshold=50</code>）：停止驅逐</li>
+<li>大集群，減慢速率為 <code>-secondary-node-eviction-rate=0.01</code></li>
+</ul>
+</li>
+<li>FullDisruption：所有節點都 NotReady，返回使用默認速率驅逐。但當所有 Zone 都處在 FullDisruption 時，停止驅逐。</li>
+</ul>
+<h2 id="leader-election-的工作機制">Leader Election 的工作機制</h2>
+<p>
+  <img src="/2022-07-30-kubenetes-controller-manager/leader-eviction.png" alt="">
+
+</p>
+<h1 id="總結">總結</h1>
+<p>每個 controller 都扮演著自己該負責的事情，這樣的每個 controller 之間的職責都分離的很乾淨，讚讚！</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/zh-tw/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/zh-tw/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan 部落格 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

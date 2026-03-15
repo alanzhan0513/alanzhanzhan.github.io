@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="透過 Terraform 建立私有 GKE Cluster" />
-    <meta property="og:title" content="透過 Terraform 建立私有 GKE Cluster" />
-    <meta property="twitter:title" content="透過 Terraform 建立私有 GKE Cluster" />
+    <meta name="title" content="Building a Private GKE Cluster with Terraform" />
+    <meta property="og:title" content="Building a Private GKE Cluster with Terraform" />
+    <meta property="twitter:title" content="Building a Private GKE Cluster with Terraform" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>透過 Terraform 建立私有 GKE Cluster | Alan Zhan Blog</title>
+    <title>Building a Private GKE Cluster with Terraform | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2023-03-12-terraform-private-gke/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2023-03-12-terraform-private-gke/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -203,27 +203,27 @@
             col-xs-12
             post-container">
             
-                <p>讓我們一起來花個十分鐘，我會手把手地教你使用 Terraform ，建立私有的 GKE Cluster ！</p>
-<h2 id="設定-gcp">設定 GCP</h2>
+                <p>Let&rsquo;s spend about ten minutes together — I&rsquo;ll walk you through using Terraform to build a private GKE Cluster step by step!</p>
+<h2 id="setting-up-gcp">Setting Up GCP</h2>
 <p>
-  <img src="/2023-03-12-terraform-private-gke/create-service-account.jpg" alt="建立 Service Account 與 Key">
+  <img src="/2023-03-12-terraform-private-gke/create-service-account.jpg" alt="Create Service Account and Key">
 
 </p>
-<h3 id="建立-service-account">建立 Service Account</h3>
-<p>首先我們會需要先到 Google Cloud 的頁面上，建立一個 Service Account 給 Terraform 使用，位置可以參考上圖的第 1 2 3 步驟，如果你已經有 Service Account 的話，你可以跳過這個步驟。</p>
-<p>權限的部分，我先給到 Editor ，因為我只是要 POC 而已，如果你是要建立在 Production 的話，記得翻一下文件，把權限設定的剛剛好就好。</p>
-<h3 id="建立-key">建立 Key</h3>
-<p>第 4 步驟是生成一把 Key ，這把 Key 稍等一下在寫 Terraform 的時候會用到。</p>
-<h2 id="建立-gke">建立 GKE</h2>
-<h3 id="1-設定變數">1. 設定變數</h3>
-<p>我們開始撰寫 Terraform 啦！</p>
-<p>我們先來設定一些變數，提供等下讓你可以快速複製貼上將 GKE 建立起來。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#6272a4"># GCP 的 Project ID
+<h3 id="create-a-service-account">Create a Service Account</h3>
+<p>First, go to the Google Cloud console and create a Service Account for Terraform to use. Follow steps 1, 2, and 3 in the diagram above. If you already have a Service Account, you can skip this step.</p>
+<p>For permissions, I&rsquo;m giving it Editor role since this is just a POC. If you&rsquo;re setting this up for production, check the documentation and set permissions appropriately.</p>
+<h3 id="create-a-key">Create a Key</h3>
+<p>Step 4 is generating a Key. We&rsquo;ll need this Key shortly when writing the Terraform configuration.</p>
+<h2 id="building-gke">Building GKE</h2>
+<h3 id="1-define-variables">1. Define Variables</h3>
+<p>Let&rsquo;s start writing Terraform!</p>
+<p>First, let&rsquo;s define some variables so you can quickly copy and paste to set up GKE.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#6272a4"># GCP Project ID
 </span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;gcp_project_id&#34;</span> {
 </span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;alan-zhan-proj&#34;</span>
 </span></span><span style="display:flex;"><span>}<span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># GKE 的建立位置
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># GKE location
 </span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;gcp_region&#34;</span> {
 </span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;asia-east1&#34;</span>
 </span></span><span style="display:flex;"><span>}
@@ -240,12 +240,12 @@
 </span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.1.0/24&#34;</span>
 </span></span><span style="display:flex;"><span>}<span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># master 的 CIDR 必須是 /28
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># Master CIDR must be /28
 </span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;master_cidr&#34;</span> {
 </span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.2.0/28&#34;</span>
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="2-設定-provider">2. 設定 Provider</h3>
-<p>再來建立一個 <code>provider.tf</code> 檔案，並且將下面內容填入。</p>
+</span></span></code></pre></div><h3 id="2-configure-the-provider">2. Configure the Provider</h3>
+<p>Create a <code>provider.tf</code> file and add the following content.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span>terraform {
 </span></span><span style="display:flex;"><span>  required_providers {
 </span></span><span style="display:flex;"><span>    google <span style="color:#ff79c6">=</span> {
@@ -257,11 +257,11 @@
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">provider</span> <span style="color:#f1fa8c">&#34;google&#34;</span> {
 </span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
 </span></span><span style="display:flex;"><span>  region  <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region<span style="color:#6272a4">
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  # 這邊填入你的剛剛下載下來的 key
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  # Enter the path to the key you just downloaded
 </span></span></span><span style="display:flex;"><span>  credentials <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;./xxx.json&#34;</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="3-init-project">3. Init Project</h3>
-<p>第二步，透過 <code>terraform init</code> 將 Terraform 專案初始化。</p>
+<p>Next, initialize the Terraform project with <code>terraform init</code>.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>terraform init
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>Initializing the backend...
@@ -285,8 +285,8 @@
 </span></span><span style="display:flex;"><span>If you ever <span style="color:#8be9fd;font-style:italic">set</span> or change modules or backend configuration <span style="color:#ff79c6">for</span> Terraform,
 </span></span><span style="display:flex;"><span>rerun this <span style="color:#8be9fd;font-style:italic">command</span> to reinitialize your working directory. If you forget, other
 </span></span><span style="display:flex;"><span>commands will detect it and remind you to <span style="color:#ff79c6">do</span> so <span style="color:#ff79c6">if</span> necessary.
-</span></span></code></pre></div><h3 id="4-設定-service-api">4. 設定 Service API</h3>
-<p>Private GKE 在建立的時候，會需要 Compute 以及 Container 這兩個 Service ，所以我們建立一個 <code>service.tf</code> ，並且把下面內容填入。</p>
+</span></span></code></pre></div><h3 id="4-configure-service-apis">4. Configure Service APIs</h3>
+<p>Private GKE requires Compute and Container services during creation, so create a <code>service.tf</code> file with the following content.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_project_service&#34;</span> <span style="color:#f1fa8c">&#34;compute&#34;</span> {
 </span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
 </span></span><span style="display:flex;"><span>  service <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;compute.googleapis.com&#34;</span>
@@ -296,8 +296,8 @@
 </span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
 </span></span><span style="display:flex;"><span>  service <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;container.googleapis.com&#34;</span>
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="5-設定-network">5. 設定 Network</h3>
-<p>建立一個 <code>network.tf</code> ，並且設定 Network 相關的設定。</p>
+</span></span></code></pre></div><h3 id="5-configure-networking">5. Configure Networking</h3>
+<p>Create a <code>network.tf</code> file and configure network settings.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_network&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
 </span></span><span style="display:flex;"><span>  name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;gke&#34;</span>
 </span></span><span style="display:flex;"><span>  auto_create_subnetworks <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
@@ -354,13 +354,13 @@
 </span></span><span style="display:flex;"><span>  depends_on <span style="color:#ff79c6">=</span> [google_project_service.compute]
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="6-service-account">6. Service Account</h3>
-<p>建立 <code>service-account.tf</code> ，建立一個給 GKE node 專用的 service account 。</p>
+<p>Create <code>service-account.tf</code> to set up a dedicated service account for GKE nodes.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_service_account&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
 </span></span><span style="display:flex;"><span>  account_id <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;kubernetes&#34;</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="7-gke">7. GKE</h3>
-<p>建立 <code>container.tf</code> ，最後我們來建立 GKE 吧！不過我會順便建立 spot 的 node 。</p>
-<p>在 Terraform 建立 GKE 的過程中，一定會建立預設的 Node ，不管你是不是有設定 <code>remove_default_node_pool = true</code>，在 GKE 建立成功後才會刪除預設的 Node。</p>
+<p>Create <code>container.tf</code> — let&rsquo;s build the GKE cluster! I&rsquo;ll also create spot instance nodes.</p>
+<p>During Terraform&rsquo;s GKE creation process, a default node is always created regardless of whether you set <code>remove_default_node_pool = true</code>. The default node is only deleted after GKE is successfully created.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_cluster&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
 </span></span><span style="display:flex;"><span>  name                     <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;primary&#34;</span>
 </span></span><span style="display:flex;"><span>  location                 <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
@@ -372,7 +372,7 @@
 </span></span><span style="display:flex;"><span>  monitoring_service       <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;monitoring.googleapis.com/kubernetes&#34;</span>
 </span></span><span style="display:flex;"><span>  networking_mode          <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;VPC_NATIVE&#34;</span><span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  # 選填，可以客制 node 的位置
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  # Optional: customize node locations
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  node_locations = [
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#    &#34;&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  ]
@@ -391,7 +391,6 @@
 </span></span><span style="display:flex;"><span>  }<span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  workload_identity_config {
-</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     # 這個是給 Pod 在做 
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#    workload_pool = &#34;xxx.svc.id.goog&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  }
 </span></span></span><span style="display:flex;"><span>
@@ -467,15 +466,15 @@
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="8-terraform-apply">8. Terraform Apply</h3>
-<p>透過 <code>terraform apply</code> 來建立 GKE 。 完成啦～</p>
+<p>Run <code>terraform apply</code> to create the GKE cluster. Done!</p>
 <p>
   <img src="/2023-03-12-terraform-private-gke/gke.jpg" alt="Create Private GKE Via Terraform">
 
 </p>
-<h2 id="總結">總結</h2>
-<p>透過 Terraform 建立 GKE 就是快速又方便，也順便複習了 Google Cloud 的相關服務，而且我們還可以透過 Terraform 不斷複製成功又快速的去建立 GKE。</p>
-<p>最後有興趣的朋友可以到這邊複製貼上： <a href="https://github.com/alanzhan0513/alan-zhan-sample-code/tree/main/terraform/private-gke">Github Source Code</a></p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Building GKE with Terraform is fast and convenient. It also gave me a chance to review Google Cloud services. Best of all, we can repeatedly replicate successful setups to quickly create GKE clusters.</p>
+<p>If you&rsquo;re interested, you can copy and paste from here: <a href="https://github.com/alanzhan0513/alan-zhan-sample-code/tree/main/terraform/private-gke">Github Source Code</a></p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
 
             
              

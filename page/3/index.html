@@ -109,7 +109,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -131,13 +130,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -146,9 +153,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -157,17 +161,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -215,8 +215,7 @@
 	
         <div class="post-content-preview">
 	
-            <p>這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下：</p>
-<p>MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by :: Executor error during find command :: caused by :: Sort operation used more than the maximum 33554432 bytes of RAM.</p>
+            This is a rare case where I learned by working backward from a problem — I&rsquo;d better document it well. Recently, our production environment hit a MongoDB sort operation limit with this specific …
        
         </div>
     </a>
@@ -234,14 +233,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/">
         <h2 class="post-title">
-            Kubernetes 核心介紹 Etcd
+            Kubernetes Core Component: etcd
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！</p>
-<h1 id="什麼是-etcd-呢">什麼是 etcd 呢</h1>
-<p>etcd 是 CoreOs 基於 Raft 算法開發的分散式 key-value 儲存，可用於服務發現、共享配置以及一致性保障 (如資料庫選主、分散式鎖等)。</p>
+            In any system, what is the most important thing? The answer is simple: data. So I&rsquo;m starting my deep dive with Kubernetes&rsquo; database — etcd!
+What is etcd? etcd is a distributed key-value …
        
         </div>
     </a>
@@ -259,12 +257,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/">
         <h2 class="post-title">
-            安裝兩次的 Kubernetes Kubeadm
+            Installing Kubernetes with Kubeadm - Twice
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但是安裝的過程不是那麼順遂，這篇就分享一下我遇到的問題跟如何解決。</p>
+            To better understand K8s through hands-on practice, I wanted to set up a K8s cluster myself. There are increasingly many ways to self-host K8s nowadays — minikube, Kubeadm, and more. I decided to go …
        
         </div>
     </a>
@@ -282,12 +280,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-02-14-kubernetes-introduction/">
         <h2 class="post-title">
-            Kubernetes 基礎介紹
+            Kubernetes Fundamentals
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>終於要來好好深入探討 Kubernetes ，因為 Kubernetes 是基於 golang 這門語言開發的，所以在稍早已經先針對 golang 深度研究了，不過對於 Docker 與 container 技術有經有深入研究過了，小弟就就不針對 Docker 技術展開了，如果也想看的話，歡迎敲碗，接下來就會好好的針對 Kubernetes 有一系列的文章介紹。</p>
+            It&rsquo;s finally time to dive deep into Kubernetes. Since Kubernetes is built with Go, I&rsquo;ve already done some in-depth research on Go beforehand. I won&rsquo;t be covering Docker and container …
        
         </div>
     </a>
@@ -305,13 +303,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-02-13-golang-memory-management/">
         <h2 class="post-title">
-            Golang 記憶體管理 GC 全面解析
+            Golang Memory Management and GC In-Depth Analysis
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>新的一年又到來了，在這邊祝大家虎頭虎尾，所以這個年還沒過完，我得好好的繼續整理技術文章給大家了，這樣有好的開始！</p>
-<p>上次分析完 <a href="/post/2022-01-24-golang-goroutine">Golang Goroutine 與 GMP 原理全面分析</a> 之後，對 golang 這個語言有了更全面的了解，但是這些有了 GMP 的相關知識之後，是不是還缺少了記憶體管理這個面向呀？那麼今天就來好好的了解 golang 是如何管理他的記憶體吧。</p>
+            A new year has arrived! After completing the analysis of Golang Goroutine and GMP Model In-Depth Analysis, I gained a much more comprehensive understanding of the Go language. But after learning about …
        
         </div>
     </a>
@@ -329,12 +326,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-01-24-golang-goroutine/">
         <h2 class="post-title">
-            Golang Goroutine 與 GMP 原理全面分析
+            Golang Goroutine and GMP Model In-Depth Analysis
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能要先來認識一下歷史，這樣我們才能更全面的認識 goroutine 的原理與設計思想。</p>
+            I&rsquo;ve been studying Kubernetes recently, so I need to become good friends with the Go language. While reading, I came across goroutines, but couldn&rsquo;t fully understand where they came from …
        
         </div>
     </a>
@@ -352,14 +349,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/">
         <h2 class="post-title">
-            10 個 Dockerfile 的最佳實踐
+            10 Dockerfile Best Practices
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。</p>
-<h1 id="容器應該是短暫的">容器應該是短暫的</h1>
-<p>通過 <code>Dockerfile</code> 構建的鏡像所啟動的容器，應該盡可能的短暫，這邊的短暫意思是：很快速的啟動，並且很快速的終止。</p>
+            I was recently organizing Docker knowledge for myself and came across Dockerfile best practices. I planned to summarize them, but then I found that the official documentation already has best …
        
         </div>
     </a>
@@ -377,14 +372,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-01-09-github-pages-custom-domain/">
         <h2 class="post-title">
-            Github Pages Custom Domain - Github Blog 自訂域名
+            GitHub Pages Custom Domain Setup
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>最近剛好在更換域名，所以順手做一下筆記，也讓大家可以輕鬆上手，設定自己的 Github page 域名。</p>
-<h1 id="第一步購買域名">第一步：購買域名</h1>
-<p>先去購買自己想要的域名名稱：我是去 Google Domain 購買的，如果你有喜歡或者偏好的域名供應商，你也可以去你想要的供應商購買，本篇就以 Google Domain 為例。</p>
+            I recently switched my domain name, so I decided to take some notes to help everyone easily set up their own GitHub Pages custom domain.
+Step 1: Purchase a Domain First, purchase the domain name you …
        
         </div>
     </a>
@@ -402,14 +396,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/">
         <h2 class="post-title">
-            Interpolation Search Algorithm - 插補搜尋法
+            Interpolation Search Algorithm
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>繼續使用猜數字當範例， 1 ~ 100 的數字，但是這次你已經知道結果了，你如果還是繼續使用二元搜尋法，那麼效率不會那麼好，那我們該用甚麼方式解決呢？</p>
-<h1 id="概念">概念</h1>
-<p>插補搜尋法 (Interpolation Search)：是一個基於二元搜尋法的演算法，<code>被搜尋的清單是需要事先先被排序過的</code>，而且資料的分布狀態最好是呈現<code>線性</code>的，如果不是呈現線性分布，那麼在搜尋的過程中，將有可能會得到 O(n) 的結果，可能會比二元搜尋法還更耗時。</p>
+            Continuing with the number guessing game — for numbers 1 to 100, if you already know the result, using binary search might not be the most efficient approach. So what method should we use instead? …
        
         </div>
     </a>
@@ -427,13 +419,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/">
         <h2 class="post-title">
-            Jump Search Algorithm - 跳躍搜尋法
+            Jump Search Algorithm
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>延續猜數字遊戲，1 ~ 100 我們是不是可以換個猜法呢？</p>
-<p>如果我們從一開始，只要每次沒猜中，我們就往後面 +10 繼續猜，直到最大值範圍值變成我們所猜的數值後，往回開始找值，這樣做，在數值較小的時候，將會更有效率。</p>
+            Continuing with the number guessing game — can we try a different approach for numbers 1 to 100?
+If we start from the beginning and jump forward by 10 each time we don&rsquo;t guess correctly, we keep …
        
         </div>
     </a>

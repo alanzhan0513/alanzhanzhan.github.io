@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Alan Zhan 部落格</title>
+    <link>https://alanzhan.dev/zh-tw/post/</link>
+    <description>Recent content in Posts on Alan Zhan 部落格</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/zh-tw/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>透過 Terraform 建立私有 GKE Cluster</title>
+      <link>https://alanzhan.dev/zh-tw/post/2023-03-12-terraform-private-gke/</link>
+      <pubDate>Sun, 12 Mar 2023 18:04:41 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2023-03-12-terraform-private-gke/</guid>
+      <description>&lt;p&gt;讓我們一起來花個十分鐘，我會手把手地教你使用 Terraform ，建立私有的 GKE Cluster ！&lt;/p&gt;&#xA;&lt;h2 id=&#34;設定-gcp&#34;&gt;設定 GCP&lt;/h2&gt;&#xA;&lt;p&gt;&#xA;  &lt;img src=&#34;https://alanzhan.dev/2023-03-12-terraform-private-gke/create-service-account.jpg&#34; alt=&#34;建立 Service Account 與 Key&#34;&gt;&#xA;&#xA;&lt;/p&gt;&#xA;&lt;h3 id=&#34;建立-service-account&#34;&gt;建立 Service Account&lt;/h3&gt;&#xA;&lt;p&gt;首先我們會需要先到 Google Cloud 的頁面上，建立一個 Service Account 給 Terraform 使用，位置可以參考上圖的第 1 2 3 步驟，如果你已經有 Service Account 的話，你可以跳過這個步驟。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>終身成長</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-10-02-lifelong-growth/</link>
+      <pubDate>Sun, 02 Oct 2022 20:20:53 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-10-02-lifelong-growth/</guid>
+      <description>&lt;h2 id=&#34;思維模式&#34;&gt;思維模式&lt;/h2&gt;&#xA;&lt;p&gt;你今天去上了一門對你來說是很重要的課程，而且你非常喜歡這門課。你的教授公佈了期中考的考試成績，然而你考試的成績只獲得了 60 分。你非常的失望，等到晚上準備要回家的時候，你發現你錯過了最後一班捷運，導致你必須走回家。當你感到非常生氣的時候，打電話給你最好的朋友想要傾訴，然而卻沒有打通。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kubernetes 核心介紹 Kubelet</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-08-30-kubernetes-kubelet/</link>
+      <pubDate>Tue, 30 Aug 2022 20:56:08 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-08-30-kubernetes-kubelet/</guid>
+      <description>&lt;h1 id=&#34;kubelet-架構&#34;&gt;Kubelet 架構&lt;/h1&gt;&#xA;&lt;p&gt;如下 kubelet 內部組件結構圖所示，Kubelet 由許多內部組件構成：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Kubelet API，包括 10250  port 的認證 API、4194  port 的 cAdvisor API、10255  port 的只讀 API 以及 10248  port 的健康檢查 API 。&lt;/li&gt;&#xA;&lt;li&gt;syncLoop：從 API 或者 manifest 目錄接收 Pod 更新，發送到 podWorkers 處理，大量使用 channel 處理來處理異步請求 。&lt;/li&gt;&#xA;&lt;li&gt;輔助的 manager，如 cAdvisor、PLEG、Volume Manager 等，處理 syncLoop 以外的其他工作 。&lt;/li&gt;&#xA;&lt;li&gt;CRI：容器執行引擎接口，負責與 container runtime shim 通信 。&lt;/li&gt;&#xA;&lt;li&gt;容器執行引擎，如 dockershim、rkt 等 。&lt;/li&gt;&#xA;&lt;li&gt;網絡插件，目前支持 CNI 和 kubenet 。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&#xA;  &lt;img src=&#34;https://alanzhan.dev/2022-08-30-kubernetes-kubelet/architecture.png&#34; alt=&#34;kubelet 架構圖&#34;&gt;&#xA;&#xA;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 25 Reverse Nodes in k-Group</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-08-28-leetcode-25/</link>
+      <pubDate>Sun, 28 Aug 2022 14:22:55 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-08-28-leetcode-25/</guid>
+      <description>&lt;h1 id=&#34;25-reverse-nodes-in-k-group&#34;&gt;25. Reverse Nodes in k-Group&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/reverse-nodes-in-k-group/&#34;&gt;https://leetcode.com/problems/reverse-nodes-in-k-group/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Hard&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given the &lt;code&gt;head&lt;/code&gt; of a linked list, reverse the nodes of the list &lt;code&gt;k&lt;/code&gt; at a time, and return &lt;em&gt;the modified list&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;k&lt;/code&gt; is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of &lt;code&gt;k&lt;/code&gt; then left-out nodes, in the end, should remain as it is.&lt;/p&gt;&#xA;&lt;p&gt;You may not alter the values in the list&#39;s nodes, only nodes themselves may be changed.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>阿甘投資法</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-08-14-forrest-gump-invest/</link>
+      <pubDate>Sun, 14 Aug 2022 14:41:06 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-08-14-forrest-gump-invest/</guid>
+      <description>&lt;p&gt;還記得我大概在三年前，當時的我是一位股市小白，我剛才了解完畢台灣股市之後，就隨即投入股市交易，當時買的第一張股票是 中信金 2891 ，這個代碼還記得清清楚楚，但是每天上上下下波動，每天都心驚膽跳，最後按耐不住性子就出場了，幸好最後出場有賺到一點點便當錢，不是賠錢，真的是不幸中的大幸，最後在因緣際會下，接觸到阿甘投資法這本書，就此展開了我的指數投資人生，今天就來跟大家好好介紹這本書。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kubernetes 核心介紹 Controller Manager</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-07-30-kubenetes-controller-manager/</link>
+      <pubDate>Sat, 30 Jul 2022 20:07:01 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-07-30-kubenetes-controller-manager/</guid>
+      <description>&lt;p&gt;Controller Manager 是 Kubernetes 集群的自動化控制中心，裡面包含了 3X 多個 Controller ，有管理 Pod 相關的、網路相關的、儲存相關的等等。大多數的 Controller 工作模式都差不多，每個 Controller 都是一個 control loop ，負責通過 api-server 監聽其相對應的資源，根據對象狀態來決定接下來的動作，使其達到預期的狀態。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 70 Climbing Stairs</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-07-13-leetcode-70/</link>
+      <pubDate>Wed, 13 Jul 2022 22:22:58 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-07-13-leetcode-70/</guid>
+      <description>&lt;h1 id=&#34;70-climbing-stairs&#34;&gt;70. Climbing Stairs&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/climbing-stairs/&#34;&gt;https://leetcode.com/problems/climbing-stairs/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Easy&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;You are climbing a staircase. It takes &lt;code&gt;n&lt;/code&gt; steps to reach the top.&lt;/p&gt;&#xA;&lt;p&gt;Each time you can either climb &lt;code&gt;1&lt;/code&gt; or &lt;code&gt;2&lt;/code&gt; steps. In how many distinct ways can you climb to the top?&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; n = 2&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 2&#xA;&lt;strong&gt;Explanation:&lt;/strong&gt; There are two ways to climb to the top.&#xA;1. 1 step + 1 step&#xA;2. 2 steps&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; n = 3&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 3&#xA;&lt;strong&gt;Explanation:&lt;/strong&gt; There are three ways to climb to the top.&#xA;1. 1 step + 1 step + 1 step&#xA;2. 1 step + 2 steps&#xA;3. 2 steps + 1 step&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kubernetes - Node 維護 Pod 遷移</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-07-10-kubernetes-cordon-drain/</link>
+      <pubDate>Sun, 10 Jul 2022 18:19:11 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-07-10-kubernetes-cordon-drain/</guid>
+      <description>&lt;p&gt;敝公司前陣子有發現有機器的資源使用率特別的低在 GKE 上，再怎麼說這些用不到的資源也是白花花的銀子啊，所以我們就新增資源更低更便宜的 Node Pool ，再搭配使用 Cordon + Drain 或者手動刪除 Pod ，讓 Pod 重新長在新的 Node Pool 上，當然在 GKE 上直接刪除舊的 Node Pool 也可以達到一樣的效果，只是我們選用了更安全的做法。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 69 Sqrt(x)</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-30-leetcode-69/</link>
+      <pubDate>Thu, 30 Jun 2022 23:37:48 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-30-leetcode-69/</guid>
+      <description>&lt;h1 id=&#34;69-sqrtx&#34;&gt;69. Sqrt(x)&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/sqrtx/&#34;&gt;https://leetcode.com/problems/sqrtx/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Easy&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given a non-negative integer &lt;code&gt;x&lt;/code&gt;,&amp;nbsp;compute and return &lt;em&gt;the square root of&lt;/em&gt; &lt;code&gt;x&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Since the return type&amp;nbsp;is an integer, the decimal digits are &lt;strong&gt;truncated&lt;/strong&gt;, and only &lt;strong&gt;the integer part&lt;/strong&gt; of the result&amp;nbsp;is returned.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Note:&amp;nbsp;&lt;/strong&gt;You are not allowed to use any built-in exponent function or operator, such as &lt;code&gt;pow(x, 0.5)&lt;/code&gt; or&amp;nbsp;&lt;code&gt;x ** 0.5&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; x = 4&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 2&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; x = 8&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 2&#xA;&lt;strong&gt;Explanation:&lt;/strong&gt; The square root of 8 is 2.82842..., and since the decimal part is truncated, 2 is returned.&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 433 Minimum Genetic Mutation</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-28-leetcode-433/</link>
+      <pubDate>Tue, 28 Jun 2022 23:55:43 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-28-leetcode-433/</guid>
+      <description>&lt;h1 id=&#34;433-minimum-genetic-mutation&#34;&gt;433. Minimum Genetic Mutation&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/minimum-genetic-mutation/&#34;&gt;https://leetcode.com/problems/minimum-genetic-mutation/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Medium&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;A gene string can be represented by an 8-character long string, with choices from &lt;code&gt;&#39;A&#39;&lt;/code&gt;, &lt;code&gt;&#39;C&#39;&lt;/code&gt;, &lt;code&gt;&#39;G&#39;&lt;/code&gt;, and &lt;code&gt;&#39;T&#39;&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Suppose we need to investigate a mutation from a gene string &lt;code&gt;start&lt;/code&gt; to a gene string &lt;code&gt;end&lt;/code&gt; where one mutation is defined as one single character changed in the gene string.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&#x9;&lt;li&gt;For example, &lt;code&gt;&#34;AACCGGTT&#34; --&amp;gt; &#34;AACCGGTA&#34;&lt;/code&gt; is one mutation.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;There is also a gene bank &lt;code&gt;bank&lt;/code&gt; that records all the valid gene mutations. A gene must be in &lt;code&gt;bank&lt;/code&gt; to make it a valid gene string.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 23  Merge k Sorted Lists</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-25-leetcode-23/</link>
+      <pubDate>Sat, 25 Jun 2022 23:29:46 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-25-leetcode-23/</guid>
+      <description>&lt;h1 id=&#34;23-merge-k-sorted-lists&#34;&gt;23. Merge k Sorted Lists&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/merge-k-sorted-lists/&#34;&gt;https://leetcode.com/problems/merge-k-sorted-lists/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Hard&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;You are given an array of &lt;code&gt;k&lt;/code&gt; linked-lists &lt;code&gt;lists&lt;/code&gt;, each linked-list is sorted in ascending order.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Merge all the linked-lists into one sorted linked-list and return it.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; lists = [[1,4,5],[1,3,4],[2,6]]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; [1,1,2,3,4,4,5,6]&#xA;&lt;strong&gt;Explanation:&lt;/strong&gt; The linked-lists are:&#xA;[&#xA;  1-&amp;gt;4-&amp;gt;5,&#xA;  1-&amp;gt;3-&amp;gt;4,&#xA;  2-&amp;gt;6&#xA;]&#xA;merging them into one sorted list:&#xA;1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;4-&amp;gt;5-&amp;gt;6&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; lists = []&#xA;&lt;strong&gt;Output:&lt;/strong&gt; []&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 3:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; lists = [[]]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; []&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 200 Number of Islands</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-23-leetcode-200/</link>
+      <pubDate>Thu, 23 Jun 2022 23:50:13 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-23-leetcode-200/</guid>
+      <description>&lt;h1 id=&#34;200-number-of-islands&#34;&gt;200. Number of Islands&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/number-of-islands/&#34;&gt;https://leetcode.com/problems/number-of-islands/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Medium&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given an &lt;code&gt;m x n&lt;/code&gt; 2D binary grid &lt;code&gt;grid&lt;/code&gt; which represents a map of &lt;code&gt;&#39;1&#39;&lt;/code&gt;s (land) and &lt;code&gt;&#39;0&#39;&lt;/code&gt;s (water), return &lt;em&gt;the number of islands&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;An &lt;strong&gt;island&lt;/strong&gt; is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; grid = [&#xA;  [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;],&#xA;  [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;],&#xA;  [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;],&#xA;  [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;]&#xA;]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 1&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 78 Subsets</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-20-leetcode-78/</link>
+      <pubDate>Mon, 20 Jun 2022 18:00:00 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-20-leetcode-78/</guid>
+      <description>&lt;h1 id=&#34;78-subsets&#34;&gt;78. Subsets&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/subsets/&#34;&gt;https://leetcode.com/problems/subsets/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Medium&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given an integer array &lt;code&gt;nums&lt;/code&gt; of &lt;strong&gt;unique&lt;/strong&gt; elements, return &lt;em&gt;all possible subsets (the power set)&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;The solution set &lt;strong&gt;must not&lt;/strong&gt; contain duplicate subsets. Return the solution in &lt;strong&gt;any order&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; nums = [1,2,3]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; nums = [0]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; [[],[0]]&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Constraints:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&#x9;&lt;li&gt;&lt;code&gt;1 &amp;lt;= nums.length &amp;lt;= 10&lt;/code&gt;&lt;/li&gt;&#xA;&#x9;&lt;li&gt;&lt;code&gt;-10 &amp;lt;= nums[i] &amp;lt;= 10&lt;/code&gt;&lt;/li&gt;&#xA;&#x9;&lt;li&gt;All the numbers of&amp;nbsp;&lt;code&gt;nums&lt;/code&gt; are &lt;strong&gt;unique&lt;/strong&gt;.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/div&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;傳入一個數值陣列，將元素與元素之間的所有有可能發生的組合回傳。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 111 Minimum Depth of Binary Tree</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-16-leetcode-111/</link>
+      <pubDate>Thu, 16 Jun 2022 18:00:00 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-16-leetcode-111/</guid>
+      <description>&lt;h1 id=&#34;111-minimum-depth-of-binary-tree&#34;&gt;111. Minimum Depth of Binary Tree&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/minimum-depth-of-binary-tree/&#34;&gt;https://leetcode.com/problems/minimum-depth-of-binary-tree/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Easy&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given a binary tree, find its minimum depth.&lt;/p&gt;&#xA;&lt;p&gt;The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt;&amp;nbsp;A leaf is a node with no children.&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;img alt=&#34;&#34; src=&#34;https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg&#34; style=&#34;width: 432px; height: 302px;&#34;&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; root = [3,9,20,null,null,15,7]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 2&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; root = [2,null,3,null,4,null,5,null,6]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 5&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Constraints:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&#x9;&lt;li&gt;The number of nodes in the tree is in the range &lt;code&gt;[0, 10&lt;sup&gt;5&lt;/sup&gt;]&lt;/code&gt;.&lt;/li&gt;&#xA;&#x9;&lt;li&gt;&lt;code&gt;-1000 &amp;lt;= Node.val &amp;lt;= 1000&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/div&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;尋找這棵樹最小的節點，他的深度為何？&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 104 Maximum Depth of Binary Tree</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-14-leetcode-104/</link>
+      <pubDate>Tue, 14 Jun 2022 18:00:00 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-14-leetcode-104/</guid>
+      <description>&lt;h1 id=&#34;104-maximum-depth-of-binary-tree&#34;&gt;104. Maximum Depth of Binary Tree&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/maximum-depth-of-binary-tree/&#34;&gt;https://leetcode.com/problems/maximum-depth-of-binary-tree/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Easy&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given the &lt;code&gt;root&lt;/code&gt; of a binary tree, return &lt;em&gt;its maximum depth&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;A binary tree&#39;s &lt;strong&gt;maximum depth&lt;/strong&gt;&amp;nbsp;is the number of nodes along the longest path from the root node down to the farthest leaf node.&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;img alt=&#34;&#34; src=&#34;https://assets.leetcode.com/uploads/2020/11/26/tmp-tree.jpg&#34; style=&#34;width: 400px; height: 277px;&#34;&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; root = [3,9,20,null,null,15,7]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 3&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; root = [1,null,2]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 2&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Constraints:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&#x9;&lt;li&gt;The number of nodes in the tree is in the range &lt;code&gt;[0, 10&lt;sup&gt;4&lt;/sup&gt;]&lt;/code&gt;.&lt;/li&gt;&#xA;&#x9;&lt;li&gt;&lt;code&gt;-100 &amp;lt;= Node.val &amp;lt;= 100&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/div&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;尋找這棵樹最深的節點，他的深度為何？&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>如何在贏者全拿的職場中生存</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-13-winners-take-all/</link>
+      <pubDate>Mon, 13 Jun 2022 18:00:00 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-13-winners-take-all/</guid>
+      <description>&lt;p&gt;贏者全拿，從字面上的大家應該就會懂了，在我們生活中也時常發生，舉一個最簡單的例子：在民主社會中，每幾年就會有一次總統大選，只有獲得最高票的那個人可以勝出擔任下一任的總統，第二名與第三名好像就沒那麼重要；在情場上，每位男生都可以去追求新垣結衣，然後最終勝出的就只為有一位，在運動場上，在公司，在任何地方，大部分的場景都是贏者全拿的。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>白話解 Leetcode - 226 Invert Binary Tree</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-06-12-leetcode-226/</link>
+      <pubDate>Sun, 12 Jun 2022 13:01:44 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-06-12-leetcode-226/</guid>
+      <description>&lt;h1 id=&#34;226-invert-binary-tree&#34;&gt;226. Invert Binary Tree&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/invert-binary-tree/&#34;&gt;https://leetcode.com/problems/invert-binary-tree/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Easy&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given the &lt;code&gt;root&lt;/code&gt; of a binary tree, invert the tree, and return &lt;em&gt;its root&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;img alt=&#34;&#34; src=&#34;https://assets.leetcode.com/uploads/2021/03/14/invert1-tree.jpg&#34; style=&#34;width: 500px; height: 165px;&#34;&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; root = [4,2,7,1,3,6,9]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; [4,7,2,9,6,3,1]&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;img alt=&#34;&#34; src=&#34;https://assets.leetcode.com/uploads/2021/03/14/invert2-tree.jpg&#34; style=&#34;width: 500px; height: 120px;&#34;&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; root = [2,1,3]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; [2,3,1]&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 3:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; root = []&#xA;&lt;strong&gt;Output:&lt;/strong&gt; []&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Constraints:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&#x9;&lt;li&gt;The number of nodes in the tree is in the range &lt;code&gt;[0, 100]&lt;/code&gt;.&lt;/li&gt;&#xA;&#x9;&lt;li&gt;&lt;code&gt;-100 &amp;lt;= Node.val &amp;lt;= 100&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/div&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;題意&#34;&gt;題意&lt;/h2&gt;&#xA;&lt;p&gt;將整棵樹的所有左右節點互相對調。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kubernetes 核心介紹 Scheduler</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-05-16-kubernetes-scheduler/</link>
+      <pubDate>Mon, 16 May 2022 22:40:48 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-05-16-kubernetes-scheduler/</guid>
+      <description>&lt;p&gt;Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。&lt;/p&gt;&#xA;&lt;p&gt;Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的所有節點健康狀況和資源使用情控，為待調度的 Pod 選擇最佳節點，完成調度。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kubernetes 核心介紹 Api Server</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-04-24-kubernetes-api-server/</link>
+      <pubDate>Sun, 24 Apr 2022 19:07:12 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-04-24-kubernetes-api-server/</guid>
+      <description>&lt;h1 id=&#34;api-server&#34;&gt;API Server&lt;/h1&gt;&#xA;&lt;p&gt;kube-apiserver 是 Kubernetes 最重要的核心組件之一，主要提供以下功能：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;提供集群管理的 REST API ，包括認證、授權、數據檢驗以及集群狀態變更等&#xA;&lt;ul&gt;&#xA;&lt;li&gt;認證 Authentication&lt;/li&gt;&#xA;&lt;li&gt;授權 Authorization&lt;/li&gt;&#xA;&lt;li&gt;准入 Admission (Mutating &amp;amp; Valiating)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;提供其他模組之間的數據交互和通訊的樞紐，其他模組只能通過 API Server 查詢或者修改數據，只有 API Server 才能直接操作 etcd。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;kube-apiserver 支持提供 https ( 預設 port 6443 ) 和 http API (默認監聽 127.0.0.1 的 8080 )，其中 http API 是非安全的 API，不做任何認證授權機制，不建議在 Production 環境開啟此功能。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Mongodb Index 最佳實踐</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-04-10-mongodb-index-best-practice/</link>
+      <pubDate>Sun, 10 Apr 2022 16:19:10 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-04-10-mongodb-index-best-practice/</guid>
+      <description>&lt;p&gt;自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重點在上一篇，可以到上一篇複習一下 &lt;a href=&#34;https://alanzhan.dev/zh-tw/post/2022-03-20-mongodb-sorted-operation-oom/&#34;&gt;MongoDB Sorted Operation OOM&lt;/a&gt;。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MongoDB Sorted Operation OOM</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-03-20-mongodb-sorted-operation-oom/</link>
+      <pubDate>Sun, 20 Mar 2022 15:11:15 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-03-20-mongodb-sorted-operation-oom/</guid>
+      <description>&lt;p&gt;這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下：&lt;/p&gt;&#xA;&lt;p&gt;MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by :: Executor error during find command :: caused by :: Sort operation used more than the maximum 33554432 bytes of RAM.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kubernetes 核心介紹 Etcd</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-02-28-kubetnetes-etcd/</link>
+      <pubDate>Mon, 28 Feb 2022 15:58:47 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-02-28-kubetnetes-etcd/</guid>
+      <description>&lt;p&gt;在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！&lt;/p&gt;&#xA;&lt;h1 id=&#34;什麼是-etcd-呢&#34;&gt;什麼是 etcd 呢&lt;/h1&gt;&#xA;&lt;p&gt;etcd 是 CoreOs 基於 Raft 算法開發的分散式 key-value 儲存，可用於服務發現、共享配置以及一致性保障 (如資料庫選主、分散式鎖等)。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>安裝兩次的 Kubernetes Kubeadm</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-02-20-reinstall-kubernetes-kubeadm/</link>
+      <pubDate>Sun, 20 Feb 2022 15:04:19 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-02-20-reinstall-kubernetes-kubeadm/</guid>
+      <description>&lt;p&gt;想要透過實戰來更了解 K8s ，所以想先自架 K8s cluster，但目前市面上自建 K8s 的方式越來越多種，可以透過 minikube 、 Kubeadm 等等，想說好吧那我就挑 Kubeadm 來裝看看，但是安裝的過程不是那麼順遂，這篇就分享一下我遇到的問題跟如何解決。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kubernetes 基礎介紹</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-02-14-kubernetes-introduction/</link>
+      <pubDate>Mon, 14 Feb 2022 21:48:40 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-02-14-kubernetes-introduction/</guid>
+      <description>&lt;p&gt;終於要來好好深入探討 Kubernetes ，因為 Kubernetes 是基於 golang 這門語言開發的，所以在稍早已經先針對 golang 深度研究了，不過對於 Docker 與 container 技術有經有深入研究過了，小弟就就不針對 Docker 技術展開了，如果也想看的話，歡迎敲碗，接下來就會好好的針對 Kubernetes 有一系列的文章介紹。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Golang 記憶體管理 GC 全面解析</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-02-13-golang-memory-management/</link>
+      <pubDate>Sun, 13 Feb 2022 14:42:09 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-02-13-golang-memory-management/</guid>
+      <description>&lt;p&gt;新的一年又到來了，在這邊祝大家虎頭虎尾，所以這個年還沒過完，我得好好的繼續整理技術文章給大家了，這樣有好的開始！&lt;/p&gt;&#xA;&lt;p&gt;上次分析完 &lt;a href=&#34;https://alanzhan.dev/zh-tw/post/2022-01-24-golang-goroutine/&#34;&gt;Golang Goroutine 與 GMP 原理全面分析&lt;/a&gt; 之後，對 golang 這個語言有了更全面的了解，但是這些有了 GMP 的相關知識之後，是不是還缺少了記憶體管理這個面向呀？那麼今天就來好好的了解 golang 是如何管理他的記憶體吧。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Golang Goroutine 與 GMP 原理全面分析</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-01-24-golang-goroutine/</link>
+      <pubDate>Mon, 24 Jan 2022 20:24:58 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-01-24-golang-goroutine/</guid>
+      <description>&lt;p&gt;最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能要先來認識一下歷史，這樣我們才能更全面的認識 goroutine 的原理與設計思想。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>10 個 Dockerfile 的最佳實踐</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-01-16-dockerfile-best-practices/</link>
+      <pubDate>Sun, 16 Jan 2022 16:55:15 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-01-16-dockerfile-best-practices/</guid>
+      <description>&lt;p&gt;最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。&lt;/p&gt;&#xA;&lt;h1 id=&#34;容器應該是短暫的&#34;&gt;容器應該是短暫的&lt;/h1&gt;&#xA;&lt;p&gt;通過 &lt;code&gt;Dockerfile&lt;/code&gt; 構建的鏡像所啟動的容器，應該盡可能的短暫，這邊的短暫意思是：很快速的啟動，並且很快速的終止。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Github Pages Custom Domain - Github Blog 自訂域名</title>
+      <link>https://alanzhan.dev/zh-tw/post/2022-01-09-github-pages-custom-domain/</link>
+      <pubDate>Sun, 09 Jan 2022 14:58:58 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2022-01-09-github-pages-custom-domain/</guid>
+      <description>&lt;p&gt;最近剛好在更換域名，所以順手做一下筆記，也讓大家可以輕鬆上手，設定自己的 Github page 域名。&lt;/p&gt;&#xA;&lt;h1 id=&#34;第一步購買域名&#34;&gt;第一步：購買域名&lt;/h1&gt;&#xA;&lt;p&gt;先去購買自己想要的域名名稱：我是去 Google Domain 購買的，如果你有喜歡或者偏好的域名供應商，你也可以去你想要的供應商購買，本篇就以 Google Domain 為例。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Interpolation Search Algorithm - 插補搜尋法</title>
+      <link>https://alanzhan.dev/zh-tw/post/2021-07-13-interpolation-search-algorithm/</link>
+      <pubDate>Tue, 13 Jul 2021 21:51:30 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2021-07-13-interpolation-search-algorithm/</guid>
+      <description>&lt;p&gt;繼續使用猜數字當範例， 1 ~ 100 的數字，但是這次你已經知道結果了，你如果還是繼續使用二元搜尋法，那麼效率不會那麼好，那我們該用甚麼方式解決呢？&lt;/p&gt;&#xA;&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;&#xA;&lt;p&gt;插補搜尋法 (Interpolation Search)：是一個基於二元搜尋法的演算法，&lt;code&gt;被搜尋的清單是需要事先先被排序過的&lt;/code&gt;，而且資料的分布狀態最好是呈現&lt;code&gt;線性&lt;/code&gt;的，如果不是呈現線性分布，那麼在搜尋的過程中，將有可能會得到 O(n) 的結果，可能會比二元搜尋法還更耗時。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Jump Search Algorithm - 跳躍搜尋法</title>
+      <link>https://alanzhan.dev/zh-tw/post/2021-07-11-jump-search-alogrithm/</link>
+      <pubDate>Sun, 11 Jul 2021 14:48:35 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2021-07-11-jump-search-alogrithm/</guid>
+      <description>&lt;p&gt;延續猜數字遊戲，1 ~ 100 我們是不是可以換個猜法呢？&lt;/p&gt;&#xA;&lt;p&gt;如果我們從一開始，只要每次沒猜中，我們就往後面 +10 繼續猜，直到最大值範圍值變成我們所猜的數值後，往回開始找值，這樣做，在數值較小的時候，將會更有效率。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Binary Search Algorithm - 二元搜尋法</title>
+      <link>https://alanzhan.dev/zh-tw/post/2021-07-10-binary-search-algorithm/</link>
+      <pubDate>Sat, 10 Jul 2021 22:57:37 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2021-07-10-binary-search-algorithm/</guid>
+      <description>&lt;p&gt;我們來玩猜數字遊戲，1 ~ 100 中的整數，你必須猜中我腦海中的數字，而且我們必須在最少的布數內猜到答案，那麼你會怎麼猜呢？&lt;/p&gt;&#xA;&lt;p&gt;答案很簡單，你一定會從 50 開始猜，如果沒猜中的話，太高你就會從 25 開始猜，太低你就會從 75 開始猜，以此類推，你每次操作的過程，你都會從中剖一半來猜測，其實你所使用的就是 Binary Search。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Linear Search Algorithm - 線性搜尋法</title>
+      <link>https://alanzhan.dev/zh-tw/post/2021-07-10-linear-search-algorithm/</link>
+      <pubDate>Sat, 10 Jul 2021 18:50:40 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2021-07-10-linear-search-algorithm/</guid>
+      <description>&lt;p&gt;在查找一個元素是否存在的時候，我們最常使用的方式是甚麼呢？答案是 for 或者是 while 迴圈，恭喜你！已經學習完 Linear Search 了！&lt;/p&gt;&#xA;&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;&#xA;&lt;p&gt;線性搜尋 (Linear Search)：這個演算法會&lt;code&gt;訪問每個元素&lt;/code&gt;，確認元素在陣列中的哪個位置，如果找不到元素則會回傳 -1。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Divide and Conquer - 分而治之</title>
+      <link>https://alanzhan.dev/zh-tw/post/2021-07-07-divide-and-conquer/</link>
+      <pubDate>Wed, 07 Jul 2021 23:56:34 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2021-07-07-divide-and-conquer/</guid>
+      <description>&lt;h1 id=&#34;分而治之&#34;&gt;分而治之&lt;/h1&gt;&#xA;&lt;p&gt;從字面上看起來，就是把一個複雜的問題分解成兩個或者很多個相同或者相似的問題，讓小問題可以被解決，再將最終結果合併求出問題的答案。&lt;/p&gt;&#xA;&lt;h2 id=&#34;優點&#34;&gt;優點&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;解決問題的難度降低。&lt;/li&gt;&#xA;&lt;li&gt;可以提升執行效率。&lt;/li&gt;&#xA;&lt;li&gt;有些時候能夠平行處理，增進性能。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;h2 id=&#34;使用步驟&#34;&gt;使用步驟&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;分解：將一個問題分解成若干個較小的問題，相對獨立，與原先問題形式相同的子問題。&lt;/li&gt;&#xA;&lt;li&gt;解決：若子問題規模較小並且容易解決時，就直接解決。否則，就遞迴的方式解決子問題。&lt;/li&gt;&#xA;&lt;li&gt;合併：將個子問題的解合併成為原問題的解。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;Resources:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Big O Notation - Big O 符號</title>
+      <link>https://alanzhan.dev/zh-tw/post/2021-07-06-big-o-notation/</link>
+      <pubDate>Tue, 06 Jul 2021 23:56:58 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2021-07-06-big-o-notation/</guid>
+      <description>&lt;h1 id=&#34;如何選擇演算法來解決問題&#34;&gt;如何選擇演算法來解決問題&lt;/h1&gt;&#xA;&lt;p&gt;同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;時間複雜度 (花的時間)&lt;/li&gt;&#xA;&lt;li&gt;空間複雜度 (花的記憶體)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;所以花費的時間越少、花費的記憶體越少，通常就是越好的演算法，但是演算法的時間複雜度分析又可以細分為以下三種：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Emotional Blackmail - 情緒勒索</title>
+      <link>https://alanzhan.dev/zh-tw/post/2021-06-26-emotional-blackmail/</link>
+      <pubDate>Sat, 26 Jun 2021 18:46:52 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2021-06-26-emotional-blackmail/</guid>
+      <description>&lt;h1 id=&#34;什麼是情緒勒索&#34;&gt;什麼是情緒勒索？&lt;/h1&gt;&#xA;&lt;p&gt;在探討情緒勒索之前，我們得先搞清楚什麼是情緒勒索？&lt;/p&gt;&#xA;&lt;p&gt;情緒勒索者可能在有意識或者無意識當中，使用要求、威脅、施壓、沉默等間接或直接的「&lt;code&gt;勒索&lt;/code&gt;」手段，讓被勒索者產生各種負面情緒，譬如：挫折感、罪惡感、恐懼感等等，這些感受就會在被勒索者的心中發酵造成傷害。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Atomic Habits - 原子習慣</title>
+      <link>https://alanzhan.dev/zh-tw/post/2021-06-13-atomic-habits/</link>
+      <pubDate>Sun, 13 Jun 2021 23:45:21 +0800</pubDate>
+      <guid>https://alanzhan.dev/zh-tw/post/2021-06-13-atomic-habits/</guid>
+      <description>&lt;p&gt;&#xA;  &lt;img src=&#34;https://alanzhan.dev/2021-06-13-atomic-habits/2021-06-13-atomic-habits_01.png&#34; alt=&#34;原子習慣&#34;&gt;&#xA;&#xA;&lt;/p&gt;&#xA;&lt;h1 id=&#34;複利&#34;&gt;複利&lt;/h1&gt;&#xA;&lt;p&gt;「複利」這個詞貫穿了整部本書，我們可以說它是世界第八大奇蹟，一點也不為過。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;你每天只進步 1% ，持續了之後一年 (1.01 ^ 365 = 37.78)，你將進步 37 倍。&lt;/li&gt;&#xA;&lt;li&gt;你每天持續退步了 1% ，持續了一年 (0.99 ^ 365 = 0.03) ，你將退步到趨近 0 。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;所以習慣就是自我改善這一件事情的複利威力。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan 部落格">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="透過 Terraform 建立私有 GKE Cluster" />
+    <meta property="og:title" content="透過 Terraform 建立私有 GKE Cluster" />
+    <meta property="twitter:title" content="透過 Terraform 建立私有 GKE Cluster" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>透過 Terraform 建立私有 GKE Cluster | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/zh-tw/post/2023-03-12-terraform-private-gke/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/zh-tw/">Alan Zhan 部落格</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/zh-tw/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/zh-tw/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/zh-tw/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2023-03-12-terraform-private-gke/">English</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan 部落格 </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <p>讓我們一起來花個十分鐘，我會手把手地教你使用 Terraform ，建立私有的 GKE Cluster ！</p>
+<h2 id="設定-gcp">設定 GCP</h2>
+<p>
+  <img src="/2023-03-12-terraform-private-gke/create-service-account.jpg" alt="建立 Service Account 與 Key">
+
+</p>
+<h3 id="建立-service-account">建立 Service Account</h3>
+<p>首先我們會需要先到 Google Cloud 的頁面上，建立一個 Service Account 給 Terraform 使用，位置可以參考上圖的第 1 2 3 步驟，如果你已經有 Service Account 的話，你可以跳過這個步驟。</p>
+<p>權限的部分，我先給到 Editor ，因為我只是要 POC 而已，如果你是要建立在 Production 的話，記得翻一下文件，把權限設定的剛剛好就好。</p>
+<h3 id="建立-key">建立 Key</h3>
+<p>第 4 步驟是生成一把 Key ，這把 Key 稍等一下在寫 Terraform 的時候會用到。</p>
+<h2 id="建立-gke">建立 GKE</h2>
+<h3 id="1-設定變數">1. 設定變數</h3>
+<p>我們開始撰寫 Terraform 啦！</p>
+<p>我們先來設定一些變數，提供等下讓你可以快速複製貼上將 GKE 建立起來。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#6272a4"># GCP 的 Project ID
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;gcp_project_id&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;alan-zhan-proj&#34;</span>
+</span></span><span style="display:flex;"><span>}<span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># GKE 的建立位置
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;gcp_region&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;asia-east1&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;subnet_cidr&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.0.0/24&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;pod_cidr&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.8.0/21&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;service_cidr&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.1.0/24&#34;</span>
+</span></span><span style="display:flex;"><span>}<span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># master 的 CIDR 必須是 /28
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6">variable</span> <span style="color:#f1fa8c">&#34;master_cidr&#34;</span> {
+</span></span><span style="display:flex;"><span>  default <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;10.0.2.0/28&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="2-設定-provider">2. 設定 Provider</h3>
+<p>再來建立一個 <code>provider.tf</code> 檔案，並且將下面內容填入。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span>terraform {
+</span></span><span style="display:flex;"><span>  required_providers {
+</span></span><span style="display:flex;"><span>    google <span style="color:#ff79c6">=</span> {
+</span></span><span style="display:flex;"><span>      source <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hashicorp/google&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">provider</span> <span style="color:#f1fa8c">&#34;google&#34;</span> {
+</span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
+</span></span><span style="display:flex;"><span>  region  <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region<span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  # 這邊填入你的剛剛下載下來的 key
+</span></span></span><span style="display:flex;"><span>  credentials <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;./xxx.json&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="3-init-project">3. Init Project</h3>
+<p>第二步，透過 <code>terraform init</code> 將 Terraform 專案初始化。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>terraform init
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Initializing the backend...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Initializing provider plugins...
+</span></span><span style="display:flex;"><span>- Finding latest version of hashicorp/google...
+</span></span><span style="display:flex;"><span>- Installing hashicorp/google v4.56.0...
+</span></span><span style="display:flex;"><span>- Installed hashicorp/google v4.56.0 <span style="color:#ff79c6">(</span>signed by HashiCorp<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Terraform has created a lock file .terraform.lock.hcl to record the provider
+</span></span><span style="display:flex;"><span>selections it made above. Include this file in your version control repository
+</span></span><span style="display:flex;"><span>so that Terraform can guarantee to make the same selections by default when
+</span></span><span style="display:flex;"><span>you run <span style="color:#f1fa8c">&#34;terraform init&#34;</span> in the future.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Terraform has been successfully initialized!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You may now begin working with Terraform. Try running <span style="color:#f1fa8c">&#34;terraform plan&#34;</span> to see
+</span></span><span style="display:flex;"><span>any changes that are required <span style="color:#ff79c6">for</span> your infrastructure. All Terraform commands
+</span></span><span style="display:flex;"><span>should now work.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>If you ever <span style="color:#8be9fd;font-style:italic">set</span> or change modules or backend configuration <span style="color:#ff79c6">for</span> Terraform,
+</span></span><span style="display:flex;"><span>rerun this <span style="color:#8be9fd;font-style:italic">command</span> to reinitialize your working directory. If you forget, other
+</span></span><span style="display:flex;"><span>commands will detect it and remind you to <span style="color:#ff79c6">do</span> so <span style="color:#ff79c6">if</span> necessary.
+</span></span></code></pre></div><h3 id="4-設定-service-api">4. 設定 Service API</h3>
+<p>Private GKE 在建立的時候，會需要 Compute 以及 Container 這兩個 Service ，所以我們建立一個 <code>service.tf</code> ，並且把下面內容填入。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_project_service&#34;</span> <span style="color:#f1fa8c">&#34;compute&#34;</span> {
+</span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
+</span></span><span style="display:flex;"><span>  service <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;compute.googleapis.com&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_project_service&#34;</span> <span style="color:#f1fa8c">&#34;container&#34;</span> {
+</span></span><span style="display:flex;"><span>  project <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_project_id
+</span></span><span style="display:flex;"><span>  service <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;container.googleapis.com&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="5-設定-network">5. 設定 Network</h3>
+<p>建立一個 <code>network.tf</code> ，並且設定 Network 相關的設定。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_network&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;gke&#34;</span>
+</span></span><span style="display:flex;"><span>  auto_create_subnetworks <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>  delete_default_routes_on_create <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>  mtu <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1460</span>
+</span></span><span style="display:flex;"><span>  routing_mode <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;REGIONAL&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_subnetwork&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name          <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;gke-subnet&#34;</span>
+</span></span><span style="display:flex;"><span>  ip_cidr_range <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.subnet_cidr
+</span></span><span style="display:flex;"><span>  region        <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>  network       <span style="color:#ff79c6">=</span> google_compute_network.gke.id
+</span></span><span style="display:flex;"><span>  private_ip_google_access <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  secondary_ip_range {
+</span></span><span style="display:flex;"><span>    range_name    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;k8s-pod-range&#34;</span>
+</span></span><span style="display:flex;"><span>    ip_cidr_range <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.pod_cidr
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  secondary_ip_range {
+</span></span><span style="display:flex;"><span>    range_name    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;k8s-service-range&#34;</span>
+</span></span><span style="display:flex;"><span>    ip_cidr_range <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.service_cidr
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_router&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;gke&#34;</span>
+</span></span><span style="display:flex;"><span>  region  <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>  network <span style="color:#ff79c6">=</span> google_compute_network.gke.id
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_router_nat&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name   <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;nat&#34;</span>
+</span></span><span style="display:flex;"><span>  router <span style="color:#ff79c6">=</span> google_compute_router.gke.name
+</span></span><span style="display:flex;"><span>  region <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  source_subnetwork_ip_ranges_to_nat <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;LIST_OF_SUBNETWORKS&#34;</span>
+</span></span><span style="display:flex;"><span>  nat_ip_allocate_option             <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;MANUAL_ONLY&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  subnetwork {
+</span></span><span style="display:flex;"><span>    name                    <span style="color:#ff79c6">=</span> google_compute_subnetwork.gke.id
+</span></span><span style="display:flex;"><span>    source_ip_ranges_to_nat <span style="color:#ff79c6">=</span> [<span style="color:#f1fa8c">&#34;ALL_IP_RANGES&#34;</span>]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  nat_ips <span style="color:#ff79c6">=</span> [google_compute_address.gke.self_link]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_compute_address&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name         <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;nat&#34;</span>
+</span></span><span style="display:flex;"><span>  address_type <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;EXTERNAL&#34;</span>
+</span></span><span style="display:flex;"><span>  network_tier <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;PREMIUM&#34;</span>
+</span></span><span style="display:flex;"><span>  region <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  depends_on <span style="color:#ff79c6">=</span> [google_project_service.compute]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="6-service-account">6. Service Account</h3>
+<p>建立 <code>service-account.tf</code> ，建立一個給 GKE node 專用的 service account 。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_service_account&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  account_id <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;kubernetes&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="7-gke">7. GKE</h3>
+<p>建立 <code>container.tf</code> ，最後我們來建立 GKE 吧！不過我會順便建立 spot 的 node 。</p>
+<p>在 Terraform 建立 GKE 的過程中，一定會建立預設的 Node ，不管你是不是有設定 <code>remove_default_node_pool = true</code>，在 GKE 建立成功後才會刪除預設的 Node。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_cluster&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name                     <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;primary&#34;</span>
+</span></span><span style="display:flex;"><span>  location                 <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.gcp_region
+</span></span><span style="display:flex;"><span>  remove_default_node_pool <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>  initial_node_count       <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>  network                  <span style="color:#ff79c6">=</span> google_compute_network.gke.self_link
+</span></span><span style="display:flex;"><span>  subnetwork               <span style="color:#ff79c6">=</span> google_compute_subnetwork.gke.self_link
+</span></span><span style="display:flex;"><span>  logging_service          <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;logging.googleapis.com/kubernetes&#34;</span>
+</span></span><span style="display:flex;"><span>  monitoring_service       <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;monitoring.googleapis.com/kubernetes&#34;</span>
+</span></span><span style="display:flex;"><span>  networking_mode          <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;VPC_NATIVE&#34;</span><span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">  # 選填，可以客制 node 的位置
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  node_locations = [
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#    &#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  ]
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  addons_config {
+</span></span><span style="display:flex;"><span>    http_load_balancing {
+</span></span><span style="display:flex;"><span>      disabled <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    horizontal_pod_autoscaling {
+</span></span><span style="display:flex;"><span>      disabled <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  release_channel {
+</span></span><span style="display:flex;"><span>    channel <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;REGULAR&#34;</span>
+</span></span><span style="display:flex;"><span>  }<span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  workload_identity_config {
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     # 這個是給 Pod 在做 
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#    workload_pool = &#34;xxx.svc.id.goog&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">#  }
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  ip_allocation_policy {
+</span></span><span style="display:flex;"><span>    cluster_secondary_range_name  <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;k8s-pod-range&#34;</span>
+</span></span><span style="display:flex;"><span>    services_secondary_range_name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;k8s-service-range&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  private_cluster_config {
+</span></span><span style="display:flex;"><span>    enable_private_nodes    <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    enable_private_endpoint <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>    master_ipv4_cidr_block  <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">var</span>.master_cidr
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_node_pool&#34;</span> <span style="color:#f1fa8c">&#34;general&#34;</span> {
+</span></span><span style="display:flex;"><span>  name       <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;general&#34;</span>
+</span></span><span style="display:flex;"><span>  cluster    <span style="color:#ff79c6">=</span> google_container_cluster.gke.id
+</span></span><span style="display:flex;"><span>  node_count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  management {
+</span></span><span style="display:flex;"><span>    auto_repair  <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    auto_upgrade <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  node_config {
+</span></span><span style="display:flex;"><span>    preemptible  <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>    machine_type <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;e2-small&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    labels <span style="color:#ff79c6">=</span> {
+</span></span><span style="display:flex;"><span>      role <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;general&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    service_account <span style="color:#ff79c6">=</span> google_service_account.gke.email
+</span></span><span style="display:flex;"><span>    oauth_scopes <span style="color:#ff79c6">=</span> [
+</span></span><span style="display:flex;"><span>      <span style="color:#f1fa8c">&#34;https://www.googleapis.com/auth/cloud-platform&#34;</span>
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">resource</span> <span style="color:#f1fa8c">&#34;google_container_node_pool&#34;</span> <span style="color:#f1fa8c">&#34;gke&#34;</span> {
+</span></span><span style="display:flex;"><span>  name    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;spot&#34;</span>
+</span></span><span style="display:flex;"><span>  cluster <span style="color:#ff79c6">=</span> google_container_cluster.gke.id
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  management {
+</span></span><span style="display:flex;"><span>    auto_repair  <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    auto_upgrade <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  autoscaling {
+</span></span><span style="display:flex;"><span>    min_node_count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>    max_node_count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">10</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  node_config {
+</span></span><span style="display:flex;"><span>    preemptible  <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span>    machine_type <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;e2-small&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    labels <span style="color:#ff79c6">=</span> {
+</span></span><span style="display:flex;"><span>      team <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;spot&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    taint {
+</span></span><span style="display:flex;"><span>      key    <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;instance_type&#34;</span>
+</span></span><span style="display:flex;"><span>      value  <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;spot&#34;</span>
+</span></span><span style="display:flex;"><span>      effect <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;NO_SCHEDULE&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    service_account <span style="color:#ff79c6">=</span> google_service_account.gke.email
+</span></span><span style="display:flex;"><span>    oauth_scopes <span style="color:#ff79c6">=</span> [
+</span></span><span style="display:flex;"><span>      <span style="color:#f1fa8c">&#34;https://www.googleapis.com/auth/cloud-platform&#34;</span>
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="8-terraform-apply">8. Terraform Apply</h3>
+<p>透過 <code>terraform apply</code> 來建立 GKE 。 完成啦～</p>
+<p>
+  <img src="/2023-03-12-terraform-private-gke/gke.jpg" alt="Create Private GKE Via Terraform">
+
+</p>
+<h2 id="總結">總結</h2>
+<p>透過 Terraform 建立 GKE 就是快速又方便，也順便複習了 Google Cloud 的相關服務，而且我們還可以透過 Terraform 不斷複製成功又快速的去建立 GKE。</p>
+<p>最後有興趣的朋友可以到這邊複製貼上： <a href="https://github.com/alanzhan0513/alan-zhan-sample-code/tree/main/terraform/private-gke">Github Source Code</a></p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/zh-tw/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/zh-tw/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan 部落格 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

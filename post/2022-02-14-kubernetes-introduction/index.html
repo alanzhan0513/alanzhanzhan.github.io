@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Kubernetes 基礎介紹" />
-    <meta property="og:title" content="Kubernetes 基礎介紹" />
-    <meta property="twitter:title" content="Kubernetes 基礎介紹" />
+    <meta name="title" content="Kubernetes Fundamentals" />
+    <meta property="og:title" content="Kubernetes Fundamentals" />
+    <meta property="twitter:title" content="Kubernetes Fundamentals" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Kubernetes 基礎介紹 | Alan Zhan Blog</title>
+    <title>Kubernetes Fundamentals | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-02-14-kubernetes-introduction/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-02-14-kubernetes-introduction/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -203,109 +203,107 @@
             col-xs-12
             post-container">
             
-                <p>終於要來好好深入探討 Kubernetes ，因為 Kubernetes 是基於 golang 這門語言開發的，所以在稍早已經先針對 golang 深度研究了，不過對於 Docker 與 container 技術有經有深入研究過了，小弟就就不針對 Docker 技術展開了，如果也想看的話，歡迎敲碗，接下來就會好好的針對 Kubernetes 有一系列的文章介紹。</p>
+                <p>It&rsquo;s finally time to dive deep into Kubernetes. Since Kubernetes is built with Go, I&rsquo;ve already done some in-depth research on Go beforehand. I won&rsquo;t be covering Docker and container technology here since I&rsquo;ve already studied those extensively. If you&rsquo;d like to see that content, let me know! From here on, I&rsquo;ll be writing a series of articles focused on Kubernetes.</p>
 <h1 id="kubernetes">Kubernetes</h1>
-<p>甚麼是 Kubernetes (k8s)？ K8s 是 Kubernetes 的縮寫，因為 K 到 s 中間有八個字母，所以稱為 Kubernetes ，它是 Google 的開源容器集群管理系統，是 Google 多年大規模容器管理技術 Borg 的開源版本，主要功能包括：</p>
+<p>What is Kubernetes (K8s)? K8s is the abbreviation for Kubernetes — because there are eight letters between &ldquo;K&rdquo; and &ldquo;s.&rdquo; It&rsquo;s Google&rsquo;s open-source container cluster management system, the open-source version of Google&rsquo;s years of large-scale container management technology called Borg. Its main features include:</p>
 <ul>
-<li>基於容器的應用佈署、維護和滾動升級。</li>
-<li>附載均衡和服務發現。</li>
-<li>跨機器與跨地區的集群調度。</li>
-<li>自動擴展。</li>
-<li>無狀態服務和有狀態服務。</li>
-<li>插件機制保證擴展性。</li>
+<li>Container-based application deployment, maintenance, and rolling updates.</li>
+<li>Load balancing and service discovery.</li>
+<li>Cross-machine and cross-region cluster scheduling.</li>
+<li>Auto-scaling.</li>
+<li>Stateless and stateful services.</li>
+<li>Plugin mechanism for extensibility.</li>
 </ul>
 <h2 id="imperative-vs-declarative">Imperative VS Declarative</h2>
 <ul>
-<li>Imperative : 命令式系統，是寫出解決某個問題、完成某個任務或者達到某個目標的明確步驟。此方法明確寫出系統應該執行某個指令，並且期待系統返回期望結果。像是電視機遙控器對電視的命令。</li>
-<li>Declarative : 聲明式系統，關注的是做甚麼，而不是怎麼做。僅限於描述要達到甚麼目的，如何達到該目的就交給系統處理就好。像是冷氣遙控器對冷氣操作。</li>
+<li>Imperative: An imperative system specifies explicit steps to solve a problem, complete a task, or achieve a goal. This approach explicitly tells the system to execute a specific command and expects a desired result. Think of a TV remote commanding the TV.</li>
+<li>Declarative: A declarative system focuses on what to do, not how to do it. You only describe what goal to achieve, and the system handles how to get there. Think of an AC remote controlling the air conditioner.</li>
 </ul>
-<p>聰明的你應該會覺得很奇怪，我不是要學習 Kubernetes 嗎？幹嘛跟我說這個？會在這邊說是因為 Kubernetes 是基於聲明式的方式而打造出來的系統，那命令式與聲明式的優缺點，這邊就不深入探討各自的優缺點了，有興趣的同學可以自己深入探討。</p>
-<h2 id="核心物件">核心物件</h2>
+<p>You might wonder — aren&rsquo;t I learning Kubernetes? Why are we discussing this? It&rsquo;s because Kubernetes is built as a declarative system. We won&rsquo;t go deep into the pros and cons of imperative vs. declarative here, but feel free to explore that on your own.</p>
+<h2 id="core-objects">Core Objects</h2>
 <ul>
-<li><a href="#pod">Pod</a> : 用來描述應用的實例，包括鏡像地址、資源需求等。Kubernetes 中最核心的物件，也是打通應用和基礎架構的秘密武器。</li>
-<li><a href="#namespace">Namespace</a> : 資源隔離的基本單位，可以理解為文件系統中的目錄結構或者程式語言中的 namespace 。</li>
-<li><a href="#node">Node</a> : 計算節點的抽象，用來描述計算節點的資源抽象、健康狀態等。</li>
-<li><a href="#service">Service</a> : 服務如何將應用發布成為服務，實質上是附載均衡與域名服務的聲明。</li>
+<li><a href="/post/2022-02-14-kubernetes-introduction/#pod">Pod</a>: Describes an application instance, including image address, resource requirements, etc. The most core object in Kubernetes and the secret weapon connecting applications to infrastructure.</li>
+<li><a href="/post/2022-02-14-kubernetes-introduction/#namespace">Namespace</a>: The basic unit of resource isolation. Think of it as a directory structure in a filesystem or a namespace in a programming language.</li>
+<li><a href="/post/2022-02-14-kubernetes-introduction/#node">Node</a>: An abstraction of a compute node, describing resource abstraction, health status, etc.</li>
+<li><a href="/post/2022-02-14-kubernetes-introduction/#service">Service</a>: How applications are published as services — essentially declarations for load balancing and DNS services.</li>
 </ul>
 <h3 id="pod">Pod</h3>
-<p>Pod 本身的意思是豆莢，為什麼會取名為這個呢？因為豆莢會把很多個豆子包覆在一起，使得這些豆子成為一體。</p>
+<p>The word &ldquo;Pod&rdquo; means a seed pod. Why this name? Because a pod wraps multiple seeds together, making them a unit.</p>
 <ul>
-<li>Pod 是一組緊密關聯的容器集合，他們共享 PID 、 IPC 、 Network 和 UTS namespace ，是 Kubernetes 調度的基本單位。</li>
-<li>Pod 的設計裡面是支持多個容器在一個 Pod 中共享網路和文件系統，可以通過進程之間通信和文件共享，簡單又高效的方式組合完成服務。</li>
-<li>同一個 Pod 中不同容器可以共享資源
+<li>A Pod is a tightly coupled group of containers that share PID, IPC, Network, and UTS namespaces. It&rsquo;s the basic scheduling unit in Kubernetes.</li>
+<li>Pods are designed to support multiple containers sharing network and filesystem within a single Pod, enabling simple and efficient service composition through inter-process communication and file sharing.</li>
+<li>Different containers within the same Pod can share resources:
 <ul>
-<li>共享網路 namespace</li>
-<li>通過掛載 Volumn 共享儲存</li>
-<li>共享 Security Context</li>
+<li>Shared network namespace</li>
+<li>Shared storage via Volume mounts</li>
+<li>Shared Security Context</li>
 </ul>
 </li>
 </ul>
 <h3 id="namespace">Namespace</h3>
-<p>Namespace 是對一組資源和物件的抽象集合，可以用來將系統內部的物件劃分不同的群組或用戶組。</p>
-<p>常見的 pods 、 services 、 replication controllers 和 deployments 都是屬於某一個 namespace 的 (默認 default)，而 Node 、 persistentVolumes 等則不屬於任何 Namespace。</p>
+<p>A Namespace is an abstract collection of resources and objects, used to divide system objects into different groups or user groups.</p>
+<p>Common resources like Pods, Services, Replication Controllers, and Deployments belong to a namespace (default is &ldquo;default&rdquo;), while Nodes and PersistentVolumes do not belong to any namespace.</p>
 <h3 id="node">Node</h3>
-<p>在 Kubernetes 的世界中，Node 通常就代表著一台實體機或者虛擬機，用來運行 Pod，為了管理 Pod ，每個 Node 至少需要運行 container runtime 、 kubelet 和 kube-proxy。Node 可以分為 master node 跟 worker node。</p>
+<p>In the Kubernetes world, a Node typically represents a physical or virtual machine used to run Pods. To manage Pods, each Node must run at least a container runtime, kubelet, and kube-proxy. Nodes can be divided into master nodes and worker nodes.</p>
 <ul>
-<li>master node : Kubernetes 的指揮中心，負責管理所以的 node，這個主節點還有以下較為重要的組件。
+<li>Master node: Kubernetes&rsquo; command center, responsible for managing all nodes. It contains the following important components:
 <ul>
 <li>kube-apiserver
 <ul>
-<li>管理整個 kubernetes 所需要的 API 。</li>
-<li>負責跟 node 之間的溝通橋樑。</li>
-<li>負責跟 kubernetes 中的請求身分認證和授權。</li>
+<li>Manages all APIs needed by Kubernetes.</li>
+<li>Acts as the communication bridge between nodes.</li>
+<li>Handles request authentication and authorization in Kubernetes.</li>
 </ul>
 </li>
 <li>etcd
 <ul>
-<li>一個強大的、穩定的、高可用的 key/value 存儲庫，被 kubernetes 用於長久儲存所有的 API 物件。</li>
+<li>A powerful, stable, highly available key/value store used by Kubernetes for persistent storage of all API objects.</li>
 </ul>
 </li>
 <li>kube-controller-manager
 <ul>
-<li>運行著著所以處理 cluster 日常任務的控制器，包括 Node Controller、Replication Controller 等等。</li>
-<li>controller manager 的監視與嘗試更新，都蓄要通過訪問 kube-apiserver。</li>
+<li>Runs all controllers that handle routine cluster tasks, including Node Controller, Replication Controller, etc.</li>
+<li>Controller manager monitoring and update attempts all go through kube-apiserver.</li>
 </ul>
 </li>
 <li>kube-scheduler
 <ul>
-<li>scheduler 會監控新建的 pods，並且將其分配給 node。</li>
+<li>Monitors newly created Pods and assigns them to nodes.</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>worker node :
+<li>Worker node:
 <ul>
 <li>kubelet
 <ul>
-<li>該 node 的管理員，負責管理該 node 上的所有 Pods 的狀態，並且與 master 溝通。</li>
+<li>The node&rsquo;s manager, responsible for managing the state of all Pods on the node and communicating with the master.</li>
 </ul>
 </li>
 <li>kube-proxy
 <ul>
-<li>該 Node 的傳訊員，負責更新該 Node 的 iptables ，讓 Kubernetes 中部在該 Node 上的其他物件，可以得知該 Node 上所以 Pods 的最新狀態。</li>
+<li>The node&rsquo;s messenger, responsible for updating the node&rsquo;s iptables so other objects in the Kubernetes cluster can learn the latest state of Pods on this node.</li>
 </ul>
 </li>
 <li>Container Runtime
 <ul>
-<li>可以運行 container 的執行程式，例如 ： Docker 。</li>
+<li>The runtime that can execute containers, e.g., Docker.</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 <h3 id="service">Service</h3>
-<p>Service 是應用服務的抽象，通過 labels 為應用提供附載均衡和服務發現。match labels 的 Pods IP 和 port 列表組成 endpoints ，由 kube-proxy 負責將服務 IP 負載均衡到這些 endpoint 上。</p>
-<p>每一個 Service 都會自動分配一個 cluster IP (僅只能在 Cluster 內部訪問的虛擬地址) 和 DNS 名，其他容器可以通過該地址或者 DNS 來訪問服務，而不需要了解背後容器的運行。</p>
-<h1 id="總結">總結</h1>
-<p>今天先初步分享 kubernetes 的基礎組件與一些知識，如果有興趣的同學可以自己安裝 kubernetes ，之後會再展開一系列的文章，就讓我們繼續看下去。</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
-<h2 id="參考">參考</h2>
+<p>A Service is an abstraction of an application service. It provides load balancing and service discovery for applications through labels. The IPs and ports of Pods matching the labels form endpoints, and kube-proxy is responsible for load balancing service IPs to these endpoints.</p>
+<p>Each Service is automatically assigned a cluster IP (a virtual address accessible only within the cluster) and a DNS name. Other containers can access the service through this address or DNS without needing to know the details of the underlying containers.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Today I&rsquo;ve shared the basic components and foundational knowledge of Kubernetes. If you&rsquo;re interested, feel free to install Kubernetes on your own. I&rsquo;ll continue with a series of articles, so stay tuned!</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<h2 id="references">References</h2>
 <ul>
-<li><a href="https://kubernetes.io/zh/docs/concepts/overview/components/">Kubernetes 组件</a></li>
-<li><a href="https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/">使用 Kubernetes 对象
-</a></li>
-<li><a href="https://cwhu.medium.com/kubernetes-basic-concept-tutorial-e033e3504ec0">Kubernetes 基礎教學（一）原理介紹
-</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/overview/components/">Kubernetes Components</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/">Working with Kubernetes Objects</a></li>
+<li><a href="https://cwhu.medium.com/kubernetes-basic-concept-tutorial-e033e3504ec0">Kubernetes Basic Tutorial - Introduction</a></li>
 </ul>
 
             

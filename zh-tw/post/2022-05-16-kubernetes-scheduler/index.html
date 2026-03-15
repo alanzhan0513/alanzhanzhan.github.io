@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan 部落格">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="Kubernetes 核心介紹 Scheduler" />
+    <meta property="og:title" content="Kubernetes 核心介紹 Scheduler" />
+    <meta property="twitter:title" content="Kubernetes 核心介紹 Scheduler" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Kubernetes 核心介紹 Scheduler | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/zh-tw/post/2022-05-16-kubernetes-scheduler/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/zh-tw/">Alan Zhan 部落格</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/zh-tw/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/zh-tw/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/zh-tw/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/zh-tw/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/">English</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan 部落格 </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <p>Scheduler 嚴格算起來，算是特殊的 Controller，工作原理與其他控制器無差別。</p>
+<p>Scheduler 的特殊職責在於監控當前集群所有未調度的 Pod，並且獲取當前集群的所有節點健康狀況和資源使用情控，為待調度的 Pod 選擇最佳節點，完成調度。</p>
+<p>kube-scheduler 負責分配調度 Pod 到集群內的節點上，他監聽 kube-apiserver ，查詢還未分配 Node 的 Pod ，然後根據調度策略為這些 Pod 分配節點 (更新 Pod 的 NodeName Field)。</p>
+<p>設計 scheduler 需要要充分考慮諸多因素：</p>
+<ul>
+<li>公平調度</li>
+<li>資源高效利用</li>
+<li>QoS(Quality of Service)</li>
+<li>affinity 和 antiaffinity</li>
+<li>數據本地化 (data locality)</li>
+<li>內部負載干擾 (inter-workload interference)</li>
+<li>deadlines</li>
+</ul>
+<h1 id="scheduler">Scheduler</h1>
+<p>kube-scheduler 調度分為幾個階段：</p>
+<ul>
+<li>predicate: 將所有節點拿出來，過濾不符合條件節點。</li>
+<li>priority: 優先級排序，選擇優先級最高的節點。</li>
+<li>Bind : 將計算節點與 Pod 綁定，完成調度。</li>
+</ul>
+<h2 id="scheduling-cycle--binding-cycle">Scheduling Cycle &amp; Binding Cycle</h2>
+<p>
+  <img src="/2022-05-16-kubernetes-scheduler/scheduling-cycle-binding-cycle.jpg" alt="">
+
+</p>
+<h2 id="predicate-策略">Predicate 策略</h2>
+<p>這邊只有列出常見的策略，還有其他很多策略，你也可以編寫自己的策略。</p>
+<ul>
+<li>PodFitsHostPorts: 檢查是否有 Host Ports 衝突。</li>
+<li>PodFitsPorts: 同PodFitsHostPorts。</li>
+<li>PodFitsResources: 檢查 Node 的資源是否充足，包括允許的 Pod 數量、CPU、內存、GPU 個數以及其他的 OpaqueIntResources。</li>
+<li>Hostname: 檢查 pod.Spec.NodeName 是否與候選節點一致。</li>
+<li>MatchNodeSelector: 檢查候選節點的 pod.Spec.NodeSelector 是否匹配。</li>
+<li>NoVolumeZoneConflict: 檢查 volume zone 是否衝突。</li>
+<li>MatchInterPodAffinity: 檢查是否匹配 Pod 的 affinity 要求。</li>
+<li>NoDiskConflict: 檢查是否存在 Volume 衝突，僅用於 GCP PD 、 AWS EBS 、 Ceph RBD 以及 iSCSI 。</li>
+<li>PodToleratesNodeTaints: 檢查 Pod 是否容忍 Node Taints。</li>
+<li>CheckNodeMemoryPressure: 檢查 Pod 是否可以調度到 MemoryPressure 的節點上。</li>
+<li>CheckNodeDiskPressure: 檢查 Pod 是否可以調度到 DiskPressure 的節點上。</li>
+<li>NoVolumeNodeConflict: 檢查節點是否滿足 Pod 所引用的 Volume 的條件。</li>
+</ul>
+<h2 id="priorites-策略">Priorites 策略</h2>
+<p>經過 Predicate 之後，就要去為剩下的機器打分數，然後排序。</p>
+<ul>
+<li>SelectorSpreadPriority: 優先減少節點上屬於同一個 Service 或 Replication Controller 的 Pod 數量。</li>
+<li>InterPodAffinityPriority: 優先將 Pod 調度到相同的拓樸上 (如同一個節點、Rack、Zone 等)。</li>
+<li>LeastRequestedPriority: 優先調度到請求資源少的節點上。</li>
+<li>BalancedResourceAllocation: 優先平衡各節點的資源使用。</li>
+<li>NodePreferAvoidPodsPriority: alpha.kubernetes.io/perferAvoidPods 字段判斷，權重為 10000 ，避免其他優先即策略的影響。</li>
+<li>NodeAffinitypriority: 優先調度到匹配 NodeAffinity 的節點上。</li>
+<li>TaintTolerationPriority: 優先調度到匹配 TaintToleration 節點上。</li>
+<li>ServiceSpreadingPriority: 盡量將同一個 service 的 Pod 分配到不同節點上，已經被 SelectorSpreadPriority 替代 (默認未使用)。</li>
+<li>EqualPriority: 將所有節點的優先級設置為1 (默認未使用)。</li>
+<li>ImageLocalityPriority: 盡量將使用大 Image 的容器調度到已經下拉的該 Image 的節點上 (默認未使用)。</li>
+<li>MostRequestedPriority: 盡量調度到已經使用過的 Node 上，特別適用於 cluster0autoscaler (默認未使用)。</li>
+</ul>
+<h1 id="指定-node-調度">指定 Node 調度</h1>
+<p>可以通過 nodeSelector 、 nodeAffinity 、 podAffinity 以及 Taints 與 tolerations 等來將 Pod 調度到需要的 Node 上。</p>
+<p>也可以指定設置 nodeName 參數，將 Pod 調度到指定 Node 節點上。</p>
+<h2 id="nodeselector">NodeSelector</h2>
+<p>可以在 pod 上面標記 nodeSelector ，讓在創建 pod 的時候調度到打有對應的 key 與 value 的機器上。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff79c6">apiVersion</span>: v1
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">kind</span>: Pod
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">metadata</span>: 
+</span></span><span style="display:flex;"><span>	<span style="color:#ff79c6">name</span>: nginx
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">containers</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ff79c6">name</span>: nginx
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">image</span>: nginx
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">imagePullPolicy</span>: IfNotPresent
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">nodeSelector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">disktype</span>: ssd
+</span></span></code></pre></div><h2 id="nodeaffinity">NodeAffinity</h2>
+<p>NodeAffinity 目前支援兩種</p>
+<ul>
+<li>requiredDuringSchedulingIgnoredDuringExecution: 必須滿足條件。</li>
+<li>preferedDuringSchedulingIgnoredDuringExecution: 優選條件。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff79c6">apiVersion</span>: v1
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">kind</span>: Pod
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">name</span>: with-affinity-anti-affinity
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">affinity</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">nodeAffinity</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">requiredDuringSchedulingIgnoredDuringExecution</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">nodeSelectorTerms</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#ff79c6">matchExpressions</span>:
+</span></span><span style="display:flex;"><span>          - <span style="color:#ff79c6">key</span>: kubernetes.io/os
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">operator</span>: In
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">values</span>:
+</span></span><span style="display:flex;"><span>            - linux
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">preferredDuringSchedulingIgnoredDuringExecution</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ff79c6">weight</span>: <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">preference</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">matchExpressions</span>:
+</span></span><span style="display:flex;"><span>          - <span style="color:#ff79c6">key</span>: label-1
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">operator</span>: In
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">values</span>:
+</span></span><span style="display:flex;"><span>            - key-1
+</span></span><span style="display:flex;"><span>      - <span style="color:#ff79c6">weight</span>: <span style="color:#bd93f9">50</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">preference</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">matchExpressions</span>:
+</span></span><span style="display:flex;"><span>          - <span style="color:#ff79c6">key</span>: label-2
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">operator</span>: In
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">values</span>:
+</span></span><span style="display:flex;"><span>            - key-2
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">containers</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ff79c6">name</span>: with-node-affinity
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">image</span>: k8s.gcr.io/pause:2.0
+</span></span></code></pre></div><h2 id="podaffinity">PodAffinity</h2>
+<p>PodAffinity 基於 Pod 的標籤來選擇 Node，僅調度滿足條件 Pod 所在的 Node 上，支持 PodAffinity 和 PodAntiffinity。</p>
+<ul>
+<li>requiredDuringSchedulingIgnoredDuringExecution: 必須滿足條件。</li>
+<li>preferedDuringSchedulingIgnoredDuringExecution: 優選條件。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff79c6">apiVersion</span>: v1
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">kind</span>: Pod
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">name</span>: with-pod-affinity
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">affinity</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">podAffinity</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">requiredDuringSchedulingIgnoredDuringExecution</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ff79c6">labelSelector</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">matchExpressions</span>:
+</span></span><span style="display:flex;"><span>          - <span style="color:#ff79c6">key</span>: security
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">operator</span>: In
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">values</span>:
+</span></span><span style="display:flex;"><span>            - S1
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">topologyKey</span>: topology.kubernetes.io/zone
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">podAntiAffinity</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">preferredDuringSchedulingIgnoredDuringExecution</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ff79c6">weight</span>: <span style="color:#bd93f9">100</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">podAffinityTerm</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">labelSelector</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">matchExpressions</span>:
+</span></span><span style="display:flex;"><span>            - <span style="color:#ff79c6">key</span>: security
+</span></span><span style="display:flex;"><span>              <span style="color:#ff79c6">operator</span>: In
+</span></span><span style="display:flex;"><span>              <span style="color:#ff79c6">values</span>:
+</span></span><span style="display:flex;"><span>              - S2
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">topologyKey</span>: topology.kubernetes.io/hostname
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">containers</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ff79c6">name</span>: with-pod-affinity
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">image</span>: k8s.gcr.io/pause:2.0
+</span></span></code></pre></div><h2 id="taints-和-tolerations">Taints 和 Tolerations</h2>
+<p>在使用 NodeSelector 的場景下，是不會強制可以拒絕 Pod 調度到某些 Node 上的，或者是在初步規劃 kubernetes 時，沒有考慮到會有所有部門都會使用 Kubernetes 的技術，結果後面大家都上 k8s 導致需要為某些節點做牆隔離，為了解決這些問題，所以可以使用 Taints 和 Tolerations。</p>
+<p>Taint 和 Tolerations 用於保證 Pod 不會被調度到不合適的 Node 上，其中 Taint 應用於 Node 上，而 Toleration 則應用在 Pod 上。</p>
+<p>目前支持的 Taint 類型：</p>
+<ul>
+<li>NoSchedule: 新的 Pod 不會被調度到該節點上，不影響正在運行的 Pod。</li>
+<li>PreferNoSchedule: Soft 版的 NoSchedule ，盡量不調度到該 Node 上。</li>
+<li>NoExecute: 新的 Pod 不調度到該 Node 上，並且刪除 (evict) 已經在運行的 Pod。Pod 可以增加一個時間 (tolerationSecondes)。</li>
+</ul>
+<p>然而，當 Pod 與 Toleration 匹配 Node 的所有 Taints 的時候，可以調度到該 Node 上，當 Pod 是已經運行的時候，也不會被刪除 (evicted)。</p>
+<p>在 kubernets 內，當一個節點有問題的時候，他也是通過 taints 的機制，將機器打上 key value，以確保不會在有 pod 不會再被調度上去，並且打上 tolerationSecondes 確保在一訂時間內恢復的話， pod 是不會被驅逐的。</p>
+<h1 id="priorityclass">PriorityClass</h1>
+<p>從 v1.8 開始，kube-scheduler 支持定義 Pod 的優先級，從而保證高優先級的 Pod 優先調度。</p>
+<p>preemptionPolicy:</p>
+<ul>
+<li>PreemptLowerPriority: 將允許該 PriorityClass 的 Pod 搶占較低優先級的 Pod 。</li>
+<li>Never: 非搶佔式。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff79c6">apiVersion</span>: scheduling.k8s.io/v1
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">kind</span>: PriorityClass
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">name</span>: high-priority
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">value</span>: <span style="color:#bd93f9">1000000</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">preemptionPolicy</span>: Never
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">globalDefault</span>: <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">description</span>: <span style="color:#f1fa8c">&#34;This priority class should be used for XYZ service pods only.&#34;</span>
+</span></span></code></pre></div><h1 id="多調度器">多調度器</h1>
+<p>如果默認的調度器不滿足需求，還可以部屬自定義的調度器。並且在整個集群中，同時可以運行多個調度器實例，通過 pod.spec.schedulerName 來選擇使用哪一個調度器 (默認使用內置的調度器)。</p>
+<h1 id="總結">總結</h1>
+<p>對於 k8s 整體運作原理已經開始有更深入的認識了，期待自己早日搞懂 k8s 。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/zh-tw/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/zh-tw/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/zh-tw/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan 部落格 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

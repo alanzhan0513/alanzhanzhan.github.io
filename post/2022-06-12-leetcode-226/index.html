@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="白話解 Leetcode - 226 Invert Binary Tree" />
-    <meta property="og:title" content="白話解 Leetcode - 226 Invert Binary Tree" />
-    <meta property="twitter:title" content="白話解 Leetcode - 226 Invert Binary Tree" />
+    <meta name="title" content="Plain English Leetcode - 226 Invert Binary Tree" />
+    <meta property="og:title" content="Plain English Leetcode - 226 Invert Binary Tree" />
+    <meta property="twitter:title" content="Plain English Leetcode - 226 Invert Binary Tree" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>白話解 Leetcode - 226 Invert Binary Tree | Alan Zhan Blog</title>
+    <title>Plain English Leetcode - 226 Invert Binary Tree | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-06-12-leetcode-226/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-06-12-leetcode-226/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -205,25 +205,40 @@
             
                 <h1 id="226-invert-binary-tree">226. Invert Binary Tree</h1>
 <p><a href="https://leetcode.com/problems/invert-binary-tree/">https://leetcode.com/problems/invert-binary-tree/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<h3>Easy</h3><hr><div><p>Given the <code>root</code> of a binary tree, invert the tree, and return <em>its root</em>.</p>
+<p>&nbsp;</p>
+<p><strong>Example 1:</strong></p>
+<img alt="" src="https://assets.leetcode.com/uploads/2021/03/14/invert1-tree.jpg" style="width: 500px; height: 165px;">
+<pre><strong>Input:</strong> root = [4,2,7,1,3,6,9]
+<strong>Output:</strong> [4,7,2,9,6,3,1]
+</pre>
+<p><strong>Example 2:</strong></p>
+<img alt="" src="https://assets.leetcode.com/uploads/2021/03/14/invert2-tree.jpg" style="width: 500px; height: 120px;">
+<pre><strong>Input:</strong> root = [2,1,3]
+<strong>Output:</strong> [2,3,1]
+</pre>
+<p><strong>Example 3:</strong></p>
+<pre><strong>Input:</strong> root = []
+<strong>Output:</strong> []
+</pre>
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+<ul>
+	<li>The number of nodes in the tree is in the range <code>[0, 100]</code>.</li>
+	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
+</ul>
+</div>
 <hr>
-<h2 id="題意">題意</h2>
-<p>將整棵樹的所有左右節點互相對調。</p>
-<h2 id="解題思路">解題思路</h2>
-<p>我們可以把每個節點都視為是一個 root 節後，然後遍例所有的 root 節點，並且將每個 root 節點的左右節點互換即可。</p>
+<h2 id="problem">Problem</h2>
+<p>Swap all left and right nodes of the entire tree.</p>
+<h2 id="approach">Approach</h2>
+<p>We can treat every node as a root node, traverse all root nodes, and swap each root&rsquo;s left and right children.</p>
 <ol>
-<li>判斷 root 是不是為 nil ，如果是結束該 root 節點的遍例。</li>
-<li>將該 root 的左右節點對調。</li>
-<li>將左節點和右節點當作 root，繼續遞歸調用 invertTree 方法，直到第一步被觸發結束遍例。</li>
+<li>Check if root is nil — if so, end the traversal for this root node.</li>
+<li>Swap the current root&rsquo;s left and right children.</li>
+<li>Treat the left and right children as roots and recursively call invertTree until step 1 terminates the traversal.</li>
 </ol>
-<h2 id="原始碼">原始碼</h2>
+<h2 id="source-code">Source Code</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#6272a4">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * Definition for a binary tree node.
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * type TreeNode struct {
@@ -236,15 +251,15 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> root <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> root
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    root.Left, root.Right = root.Right, root.Left
 </span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">invertTree</span>(root.Left)
 </span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">invertTree</span>(root.Right)
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> root
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="結尾">結尾</h1>
-<p>你有更好或更簡單的解決方案嗎？</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+</span></span></code></pre></div><h1 id="closing">Closing</h1>
+<p>Do you have a better or simpler solution?</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
 
             
              

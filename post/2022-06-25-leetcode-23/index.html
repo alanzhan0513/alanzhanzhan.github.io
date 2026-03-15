@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
-    <meta property="og:title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
-    <meta property="twitter:title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
+    <meta name="title" content="Plain English Leetcode - 23 Merge k Sorted Lists" />
+    <meta property="og:title" content="Plain English Leetcode - 23 Merge k Sorted Lists" />
+    <meta property="twitter:title" content="Plain English Leetcode - 23 Merge k Sorted Lists" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>白話解 Leetcode - 23  Merge k Sorted Lists | Alan Zhan Blog</title>
+    <title>Plain English Leetcode - 23 Merge k Sorted Lists | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-06-25-leetcode-23/">
 
@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/post/2022-06-25-leetcode-23/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -205,31 +205,51 @@
             
                 <h1 id="23-merge-k-sorted-lists">23. Merge k Sorted Lists</h1>
 <p><a href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>將 k 個已經排好順序的 linked list 合併成為一個排好序的 list。</p>
-<h2 id="解題思路">解題思路</h2>
-<p>如果一個一個合併匯總成一個 list ，這樣暴力破解，相當的的沒效率，所以我們來換個思路來解這一題。</p>
-<p>如果我一次合併兩個 list ，然後再將每兩個 list 得出的 list 再次合併呢？速度是不是快多了！</p>
+<h3>Hard</h3><hr><div><p>You are given an array of <code>k</code> linked-lists <code>lists</code>, each linked-list is sorted in ascending order.</p>
+<p><em>Merge all the linked-lists into one sorted linked-list and return it.</em></p>
+<p>&nbsp;</p>
+<p><strong>Example 1:</strong></p>
+<pre><strong>Input:</strong> lists = [[1,4,5],[1,3,4],[2,6]]
+<strong>Output:</strong> [1,1,2,3,4,4,5,6]
+<strong>Explanation:</strong> The linked-lists are:
+[
+  1-&gt;4-&gt;5,
+  1-&gt;3-&gt;4,
+  2-&gt;6
+]
+merging them into one sorted list:
+1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6
+</pre>
+<p><strong>Example 2:</strong></p>
+<pre><strong>Input:</strong> lists = []
+<strong>Output:</strong> []
+</pre>
+<p><strong>Example 3:</strong></p>
+<pre><strong>Input:</strong> lists = [[]]
+<strong>Output:</strong> []
+</pre>
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+<ul>
+	<li><code>k == lists.length</code></li>
+	<li><code>0 &lt;= k &lt;= 10<sup>4</sup></code></li>
+	<li><code>0 &lt;= lists[i].length &lt;= 500</code></li>
+	<li><code>-10<sup>4</sup> &lt;= lists[i][j] &lt;= 10<sup>4</sup></code></li>
+	<li><code>lists[i]</code> is sorted in <strong>ascending order</strong>.</li>
+	<li>The sum of <code>lists[i].length</code> will not exceed <code>10<sup>4</sup></code>.</li>
+</ul>
+</div>
+<h2 id="problem">Problem</h2>
+<p>Merge k already-sorted linked lists into one sorted list.</p>
+<h2 id="approach">Approach</h2>
+<p>Brute-force merging one by one would be very inefficient. Instead, we merge two lists at a time and recursively combine the results — divide and conquer!</p>
 <ol>
-<li>我們先將兩個 list 合併的方法撰寫出來。</li>
-<li>我們來撰寫一個方法，每次合併會將低位與中位的 list 合併，並且還會將 中位 + 1 與高位的 list 合併。</li>
-<li>然後在呼叫自己遞歸，重複上述得動作。</li>
-<li>然後再將第二步與第三部得到的 list 合併起來，結果就出來了啦。</li>
+<li>Write a method to merge two lists.</li>
+<li>Write a method that merges the low-to-mid range and the (mid+1)-to-high range.</li>
+<li>Recursively call itself, repeating the process.</li>
+<li>Merge the results — and we have our answer!</li>
 </ol>
-<h2 id="原始碼">原始碼</h2>
+<h2 id="source-code">Source Code</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#6272a4">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * Definition for singly-linked list.
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * type ListNode struct {
@@ -279,9 +299,9 @@
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> sentinel.Next
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="結尾">結尾</h1>
-<p>你有更好或更簡單的解決方案嗎？</p>
-<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+</span></span></code></pre></div><h1 id="closing">Closing</h1>
+<p>Do you have a better or simpler solution?</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
 
             
              

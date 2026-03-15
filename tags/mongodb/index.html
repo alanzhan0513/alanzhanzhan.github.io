@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/tags/mongodb/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -209,12 +209,12 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/">
         <h2 class="post-title">
-            Mongodb Index 最佳實踐
+            MongoDB Index Best Practices
         </h2>
 	
         <div class="post-content-preview">
 	
-            <p>自上一篇在實際的 Porduction 發生了 sorted operation oom 的問題之後，才意識到自己對於 mongodb Index 的掌握度沒有那麼高，於是開始餵關鍵字給 google 查了好久才終於整理出一些重點，有一些重點在上一篇，可以到上一篇複習一下 <a href="/post/2022-03-20-mongodb-sorted-operation-oom">MongoDB Sorted Operation OOM</a>。</p>
+            After the sorted operation OOM incident in production from the previous post, I realized my understanding of MongoDB indexes wasn&rsquo;t as deep as it should be. I started searching extensively and …
        
         </div>
     </a>
@@ -237,8 +237,7 @@
 	
         <div class="post-content-preview">
 	
-            <p>這篇應該會是難得的從問題反推回去學習的歷程吧，我得好好記錄紀錄。最近我們的 production 發生了 MongoDB 的 sort 操作的限制，具體訊息如下：</p>
-<p>MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by :: Executor error during find command :: caused by :: Sort operation used more than the maximum 33554432 bytes of RAM.</p>
+            This is a rare case where I learned by working backward from a problem — I&rsquo;d better document it well. Recently, our production environment hit a MongoDB sort operation limit with this specific …
        
         </div>
     </a>

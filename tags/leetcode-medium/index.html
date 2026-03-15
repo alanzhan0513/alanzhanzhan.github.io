@@ -108,7 +108,6 @@
         </div>
 
         
-        
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -130,13 +129,21 @@
                         </li>
                         
                     
-                    
+
 		    
-                        <li><a href="/about//">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                     
 		            <li>
                         <a href="/search"><i class="fa fa-search"></i></a>
 		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/zh-tw/tags/leetcode-medium/">繁體中文</a>
+                      </li>
+                      
+                    
                 </ul>
             </div>
         </div>
@@ -145,9 +152,6 @@
     
 </nav>
 <script>
-    
-    
-    
     var $body   = document.body;
     var $toggle = document.querySelector('.navbar-toggle');
     var $navbar = document.querySelector('#huxblog_navbar');
@@ -156,17 +160,13 @@
     $toggle.addEventListener('click', handleMagic)
     function handleMagic(e){
         if ($navbar.className.indexOf('in') > 0) {
-        
             $navbar.className = " ";
-            
             setTimeout(function(){
-                
                 if($navbar.className.indexOf('in') < 0) {
                     $collapse.style.height = "0px"
                 }
             },400)
         }else{
-        
             $collapse.style.height = "auto"
             $navbar.className += " in";
         }
@@ -209,32 +209,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-28-leetcode-433/">
         <h2 class="post-title">
-            白話解 Leetcode - 433 Minimum Genetic Mutation
+            Plain English Leetcode - 433 Minimum Genetic Mutation
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="433-minimum-genetic-mutation">433. Minimum Genetic Mutation</h1>
-<p><a href="https://leetcode.com/problems/minimum-genetic-mutation/">https://leetcode.com/problems/minimum-genetic-mutation/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>每一段字串代表一個基因序列，基因在變化的時候，每次只會變化一個字，只要變化的過程以及變化結束的時候，都在 bank 庫中找得到就好，最後要回傳基因變化了幾次，如果不在庫中的話，要回傳 -1 。</p>
+            433. Minimum Genetic Mutation https://leetcode.com/problems/minimum-genetic-mutation/
+MediumA gene string can be represented by an 8-character long string, with choices from 'A', 'C', 'G', and 'T'. …
        
         </div>
     </a>
@@ -252,25 +233,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-23-leetcode-200/">
         <h2 class="post-title">
-            白話解 Leetcode - 200 Number of Islands
+            Plain English Leetcode - 200 Number of Islands
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="200-number-of-islands">200. Number of Islands</h1>
-<p><a href="https://leetcode.com/problems/number-of-islands/">https://leetcode.com/problems/number-of-islands/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="題意">題意</h2>
-<p>給你一個二維的陣列， 1 代表陸地， 0 代表是水，島嶼四面環水，島嶼是由上下左右連接組合而成的，請問這個二維陣列中有幾個島嶼？</p>
+            200. Number of Islands https://leetcode.com/problems/number-of-islands/
+MediumGiven an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. …
        
         </div>
     </a>
@@ -288,26 +257,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2022-06-20-leetcode-78/">
         <h2 class="post-title">
-            白話解 Leetcode - 78 Subsets
+            Plain English Leetcode - 78 Subsets
         </h2>
 	
         <div class="post-content-preview">
 	
-            <h1 id="78-subsets">78. Subsets</h1>
-<p><a href="https://leetcode.com/problems/subsets/">https://leetcode.com/problems/subsets/</a></p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<hr>
-<h2 id="題意">題意</h2>
-<p>傳入一個數值陣列，將元素與元素之間的所有有可能發生的組合回傳。</p>
+            78. Subsets https://leetcode.com/problems/subsets/
+MediumGiven an integer array nums of unique elements, return all possible subsets (the power set).
+The solution set must not contain duplicate …
        
         </div>
     </a>
