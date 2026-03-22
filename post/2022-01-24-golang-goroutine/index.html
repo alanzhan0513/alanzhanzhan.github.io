@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Golang Goroutine and GMP Model In-Depth Analysis" />
-    <meta property="og:title" content="Golang Goroutine and GMP Model In-Depth Analysis" />
-    <meta property="twitter:title" content="Golang Goroutine and GMP Model In-Depth Analysis" />
+    <meta name="title" content="Golang Goroutine 與 GMP 原理全面分析" />
+    <meta property="og:title" content="Golang Goroutine 與 GMP 原理全面分析" />
+    <meta property="twitter:title" content="Golang Goroutine 與 GMP 原理全面分析" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Golang Goroutine and GMP Model In-Depth Analysis | Alan Zhan Blog</title>
+    <title>Golang Goroutine 與 GMP 原理全面分析 | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-01-24-golang-goroutine/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-01-24-golang-goroutine/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-01-24-golang-goroutine/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -203,135 +203,135 @@
             col-xs-12
             post-container">
             
-                <p>I&rsquo;ve been studying Kubernetes recently, so I need to become good friends with the Go language. While reading, I came across goroutines, but couldn&rsquo;t fully understand where they came from and why they exist. So before we dive deep into goroutines, we should first learn some history — this will give us a more comprehensive understanding of the principles and design philosophy behind goroutines.</p>
-<h1 id="the-origin-of-golangs-scheduler">The Origin of Golang&rsquo;s Scheduler</h1>
-<h2 id="the-single-process-era">The Single-Process Era</h2>
-<p>We know that software runs on top of the operating system, and the CPU does the actual computation. In early operating systems, each program was a process, and the next process could only run after the current one finished.</p>
-<p>Suppose there are three processes: A, B, and C. The CPU would schedule them sequentially in order of execution.</p>
+                <p>最近在研讀 Kubernetes ，所以得好好地跟 golang 這個語言當朋友，看著看著看到了 goroutine ，但是始終不解 goroutine 是哪來幹嘛、為何而生的？所以我們在開始深入認識 goroutine 之前，我們可能要先來認識一下歷史，這樣我們才能更全面的認識 goroutine 的原理與設計思想。</p>
+<h1 id="golang-調度器的由來">Golang 調度器的由來</h1>
+<h2 id="單進程時代">單進程時代</h2>
+<p>我們都知道軟體是跑在操作系統之上的，真正來計算的人是 CPU，早期的操作系統每個程序就是一個進程，直到一個程序運行完畢之後，才能運行下一個進程。</p>
+<p>假設有三個進程，分別為 A 、 B 與 C ，那麼在 CPU 上的調度就是依照執行順序執行。</p>
 <p><code>Example: A -&gt; B -&gt; C</code></p>
-<p>However, the single-process operating system era faced these problems:</p>
+<p>但是在這樣的單進程操作系統時代，會面臨以下的問題：</p>
 <ol>
-<li>Only one process could run at a time — the computer could only execute tasks one by one.</li>
-<li>If a process encountered a blocking I/O operation, it caused CPU resource waste.</li>
+<li>每次只能執行一個進程，計算機只能一個任務一個任務的執行。</li>
+<li>若進程發生了 IO 操作堵塞時，容易造成 CPU 資源的浪費。</li>
 </ol>
-<p>This gave rise to multi-process / multi-thread operating systems.</p>
-<h2 id="the-multi-process--multi-thread-era">The Multi-Process / Multi-Thread Era</h2>
-<p>In multi-process / multi-thread operating systems, the blocking problem was solved because the CPU could immediately switch to another process when one was blocked. The CPU scheduling algorithm ensured that running processes were allocated CPU time slices. From a macroscopic perspective, multiple processes appeared to run simultaneously. If you&rsquo;re unfamiliar with CPU scheduling principles, check out <a href="https://bbs.huaweicloud.com/blogs/288296">CPU Scheduling Principles</a>.</p>
-<p>When multiple processes share CPU time slices, everything seems fine. But engineers discovered new problems: creating, switching, and destroying processes all take considerable time. While CPU utilization improved, when there were too many processes, a large portion of CPU time was spent on context switching.</p>
-<p>So what overhead does process switching incur?</p>
-<h3 id="process-switching-overhead">Process Switching Overhead</h3>
+<p>於是就誕生了多進程 / 多線程 的操作系統。</p>
+<h2 id="多進程--多線程時代">多進程 / 多線程時代</h2>
+<p>在多進程 / 多線程德操作系統中，就解決掉了阻塞的問題，因為一個進程阻塞 CPU 就可以立刻切換到其他進程中去執行，而且調度 CPU 的算法可以保證運行的進程，都可以分配到 CPU 的運行分片，從宏觀的角度來看，似乎多個進程是同時在運行的，相信會有同學不清楚 CPU 的調度原理不清楚的話，可以查看一下 <a href="https://bbs.huaweicloud.com/blogs/288296">CPU 調度原理</a>。</p>
+<p>多個進程在分配 CPU 的運行時間片的時候，一切看起來沒問題的，但是工程師們又發現了新的問題，進程在創建、切換、銷毀，都會占用很長得時間，CPU 的利用率雖然起來了，但是進程過多時，CPU 會有很大一部分的時間都會被用來運行切換進程。</p>
+<p>那麼進程在切換的時候，會造成那些開銷呢？</p>
+<h3 id="進程切換開銷">進程切換開銷</h3>
 <ul>
-<li>Direct costs
+<li>直接開銷
 <ul>
-<li>Switching the Page Global Directory (PGD)</li>
-<li>Switching the kernel stack</li>
-<li>Switching hardware context (data that must be loaded into registers before a process can resume, collectively called hardware context)</li>
-<li>Flushing the TLB</li>
-<li>Executing the system scheduler code</li>
+<li>切換頁表全域性目錄 (PGD)</li>
+<li>切換 Kernel 堆疊</li>
+<li>切換硬體上下文 (進程恢復之前，必須裝入戰存器的資料，統稱為硬體上下文)</li>
+<li>重新整理 TLB</li>
+<li>系統調度器的代碼執行</li>
 </ul>
 </li>
-<li>Indirect costs
+<li>間接開銷
 <ul>
-<li>CPU cache invalidation leads to more memory I/O operations for direct access</li>
+<li>CPU 緩存失效導致進程需要用到內存直接訪問的 IO 操作變多</li>
 </ul>
 </li>
 </ul>
-<p>So how can we improve CPU utilization?</p>
-<h2 id="coroutines-to-improve-cpu-utilization">Coroutines to Improve CPU Utilization</h2>
-<p>Clever engineers discovered that threads are divided into kernel threads (Kernel Thread) and user threads (User Thread). A &ldquo;user thread&rdquo; must be bound to a &ldquo;kernel thread,&rdquo; but the CPU doesn&rsquo;t know about &ldquo;user threads&rdquo; — it only knows it&rsquo;s running a &ldquo;kernel thread&rdquo; (Linux PCB process control block).</p>
-<p>So can we create and maintain lightweight coroutines in user space, binding multiple lightweight threads to the same kernel thread? If a kernel thread gets a time slice, couldn&rsquo;t we execute all the user-space coroutines within that time? Then hand the CPU back. Wouldn&rsquo;t this significantly improve overall execution efficiency?</p>
-<p>This is the principle behind Go&rsquo;s thread scheduling. Let&rsquo;s take a look at Goroutines.</p>
+<p>所以我們該如何才能提高 CPU 的利用率呢？</p>
+<h2 id="協程來提高-cpu-利用率">協程來提高 CPU 利用率</h2>
+<p>聰明的工程師們就發現，其實線程分為內核態線程 (Kernel Thread) 與用戶態線程 (User Thread)，而一個「用戶態線程」必須綁定一個「內核態線程」，但是 CPU 不會知道有「用戶態線程」的存在，他只知道他運行的是一個「內核態線程」 (Linux PCB 進程控制塊)。</p>
+<p>那麼我們能不能在用戶態創建維護一個輕量級的協程 (co-routine)，讓多個輕量級的線程綁定到同一個內核態線程上？如果一個內核態線程分到一個運行的時間片之後，那我是不是能在有效的時間內，把用戶態堆積的所有協程都執行完成呢？然後再把 CPU 交出去，那這樣是不是整個執行效率會高很多呢？</p>
+<p>所以這就是 Go 語言線程調度遵循的一些原則，那我們來看看 Goroutine。</p>
 <h2 id="goroutine">Goroutine</h2>
-<p>Goroutine is Go&rsquo;s implementation of coroutines. Go implements user-space threads based on the GMP model:</p>
+<p>Goroutine 就是 Go 語言的協程概念，Go 語言基於 GMP 模型實現用戶態線程</p>
 <ul>
-<li>Goroutine (G): Represents a goroutine. Each goroutine has its own stack space and timer. The initial stack size is around 2KB and grows as needed.</li>
-<li>Machine (M): An abstraction representing a kernel thread. Records kernel thread stack information. When a goroutine is scheduled to a thread, it uses the goroutine&rsquo;s own stack information.</li>
-<li>Processor (P): Represents the scheduler. Responsible for scheduling goroutines, maintaining a local goroutine queue, and binding the queue to an M. M retrieves goroutines from P and executes them. P is also responsible for some memory management.</li>
+<li>Goroutine ： 表示 goroutine ，每個 goroutine 都有自已的 stack 空間、定時器，初始化的 stack 大小在 2k 左右，空間會隨著需求增長。</li>
+<li>Machine ： 抽象化代表內核線程，紀錄內核線程 stack 信息，當 goroutine 調度到線程時候，使用該 goroutine 自己的 stack 信息。</li>
+<li>Process ： 表示調度器，負責調度 goroutine ，維護一個本地 goroutine 對列，並且把對列跟 M 綁定，讓 M 從 P 上獲得 goroutine 並執行，同時還負責部分記憶體管理。</li>
 </ul>
 <p>
   <img src="/2022-01-24-golang-goroutine/2022-01-24-gmp.jpg" alt="golang GMP">
 
 </p>
-<h3 id="mpg-relationships">MPG Relationships</h3>
+<h3 id="mpg-的對應關係">MPG 的對應關係</h3>
 <ul>
 <li>KSE: Kernel Scheduling Entity</li>
-<li>M has a one-to-one correspondence with Kernel Tasks.</li>
-<li>A single P can have multiple Gs. P determines which M to bind to based on the current state. For example, if an M has entered kernel mode, P may switch to find another idle M to execute on.</li>
+<li>M 我們可以理解跟 Kernel Task 一對一對應</li>
+<li>一個 P 上面可以有多個 G，P 會去識當前狀態來決定要跟哪個 M 來綁定，比如說一個 M 已經陷入到內核態，而 P 就有可能換主，去找其他 M 執行。</li>
 </ul>
 <p>
   <img src="/2022-01-24-golang-goroutine/2022-01-24-mpg.jpg" alt="golang MPG">
 
 </p>
-<h3 id="gmp-model-details">GMP Model Details</h3>
+<h3 id="gmp-模型細節">GMP 模型細節</h3>
 <p>
   <img src="/2022-01-24-golang-goroutine/2022-01-24-gmp-detail.jpg" alt="golang GMP Model">
 
 </p>
 <ul>
-<li>LRQ: Local Run Queue</li>
-<li>GRQ: Global Run Queue</li>
-<li>sudog: Blocking queue</li>
-<li>gFree: Global free G list</li>
-<li>pidle: Global idle P list</li>
+<li>LRQ： local run queue</li>
+<li>GRQ： global run queue</li>
+<li>sudog： 阻塞 queue</li>
+<li>gFree： 全局自由 G 列表</li>
+<li>pidle： 全局空閒 P 列表</li>
 </ul>
-<p>Here are some details about the diagram above:</p>
+<p>以下真的上圖的一些細節展開贅述：</p>
 <ul>
-<li>When a Go program starts and spawns multiple goroutines, there&rsquo;s a configurable parameter for how many concurrent threads Go can run. Typically, this matches the number of CPUs on your machine. During initialization, P instances are created according to this setting.</li>
-<li>When Go starts executing, the main function itself is also a goroutine, so it gets placed on a P. If the main function spawns many goroutines, they queue up on the current P. At this point, the multi-core advantage isn&rsquo;t fully utilized because all Gs are mounted on the same P. But other Ps won&rsquo;t just sit idle — that would waste CPU!</li>
-<li>If a P has no work, it checks the GRQ. If there&rsquo;s still nothing, it looks at other Ps to see if they have Gs to execute. If it finds the first P has queued Gs, it steals half. Since all Ps have this mechanism, the backlog of Gs is quickly consumed.</li>
-<li>What if we create more Gs than the LRQ can hold (default 256)? The overflow goes to the GRQ.</li>
-<li>If an M enters kernel mode, P unbinds from it and looks for another idle M to bind with.</li>
-<li>If a G becomes blocked, the waiting G gets placed in the sudog blocking queue with no P binding.</li>
-<li>After a G finishes running, it places itself in gFree for reuse, reducing overhead.</li>
+<li>假設 go 語言在主程序，起了多個 goroutine ，那麼在啟動的過程中，會有一個參數可以設定， go 可以運行多少個併發的現程，一般而言，會看你的節點上有多少個 CPU 併發數就是多少，所以在初始化的過程中，就會按照你的設定數量去初始化 P 。</li>
+<li>當 go 語言開始執行了，那其實 go 語言的 main 方法，本身也是一個 goroutine ，所以他就會被落到一個 P 上，那麼這個 main 方法又起了很多個 goroutine ，那麼他就會在當前的 P 上掛載多個 G ，所以在這一刻， P 上會有一堆排隊的 G ，這時候，還沒充分的利用多核心的優勢，因為 G 都掛載在同一個 P 上，但是其他的 P 不可能空手啥事都不幹，這樣未免也太浪費 CPU 了吧！</li>
+<li>如果 P 已經空手了，那麼他就會去看 GRQ ，如果還是沒有，他就會去看看其他的 P 是不是有 G 可以執行，假設他發現第一個 P 有正在對列的 G ，那麼他就會拿取一半的 G 過來運行，但是所有的 P 都有這個機制，所以很快的堆積的 G 就被消化完畢。</li>
+<li>但是會不會有一種狀況發生，我創建了一堆 G ，超出了 LRQ 的長度 (默認 256)，那麼這個 G 就會放到 GRQ 內。</li>
+<li>如果 M 陷入內核態了，那麼 P 就會跟 M 斷開綁定關係， P 就會取找說 哪個 M 是空閒的，並且跟他綁定在一起。</li>
+<li>如果一個 G 產生了阻塞，那處於 wait 狀態的 G ，就會被丟到 sudog 阻塞對列裡，他不跟任何的 P 產生綁定關係。</li>
+<li>如果 G 已經完成運行後，他會把自己放到 gFree 去，這樣就可以重複使用 G ，減少開銷。</li>
 </ul>
-<h4 id="p-states">P States</h4>
+<h4 id="p-的狀態">P 的狀態</h4>
 <p>
   <img src="/2022-01-24-golang-goroutine/2022-01-24-p-state-machine.jpg" alt="golang GMP P state machine">
 
 </p>
 <ul>
-<li>_Pidle: The processor is not running user code or the scheduler. Held by the idle queue or a structure changing its state. The run queue is empty.</li>
-<li>_Prunning: Held by thread M, currently executing user code or the scheduler.</li>
-<li>_Psyscall: Not executing user code. The current thread is trapped in a system call.</li>
-<li>_Pgcstop: Held by thread M. The current processor is stopped for garbage collection.</li>
-<li>_Pdead: The current processor is no longer in use.</li>
+<li>_Pidle： 處理器沒有運行用戶代碼或者調度器，被空閒對列或者改變其狀態的結構持有，運行對列為空。</li>
+<li>_Prunning： 被線程 M 持有，並且正在執行用戶代碼或者調度器。</li>
+<li>_Psyscall： 沒有執行用戶代碼，當前線程陷入系統調用。</li>
+<li>_Pgcstop： 被線程 M 持有，當前處理器於垃圾回收被停止。</li>
+<li>_Pdead： 當前處理器已經不被使用。</li>
 </ul>
-<h4 id="g-states">G States</h4>
+<h4 id="g-的狀態">G 的狀態</h4>
 <p>
   <img src="/2022-01-24-golang-goroutine/2022-01-24-g-state-machine.jpg" alt="golang GMP G state machine">
 
 </p>
 <ul>
-<li>_Gidle: Just allocated and not yet initialized. Value is 0, the default after creating a goroutine.</li>
-<li>_Grunnable: Not executing code, no stack ownership. Stored in a run queue — possibly in a P&rsquo;s local queue or the global queue.</li>
-<li>_Grunning: Currently executing code. Owns the stack.</li>
-<li>_Gsyscall: Executing a system call. Owns the stack, detached from P but bound to a specific M. Will be assigned to a run queue after the call ends.</li>
-<li>_Gwaiting: A blocked goroutine, blocked on a channel send or receive queue.</li>
-<li>_Gdead: Currently unused, not executing code. May have an allocated stack. Found in the free list — could be a freshly initialized goroutine or one that exited via goexit.</li>
-<li>_Gcopystack: Stack is being copied. Not executing code, not in a run queue.</li>
-<li>_Gscan: GC is scanning the stack space. Not executing code. Can coexist with other states.</li>
+<li>_Gidle： 剛剛被分配，並且還沒被初始化，值為 0 ，為創建 goroutine 後的默認值。</li>
+<li>_Grunnable： 沒有執行代碼，沒有 stack 的所有權，存儲在運行對列中，可能在某個 P 的本地對列或者全局對列中。</li>
+<li>_Grunning： 正在執行代碼的 goroutine，擁有 stack 的所有權。</li>
+<li>_Gsyscall： 正在執行系統調用，擁有 stack 的所有權，與 P 脫離，但是與某個 M 綁定，會在調用結束後，被分配到運行對列。</li>
+<li>_Gwaiting： 被阻塞的 goroutine，阻塞在某個 channel 的發送或者接收對列。</li>
+<li>_Gdead： 當前 goroutine 未被使用，沒有執行代碼，可能有分配的 stack ，分布在空閒列表，可能是一個剛初始化 goroutine ，也可能是執行 goexit 退出的 goroutine。</li>
+<li>_Gcopystac： stack 正在被拷貝，沒有執行代碼，不在運行對列上，執行權在。</li>
+<li>_Gscan： GC 正在掃描 stack 空間，沒有執行代碼，可以與其他狀態同時存在。</li>
 </ul>
-<h3 id="scheduler-behavior">Scheduler Behavior</h3>
+<h3 id="調度器行為">調度器行為</h3>
 <ul>
-<li>To ensure fairness, when there are pending Gs in the GRQ, schedtick ensures a certain probability (1/61) of fetching G from the GRQ.</li>
-<li>Look for pending G in P&rsquo;s LRQ.</li>
-<li>If neither of the above finds a G, runtime.findrunnable performs a blocking search:
+<li>為了保證公平，當 GRQ 中有待執行的 G 時候，通過 schedtick 保證有一定的機率 (1/61)，會從 GRQ 中查找 G。</li>
+<li>從 P 的 LRQ 中查找待處理的 G。</li>
+<li>如果前面兩種都沒找到 G，會通過 runtime.findrunnable 進行阻塞查找 G。
 <ul>
-<li>Search the LRQ and GRQ.</li>
-<li>Check the network poller for Gs waiting to run.</li>
-<li>Use runtime.runqsteal to try stealing half the Gs from another random P.</li>
+<li>從 LRQ 、 GRQ 中查找。</li>
+<li>從網路輪詢器中查找是否有 G 等待運行。</li>
+<li>通過 runtime.runqsteal 嘗試從其他隨機的 P 中竊取一半的 G。</li>
 </ul>
 </li>
 </ul>
-<h1 id="conclusion">Conclusion</h1>
-<p>It&rsquo;s been a while since I studied such hardcore knowledge. I feel like I might not fully digest it today — I&rsquo;ll need to review it several more times. What are your thoughts after reading this?</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
-<h2 id="references">References</h2>
+<h1 id="總結">總結</h1>
+<p>好久沒看那麼硬的知識了，但我總覺得我今天會消化不良，我需要反反覆覆在看個好幾次，看完之後你的心得如何呢？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="參考">參考</h2>
 <ul>
-<li><a href="https://github.com/aceld/golang/blob/main/2%E3%80%81Golang%E7%9A%84%E5%8D%8F%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8%E5%8E%9F%E7%90%86%E5%8F%8AGMP%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%EF%BC%9F.md">Golang&rsquo;s Goroutine Scheduler Principles and GMP Design</a></li>
+<li><a href="https://github.com/aceld/golang/blob/main/2%E3%80%81Golang%E7%9A%84%E5%8D%8F%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8%E5%8E%9F%E7%90%86%E5%8F%8AGMP%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%EF%BC%9F.md">Golang的协程调度器原理及GMP设计思想？</a></li>
 </ul>
-<h2 id="errata">Errata</h2>
-<p>Thanks to Wang Zhi for finding some errors in this article. The corrections have been made.</p>
+<h2 id="補充">補充</h2>
+<p>感謝 王志 同學，發現本文的一些錯誤，目前已經修正錯誤，讓本文更佳的完善。</p>
 
             
              
@@ -618,7 +618,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -628,7 +628,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

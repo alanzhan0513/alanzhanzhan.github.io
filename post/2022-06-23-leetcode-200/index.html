@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Plain English Leetcode - 200 Number of Islands" />
-    <meta property="og:title" content="Plain English Leetcode - 200 Number of Islands" />
-    <meta property="twitter:title" content="Plain English Leetcode - 200 Number of Islands" />
+    <meta name="title" content="白話解 Leetcode - 200 Number of Islands" />
+    <meta property="og:title" content="白話解 Leetcode - 200 Number of Islands" />
+    <meta property="twitter:title" content="白話解 Leetcode - 200 Number of Islands" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Plain English Leetcode - 200 Number of Islands | Alan Zhan Blog</title>
+    <title>白話解 Leetcode - 200 Number of Islands | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-06-23-leetcode-200/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-06-23-leetcode-200/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-06-23-leetcode-200/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -235,23 +235,23 @@
 	<li><code>grid[i][j]</code> is <code>'0'</code> or <code>'1'</code>.</li>
 </ul>
 </div>
-<h2 id="problem">Problem</h2>
-<p>Given a 2D array where 1 represents land and 0 represents water, islands are surrounded by water and formed by connecting adjacent land cells horizontally or vertically. How many islands are in this 2D array?</p>
-<h2 id="approach">Approach</h2>
-<p>We visit all land and water cells. When we encounter land, we flood-fill all its neighbors to water so we won&rsquo;t double-count islands on subsequent visits.</p>
+<h2 id="題意">題意</h2>
+<p>給你一個二維的陣列， 1 代表陸地， 0 代表是水，島嶼四面環水，島嶼是由上下左右連接組合而成的，請問這個二維陣列中有幾個島嶼？</p>
+<h2 id="解題思路">解題思路</h2>
+<p>我們要訪問完全陸地以及水，當遇到陸地就把所有鄰居刷成水，下次再訪問就不會重複計算島嶼了。</p>
 <ol>
-<li>Write a nested loop to visit all elements.</li>
-<li>Declare an ans variable to hold the result.</li>
-<li>When encountering a &lsquo;1&rsquo;, increment ans by 1.</li>
-<li>Update all connected &lsquo;1&rsquo;s to &lsquo;0&rsquo; — treat them as water on future visits.</li>
-<li>Return ans.</li>
+<li>寫個雙迴圈，要訪問所有的元素。</li>
+<li>宣告一個 ans 的變數，這個也要當作是結果準備回傳。</li>
+<li>當遇到 1 ， 將 ans + 1 。</li>
+<li>將所有相關連再一起的 1 ，把它更新為 0 ，之後再訪問就當作是水處理就好。</li>
+<li>回傳 ans 。</li>
 </ol>
-<h2 id="source-code">Source Code</h2>
+<h2 id="原始碼">原始碼</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">numIslands</span>(grid [][]<span style="color:#8be9fd">byte</span>) <span style="color:#8be9fd">int</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> <span style="color:#8be9fd;font-style:italic">len</span>(grid) <span style="color:#ff79c6">==</span> <span style="color:#bd93f9">0</span> {
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> <span style="color:#bd93f9">0</span>
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    m <span style="color:#ff79c6">:=</span> <span style="color:#8be9fd;font-style:italic">len</span>(grid)
 </span></span><span style="display:flex;"><span>    n <span style="color:#ff79c6">:=</span> <span style="color:#8be9fd;font-style:italic">len</span>(grid[<span style="color:#bd93f9">0</span>])
 </span></span><span style="display:flex;"><span>    ans <span style="color:#ff79c6">:=</span> <span style="color:#bd93f9">0</span>
@@ -276,9 +276,9 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">dfs</span>(grid, x, y <span style="color:#ff79c6">+</span> <span style="color:#bd93f9">1</span>, m, n)
 </span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">dfs</span>(grid, x, y <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>, m, n)
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="closing">Closing</h1>
-<p>Do you have a better or simpler solution?</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+</span></span></code></pre></div><h1 id="結尾">結尾</h1>
+<p>你有更好或更簡單的解決方案嗎？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -565,7 +565,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -575,7 +575,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

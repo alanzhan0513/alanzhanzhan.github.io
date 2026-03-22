@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on Alan Zhan Blog</title>
+    <link>https://alanzhan.dev/en/tags/golang/</link>
+    <description>Recent content in Golang on Alan Zhan Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 13 Feb 2022 14:42:09 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/en/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang Memory Management and GC In-Depth Analysis</title>
+      <link>https://alanzhan.dev/en/post/2022-02-13-golang-memory-management/</link>
+      <pubDate>Sun, 13 Feb 2022 14:42:09 +0800</pubDate>
+      <guid>https://alanzhan.dev/en/post/2022-02-13-golang-memory-management/</guid>
+      <description>&lt;p&gt;A new year has arrived! After completing the analysis of &lt;a href=&#34;https://alanzhan.dev/en/post/2022-01-24-golang-goroutine/&#34;&gt;Golang Goroutine and GMP Model In-Depth Analysis&lt;/a&gt;, I gained a much more comprehensive understanding of the Go language. But after learning about GMP, aren&amp;rsquo;t we still missing the memory management aspect? So today, let&amp;rsquo;s dive deep into how Go manages its memory.&lt;/p&gt;&#xA;&lt;h1 id=&#34;the-memory-management-debate&#34;&gt;The Memory Management Debate&lt;/h1&gt;&#xA;&lt;p&gt;When it comes to memory management, there&amp;rsquo;s been a long-standing debate: who should manage memory — the machine or the developer? Whether it&amp;rsquo;s machine-managed or human-managed, everyone agrees that memory management is critically important, but opinions diverge:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Golang Goroutine and GMP Model In-Depth Analysis</title>
+      <link>https://alanzhan.dev/en/post/2022-01-24-golang-goroutine/</link>
+      <pubDate>Mon, 24 Jan 2022 20:24:58 +0800</pubDate>
+      <guid>https://alanzhan.dev/en/post/2022-01-24-golang-goroutine/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve been studying Kubernetes recently, so I need to become good friends with the Go language. While reading, I came across goroutines, but couldn&amp;rsquo;t fully understand where they came from and why they exist. So before we dive deep into goroutines, we should first learn some history — this will give us a more comprehensive understanding of the principles and design philosophy behind goroutines.&lt;/p&gt;&#xA;&lt;h1 id=&#34;the-origin-of-golangs-scheduler&#34;&gt;The Origin of Golang&amp;rsquo;s Scheduler&lt;/h1&gt;&#xA;&lt;h2 id=&#34;the-single-process-era&#34;&gt;The Single-Process Era&lt;/h2&gt;&#xA;&lt;p&gt;We know that software runs on top of the operating system, and the CPU does the actual computation. In early operating systems, each program was a process, and the next process could only run after the current one finished.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

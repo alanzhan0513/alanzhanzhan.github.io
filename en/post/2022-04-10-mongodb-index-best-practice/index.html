@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="MongoDB Index Best Practices" />
+    <meta property="og:title" content="MongoDB Index Best Practices" />
+    <meta property="twitter:title" content="MongoDB Index Best Practices" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MongoDB Index Best Practices | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/en/post/2022-04-10-mongodb-index-best-practice/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/en/">Alan Zhan Blog</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/en/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/en/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/en/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/">繁體中文</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <p>After the sorted operation OOM incident in production from the previous post, I realized my understanding of MongoDB indexes wasn&rsquo;t as deep as it should be. I started searching extensively and finally organized some key points. Some were covered in the previous post — feel free to review <a href="/en/post/2022-03-20-mongodb-sorted-operation-oom/">MongoDB Sorted Operation OOM</a>.</p>
+<h1 id="when-to-use-indexes">When to Use Indexes</h1>
+<ul>
+<li>When you have sorting scenarios and in-memory sorting exceeds 32 MB.</li>
+<li>When a specific field has a uniqueness requirement.</li>
+<li>When the document count is large.</li>
+<li>Build indexes on high-cardinality fields.</li>
+</ul>
+<h1 id="when-not-to-use-indexes">When NOT to Use Indexes</h1>
+<ul>
+<li>When an index cannot effectively filter data.</li>
+<li>Don&rsquo;t set indexes on frequently updated fields.</li>
+</ul>
+<h1 id="how-to-design-and-use-indexes">How to Design and Use Indexes</h1>
+<h2 id="use-compound-indexes-instead-of-single-field-indexes">Use Compound Indexes Instead of Single Field Indexes</h2>
+<p>In MongoDB, a find query can only use one index at a time (in most scenarios). So if your use case frequently filters on multiple fields, use a Compound Index composed of multiple fields to match your query conditions.</p>
+<h2 id="follow-the-esr-rule">Follow the ESR Rule</h2>
+<p>ESR stands for Equality, Sort, Range. This means the index field order must follow this sequence for optimal efficiency:</p>
+<ul>
+<li>Equality: Fields used in equality queries.</li>
+<li>Sort: Fields used for sorting.</li>
+<li>Range: Fields used for range queries.</li>
+</ul>
+<h2 id="let-indexes-cover-your-queries">Let Indexes Cover Your Queries</h2>
+<p><a href="https://www.mongodb.com/docs/upcoming/indexes/#covered-queries">Covered Queries</a> can return results directly from the index, making them highly efficient.</p>
+<p>The following conditions must be met:</p>
+<ul>
+<li>All query condition fields must be part of the index.</li>
+<li>All returned fields must be part of the index.</li>
+<li>The query conditions must not include equality to null, e.g., <code>(i.e. {&quot;field&quot; : null} or {&quot;field&quot; : {$eq : null}} )</code>.</li>
+</ul>
+<h2 id="be-careful-with-indexes-on-low-cardinality-fields">Be Careful with Indexes on Low-Cardinality Fields</h2>
+<p>Querying fields with few unique values returns large result sets.</p>
+<p>Compound indexes can include low-cardinality fields, but the combined index should also include high-cardinality fields.</p>
+<h2 id="remove-unnecessary-indexes">Remove Unnecessary Indexes</h2>
+<p>Too many indexes degrade CUD (Create, Update, Delete) performance. Keep indexes to an appropriate number — don&rsquo;t create too many.</p>
+<h2 id="dont-use-wildcard-indexes-as-replacements">Don&rsquo;t Use Wildcard Indexes as Replacements</h2>
+<p>Wildcard indexes provide additional flexibility for special query patterns or polymorphic document workloads, but like other indexes, they require storage and maintenance, adding overhead to MongoDB.</p>
+<p>If your application&rsquo;s query patterns are known in advance, use more selective indexes on the specific fields your queries access.</p>
+<h2 id="use-partial-indexes">Use Partial Indexes</h2>
+<p>You can reduce index size and performance overhead by building <a href="https://www.mongodb.com/docs/manual/core/index-partial/">Partial Indexes</a> on specific fields. For example, on an order status field, only index documents with &ldquo;processing&rdquo; status.</p>
+<h2 id="build-appropriate-indexes-for-sorting">Build Appropriate Indexes for Sorting</h2>
+<p>Since MongoDB can only use up to 32 MB of memory for sorting, you need to build indexes on the relevant fields to avoid this limitation.</p>
+<h2 id="be-careful-with-these-operators">Be Careful with These Operators</h2>
+<ol>
+<li>$where and $exists: These operators completely bypass indexes.</li>
+<li>$ne and $not: Can generally still use indexes, but with very low efficiency — may even fall back to COLLSCAN.</li>
+<li>If your query uses $or, ensure each condition in the $or can use a different index (under $or, multiple index references are supported). However, $or + $sort will never use an index. If possible, use range queries instead to avoid $or + $sort.</li>
+<li>$nin: The &ldquo;not in&rdquo; operator also easily falls back to COLLSCAN.</li>
+<li>For indexes within pipelines, be careful — once data passes through $project, $group, $lookup, $unwind, etc., indexes become completely unusable.</li>
+</ol>
+<h2 id="dont-build-indexes-on-frequently-written-fields">Don&rsquo;t Build Indexes on Frequently Written Fields</h2>
+<p>Building indexes on frequently updated fields means every write or update also needs to update the index B-tree, degrading performance. Indexes perform best in read-heavy scenarios.</p>
+<h1 id="automated-index-recommendations">Automated Index Recommendations</h1>
+<p>If you&rsquo;re unsure how to design and use indexes, you can use <a href="https://www.mongodb.com/docs/atlas/performance-advisor/">Performance Advisor</a> to monitor queries exceeding 100ms and automatically suggest new indexes to improve performance. However, this isn&rsquo;t the recommended approach.</p>
+<p>The better practice is to plan ahead and use Performance Advisor to identify areas that may need additional tuning.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>The above covers the most common scenarios for designing and using indexes. If you have other common scenarios and corresponding index usage patterns, feel free to leave a comment and let&rsquo;s discuss.</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://blog.csdn.net/dch9210/article/details/116130749">MongoDB Index Best Practices</a></li>
+<li><a href="https://www.mongodb.com/blog/post/performance-best-practices-Indexing">Performance Best Practices: Indexing</a></li>
+<li><a href="https://blog.myctw.cc/post/4e6b.html">MongoDB Index ESR Rule Explained</a></li>
+</ul>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/en/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/en/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan Blog 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

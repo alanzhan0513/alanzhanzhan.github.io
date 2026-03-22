@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Plain English Leetcode - 104 Maximum Depth of Binary Tree" />
-    <meta property="og:title" content="Plain English Leetcode - 104 Maximum Depth of Binary Tree" />
-    <meta property="twitter:title" content="Plain English Leetcode - 104 Maximum Depth of Binary Tree" />
+    <meta name="title" content="白話解 Leetcode - 104 Maximum Depth of Binary Tree" />
+    <meta property="og:title" content="白話解 Leetcode - 104 Maximum Depth of Binary Tree" />
+    <meta property="twitter:title" content="白話解 Leetcode - 104 Maximum Depth of Binary Tree" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Plain English Leetcode - 104 Maximum Depth of Binary Tree | Alan Zhan Blog</title>
+    <title>白話解 Leetcode - 104 Maximum Depth of Binary Tree | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-06-14-leetcode-104/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-06-14-leetcode-104/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-06-14-leetcode-104/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -225,18 +225,18 @@
 </ul>
 </div>
 <hr>
-<h2 id="problem">Problem</h2>
-<p>Find the deepest node in the tree — what is its depth?</p>
-<h2 id="approach">Approach</h2>
-<p>This problem is similar to <a href="/2022-06-12-leetcode-226">226 Invert Binary Tree</a>, and we&rsquo;ll also use recursion, but with a different approach.</p>
-<p>Treat each node as a root node, declare a depth variable, increment by 1 going down each level and decrement by 1 going up. Traverse all nodes, updating the answer whenever the depth increases. Finally, return the answer.</p>
+<h2 id="題意">題意</h2>
+<p>尋找這棵樹最深的節點，他的深度為何？</p>
+<h2 id="解題思路">解題思路</h2>
+<p>這次的題目與 <a href="/2022-06-12-leetcode-226">226 Invert Binary Tree</a> 相似，這次也採用遞歸的做法，不過思路換一套方法。</p>
+<p>一樣把每個節點當作是一個 root 節點，然後先宣告一個 depth 的變數出來，每往下一層就 +1 ，往上一層就 -1 ，遍例所有的節點，並且當深度變深的時候，就將答案刷新，最後將答案回傳。</p>
 <ol>
-<li>Declare global depth and result variables.</li>
-<li>Start recursive traversal — increment the depth variable by 1 when going deeper, decrement by 1 when going back up.</li>
-<li>Treat left and right children as roots, continuing to recursively call the calculateDepth method.</li>
-<li>Whenever depth exceeds the current result, update the result to the current depth.</li>
+<li>宣告全域的深度與結果的變數。</li>
+<li>開始遞歸查找，只要深度增加就將深度的變數 +1 ，深度減少就 -1。</li>
+<li>將左節點和右節點當作 root，繼續遞歸調用 calculateDepth 方法。</li>
+<li>只要深度大於結果，就將結果刷新為當前的深度。</li>
 </ol>
-<h2 id="source-code">Source Code</h2>
+<h2 id="原始碼">原始碼</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#6272a4">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * Definition for a binary tree node.
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * type TreeNode struct {
@@ -258,19 +258,19 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> root <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span>
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> ans &lt; depth {
 </span></span><span style="display:flex;"><span>        ans = depth
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    depth<span style="color:#ff79c6">++</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">calculateDepth</span>(root.Left)
 </span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">calculateDepth</span>(root.Right)
 </span></span><span style="display:flex;"><span>    depth<span style="color:#ff79c6">--</span>
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="closing">Closing</h1>
-<p>Do you have a better or simpler solution?</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+</span></span></code></pre></div><h1 id="結尾">結尾</h1>
+<p>你有更好或更簡單的解決方案嗎？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -557,7 +557,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -567,7 +567,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

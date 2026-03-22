@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="10 Dockerfile Best Practices" />
-    <meta property="og:title" content="10 Dockerfile Best Practices" />
-    <meta property="twitter:title" content="10 Dockerfile Best Practices" />
+    <meta name="title" content="10 個 Dockerfile 的最佳實踐" />
+    <meta property="og:title" content="10 個 Dockerfile 的最佳實踐" />
+    <meta property="twitter:title" content="10 個 Dockerfile 的最佳實踐" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>10 Dockerfile Best Practices | Alan Zhan Blog</title>
+    <title>10 個 Dockerfile 的最佳實踐 | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-01-16-dockerfile-best-practices/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-01-16-dockerfile-best-practices/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-01-16-dockerfile-best-practices/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -203,27 +203,27 @@
             col-xs-12
             post-container">
             
-                <p>I was recently organizing Docker knowledge for myself and came across Dockerfile best practices. I planned to summarize them, but then I found that the official documentation already has best practices, so I decided to translate them and add my own insights.</p>
-<h1 id="containers-should-be-ephemeral">Containers Should Be Ephemeral</h1>
-<p>Containers built from a <code>Dockerfile</code> should be as ephemeral as possible. &ldquo;Ephemeral&rdquo; here means they can be started quickly and stopped quickly.</p>
-<h1 id="understand-the-build-context">Understand the Build Context</h1>
-<p>Including files that aren&rsquo;t needed to build the image results in a larger build context and larger image. This increases build time, pull/push time, and the runtime size of the container.</p>
+                <p>最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。</p>
+<h1 id="容器應該是短暫的">容器應該是短暫的</h1>
+<p>通過 <code>Dockerfile</code> 構建的鏡像所啟動的容器，應該盡可能的短暫，這邊的短暫意思是：很快速的啟動，並且很快速的終止。</p>
+<h1 id="了解-build-context-構建的上下文">了解 Build Context (構建的上下文)</h1>
+<p>建構包含建構鏡像不需要的文件會導致更大的建構上下文與更大的鏡像。這樣會增加建構的時間以及 pull 和 push 鏡像的時間和運行容器時的大小。</p>
 <ul>
-<li>Pay attention to the context directory during builds, which is typically <code>.</code> (the current directory).</li>
-<li>Make good use of .dockerignore, which we&rsquo;ll cover in more detail below.</li>
+<li>建構時需要注意 context 的目錄，通常為 <code>.</code>，目前位置。</li>
+<li>善用 .dockerignore，會在下面再做詳細介紹。</li>
 </ul>
-<h1 id="use-dockerignore-files">Use .dockerignore Files</h1>
-<p>The usage is similar to .gitignore in Git. For Git, .gitignore prevents unnecessary files from being committed to the repository. Similarly, .dockerignore ensures the build context is as small as possible.</p>
-<h1 id="pipe-dockerfile-through-stdin">Pipe Dockerfile Through stdin</h1>
-<p>If your image is temporary and you don&rsquo;t want to bother writing a Dockerfile, you can build images through stdin piping.</p>
+<h1 id="使用-dockerignore-文件">使用 .dockerignore 文件</h1>
+<p>用法和 git 中的 .gitignore 很像，以 git 來說，是為了避免無意義的文件被提交到 git 鍊上，而 .dockerignore 是為了確保 context 越小越好。</p>
+<h1 id="借助-stdin-管道傳輸-dockerfile">借助 stdin 管道傳輸 dockerfile</h1>
+<p>如果你的鏡像只是臨時性的話，你又懶得撰寫 Dockerfile，你可以通過 stdin 管道，建構鏡像。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> -e <span style="color:#f1fa8c">&#39;FROM busybox\nRUN echo &#34;hello world&#34;&#39;</span> | docker build -
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker build -<span style="color:#f1fa8c">&lt;&lt;EOF
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">FROM busybox
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">RUN echo &#34;hello world&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
-</span></span></code></pre></div><h1 id="use-multi-stage-builds">Use Multi-Stage Builds</h1>
-<p>Using multi-stage builds can dramatically reduce your final image size, and you won&rsquo;t need to worry about optimizing the Dockerfile statements in non-final images.</p>
-<p>Here&rsquo;s a Go example: during the build process, we need the SDK image to compile the binary. After compilation, we only need to place the binary in an extremely lightweight image, ensuring the final image stays lean.</p>
+</span></span></code></pre></div><h1 id="使用多階段建構">使用多階段建構</h1>
+<p>使用多階段建構，能夠大幅度減少你最終的鏡像大小，而且你就可以不需要考慮優化非最終鏡像的 dockerfile 內的聲明語句。</p>
+<p>以下依 golang 為例，在建構的過程中，我們需要 SDK 的鏡像來協助我們打包成二進位文件，而打包完畢之後，我們只需要把文件放到一個極度輕量的鏡像即可，這樣就可以確保最終鏡像是很輕量的。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#6272a4"># build stage</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">FROM</span> <span style="color:#f1fa8c">golang:alpine</span> <span style="color:#ff79c6">AS</span> <span style="color:#f1fa8c">build</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> apk --no-cache add build-base git bzr mercurial gcc
@@ -235,25 +235,25 @@
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">WORKDIR</span> <span style="color:#f1fa8c">/app</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">COPY</span> --from<span style="color:#ff79c6">=</span>build /src/main /app/
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">ENTRYPOINT</span> ./main
-</span></span></code></pre></div><h1 id="minimize-installing-unnecessary-packages">Minimize Installing Unnecessary Packages</h1>
-<p>To reduce complexity, dependencies, file size, and build time, avoid installing unnecessary software packages whenever possible.</p>
-<h1 id="run-only-one-process-per-container">Run Only One Process Per Container</h1>
-<p>Each container should have only one concern, so ideally only one process should run per container. Decouple other applications into separate containers as much as possible.</p>
-<p>However, things aren&rsquo;t always that simple — sometimes multiple processes do run in a single container. In that case, here are some recommended process management tools:</p>
+</span></span></code></pre></div><h1 id="減少安裝不必要的包">減少安裝不必要的包</h1>
+<p>為了降低複雜性、依賴關係、文件大小與建構時間，在非必要情況下，應避免安裝不必要的軟件包。</p>
+<h1 id="一個容器指運行一個進程">一個容器指運行一個進程</h1>
+<p>每個容器應該只有一個關注點，所以容器中最好是只有一個進程，盡可能地把其他應用程序解耦到其他容器中。</p>
+<p>但是事情往往沒有那麼簡單，就是有機會用一個容器內會跑起多個進程，那麼這邊會推薦你以下的進程管理工具，這邊列舉了幾個比較有名氣的管理工具：</p>
 <ul>
-<li>supervisord: An easy-to-use process management tool</li>
-<li>tini: Docker&rsquo;s default process manager</li>
-<li>systemd: A comprehensive solution, but relatively heavyweight</li>
-<li>s6: A well-known process management tool</li>
+<li>supervisord: 輕易使用的進程管理工具</li>
+<li>tini: Docker 默認的進程管理工具</li>
+<li>systemd: 大而全的解決方案，但是相對的有點笨重</li>
+<li>s6: 非常著名的進程管理工具</li>
 </ul>
-<h1 id="minimize-the-number-of-image-layers">Minimize the Number of Image Layers</h1>
-<p>In older versions of Docker, minimizing the number of layers in an image was crucial for performance:</p>
+<h1 id="鏡像層數盡可能減少">鏡像層數盡可能減少</h1>
+<p>在舊版的 Docker 中，盡量減少鏡像中的層數，以確保他們的性能非常重要：</p>
 <ul>
-<li>Only the <code>RUN</code>, <code>COPY</code>, and <code>ADD</code> instructions create layers. Other instructions create temporary intermediate images and don&rsquo;t increase the build size.</li>
-<li>When possible, leverage multi-stage builds (see the <code>Use Multi-Stage Builds</code> section above).</li>
+<li>只有指令 RUN 、 COPY 、 ADD 創建層，其他指令創建臨時中間鏡像，並不會增加建構大小。</li>
+<li>在可以的情況下，善用多階段建構，可以參考上方 <code>使用多階段建構</code></li>
 </ul>
-<h1 id="sort-multi-line-arguments">Sort Multi-Line Arguments</h1>
-<p>Sort multi-line arguments alphabetically — for example, when installing multiple packages. This avoids installing duplicate packages and makes the package list easier to maintain when updating.</p>
+<h1 id="將多行參數排序">將多行參數排序</h1>
+<p>將多行參數按照字母排序，譬如：要安裝多個包時。可以避免重複安裝到同一個包，更新包列表時也更容易維護。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span>  bzr <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span>  cvs <span style="color:#f1fa8c">\
@@ -261,24 +261,24 @@
 </span></span></span><span style="display:flex;"><span>  mercurial <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span>  subversion <span style="color:#f1fa8c">\
 </span></span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
-</span></span></code></pre></div><h1 id="leverage-build-cache">Leverage Build Cache</h1>
-<p>During the image build process, Docker iterates through the instructions in the Dockerfile and executes them sequentially. Before each instruction is executed, Docker checks the cache for a reusable duplicate image. If one exists, it uses the cached image instead of creating a duplicate.</p>
+</span></span></code></pre></div><h1 id="利用建構緩存">利用建構緩存</h1>
+<p>在鏡像的建構過中，Docker 會遍歷 Dockerfile 文堅中的指令，然後按照順序執行。每條指令在執行前， Docker 都會在緩存中尋找是否已經存在可用的重複鏡像，如果有就使用現有的鏡像，不重覆創建。</p>
 <blockquote>
-<p>You can disable caching by using the <code>--no-cache=true</code> option in the <code>docker build</code> command.</p>
+<p>可以在 <code>docker build</code> 命令中，使用 <code>--no-cache=true</code> 選項來禁止使用緩存。</p>
 </blockquote>
 <ul>
-<li>Starting from the cached parent image, the next instruction is compared against all child images of that parent to check whether any of them were created using the exact same instruction. If not, the cache is invalidated.
+<li>從已經存在緩存中的父鏡像開始，將下一條指令與該父鏡像的所有子鏡像進行比較，檢查這蠍子鏡像，在被創建時的指令是否和被檢查的指令完全一樣。如果不是，則緩存無效。
 <ul>
-<li>Note: Instructions and files that are least likely to change should be executed first to maximize cache reuse.</li>
+<li>補充：越是不容易被改動的文件或指令，應該優先執行，這樣就可以最大程度的保證快取被重複執行。</li>
 </ul>
 </li>
-<li>In most cases, simply comparing the instruction in the <code>Dockerfile</code> with the child image is sufficient.</li>
-<li>For <code>ADD</code> and <code>COPY</code> instructions, the contents of the corresponding files in the image are also checked. A checksum is calculated for each file (though last modified time and last access time are not included in the checksum). During cache lookup, these checksums are compared with checksums of files in existing images. If files have changed, the cache is invalidated.</li>
-<li>Apart from <code>ADD</code> and <code>COPY</code> instructions, the cache matching process does not examine files in temporary containers to determine cache matches. For example, when running <code>RUN apt-get -y update</code>, some files in the container are updated, but Docker does not check these files — it records the instruction string to match the cache.</li>
+<li>在大多數的情況下，只需要簡單的比對 <code>Dockefile</code> 中的指令與子鏡像。</li>
+<li>對於 <code>ADD</code> 與 <code>COPY</code> 指令，鏡像中對應文件的內容也會被檢查，每隔文件都會計算出一個較驗和 (但是最後修改時間與最後訪問時間不會被納入較驗)。在緩存尋找的過程中，會將這些較驗和與已存在的鏡像中的文件較驗和進行比較，如果文件有改變，則緩存無效。</li>
+<li>除了 <code>ADD</code> 與 <code>COPY</code> 指令，緩存匹配過程，不會查看臨時容器的文件來決定緩存是否匹配。譬如：當執行 <code>RUN apt-get -y update</code> 指令後，容器的一些文件會被更新，但是 Docker 不會去檢查這些文件，而是紀錄這些指令字串，來匹配緩存。</li>
 </ul>
-<h1 id="references">References</h1>
+<h1 id="參考">參考</h1>
 <p><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile Best Practices</a></p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -565,7 +565,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -575,7 +575,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

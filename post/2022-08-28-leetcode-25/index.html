@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Plain English Leetcode - 25 Reverse Nodes in k-Group" />
-    <meta property="og:title" content="Plain English Leetcode - 25 Reverse Nodes in k-Group" />
-    <meta property="twitter:title" content="Plain English Leetcode - 25 Reverse Nodes in k-Group" />
+    <meta name="title" content="白話解 Leetcode - 25 Reverse Nodes in k-Group" />
+    <meta property="og:title" content="白話解 Leetcode - 25 Reverse Nodes in k-Group" />
+    <meta property="twitter:title" content="白話解 Leetcode - 25 Reverse Nodes in k-Group" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Plain English Leetcode - 25 Reverse Nodes in k-Group | Alan Zhan Blog</title>
+    <title>白話解 Leetcode - 25 Reverse Nodes in k-Group | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-08-28-leetcode-25/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-08-28-leetcode-25/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-08-28-leetcode-25/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -229,15 +229,15 @@
 <p>&nbsp;</p>
 <p><strong>Follow-up:</strong> Can you solve the problem in <code>O(1)</code> extra memory space?</p>
 </div>
-<h2 id="problem">Problem</h2>
-<p>Given a linked list, group nodes in sets of k and reverse each group&rsquo;s internal elements. If the total number of remaining nodes is less than k, don&rsquo;t reverse them. Return the reversed result.</p>
-<h2 id="approach">Approach</h2>
+<h2 id="題意">題意</h2>
+<p>有一個 Linked List ，將 k 個節點為一組，並且將這一組內部的元素進行反轉，如果節點總數不足 k 個就不用反轉，最後回傳反轉後的結果。</p>
+<h2 id="解題思路">解題思路</h2>
 <ol>
-<li>Group every k elements and find the tail element of each group.</li>
-<li>Reverse the internal elements of the group.</li>
-<li>Update the head and tail of the group.</li>
+<li>依每 k 個元素進行分組，並且順便找出結尾的元素。</li>
+<li>將這個組的內部元素進行反轉。</li>
+<li>更新這個組的 head 與 tail 元素。</li>
 </ol>
-<h2 id="source-code">Source Code</h2>
+<h2 id="原始碼">原始碼</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">reverseKGroup</span>(head <span style="color:#ff79c6">*</span>ListNode, k <span style="color:#8be9fd">int</span>) <span style="color:#ff79c6">*</span>ListNode {
 </span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 1. grouping and find head and tail of group</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 2. reverse this group</span>
@@ -252,14 +252,14 @@
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">break</span>
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>        nextGroupHead <span style="color:#ff79c6">:=</span> end.Next
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        
 </span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 2. reverse this group</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#50fa7b">reverseLinkedList</span>(head, nextGroupHead)
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        
 </span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// 3. update head and tail</span>
 </span></span><span style="display:flex;"><span>        last.Next = end
 </span></span><span style="display:flex;"><span>        head.Next = nextGroupHead
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        
 </span></span><span style="display:flex;"><span>        last = head
 </span></span><span style="display:flex;"><span>        head = nextGroupHead
 </span></span><span style="display:flex;"><span>    }
@@ -287,9 +287,9 @@
 </span></span><span style="display:flex;"><span>        head = headNext
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="closing">Closing</h1>
-<p>Do you have a better or simpler solution?</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+</span></span></code></pre></div><h1 id="結尾">結尾</h1>
+<p>你有更好或更簡單的解決方案嗎？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -576,7 +576,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -586,7 +586,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

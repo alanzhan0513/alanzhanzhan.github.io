@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Golang Memory Management and GC In-Depth Analysis" />
-    <meta property="og:title" content="Golang Memory Management and GC In-Depth Analysis" />
-    <meta property="twitter:title" content="Golang Memory Management and GC In-Depth Analysis" />
+    <meta name="title" content="Golang 記憶體管理 GC 全面解析" />
+    <meta property="og:title" content="Golang 記憶體管理 GC 全面解析" />
+    <meta property="twitter:title" content="Golang 記憶體管理 GC 全面解析" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Golang Memory Management and GC In-Depth Analysis | Alan Zhan Blog</title>
+    <title>Golang 記憶體管理 GC 全面解析 | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-02-13-golang-memory-management/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-02-13-golang-memory-management/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-02-13-golang-memory-management/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -203,105 +203,106 @@
             col-xs-12
             post-container">
             
-                <p>A new year has arrived! After completing the analysis of <a href="/post/2022-01-24-golang-goroutine/">Golang Goroutine and GMP Model In-Depth Analysis</a>, I gained a much more comprehensive understanding of the Go language. But after learning about GMP, aren&rsquo;t we still missing the memory management aspect? So today, let&rsquo;s dive deep into how Go manages its memory.</p>
-<h1 id="the-memory-management-debate">The Memory Management Debate</h1>
-<p>When it comes to memory management, there&rsquo;s been a long-standing debate: who should manage memory — the machine or the developer? Whether it&rsquo;s machine-managed or human-managed, everyone agrees that memory management is critically important, but opinions diverge:</p>
+                <p>新的一年又到來了，在這邊祝大家虎頭虎尾，所以這個年還沒過完，我得好好的繼續整理技術文章給大家了，這樣有好的開始！</p>
+<p>上次分析完 <a href="/post/2022-01-24-golang-goroutine/">Golang Goroutine 與 GMP 原理全面分析</a> 之後，對 golang 這個語言有了更全面的了解，但是這些有了 GMP 的相關知識之後，是不是還缺少了記憶體管理這個面向呀？那麼今天就來好好的了解 golang 是如何管理他的記憶體吧。</p>
+<h1 id="記憶體管理的爭論">記憶體管理的爭論</h1>
+<p>關於記憶體管理，往往都會討論到一個持續很久的爭論，就是記憶體到底要給誰管？給機器管？還是給人管？不管是機器管或者是人管，大家的初衷都是一致的，認為記憶體管理是非常重要的，但大家的意見還是分歧了：</p>
 <ul>
-<li>C/C++: &ldquo;Memory management is so important that we should give engineers full control. We trust that they&rsquo;re skilled enough to know when to allocate and when to free memory.&rdquo;</li>
-<li>Java / .NET(C#) / Go / etc.: They take the opposite stance — while memory management is equally important, &ldquo;we can&rsquo;t trust humans. We prefer to manage memory automatically.&rdquo;</li>
+<li>c / c++ ：認為記憶體管理如此重要，所以我希望把記憶體管理的自由交付給工程師，因為這些人我相信他的技能非常的強，他知道甚麼時候該申請記憶體，甚麼時候該釋放記憶體。</li>
+<li>Java / .Net(C#) / golang / etc ：它們觀點卻站在反面，目的雖然一樣，認為記憶體管理如此重要，但是我們不能相信人，我希望通過自動化的方式管理記憶體。</li>
 </ul>
-<p>Let&rsquo;s consider the differences. C/C++ memory allocation and deallocation is indeed very efficient because engineers know exactly when memory is no longer needed and can free it immediately. However, humans make mistakes — if someone forgets to free memory, it leads to memory leaks and eventually program crashes.</p>
-<p>In newer languages, the pursuit is developer productivity. They aim to manage memory automatically, reducing human error and increasing development efficiency. This makes memory management even more critical. So what challenges does memory management face?</p>
-<h1 id="heap-memory-management-challenges">Heap Memory Management Challenges</h1>
+<p>我們可以思考一下這兩者的差異，當然 c / c++ 記憶體使用與釋放的效率非常的高，因為工程師知道我的記憶體甚麼時候不用，我直接把他 free 掉，但是人總是會犯錯，如果有人忘記釋放記憶體，那麼就會導致記憶體洩漏，最終導致程式崩潰。</p>
+<p>在越是年輕的語言，在追求的反而是開發的效率，希望可以通過一種自動化的方式管理記憶體，減少人為的錯誤，使得開發的效率變高，所以記憶體的管理反而變得十分的重要，那麼記憶體管理會面臨哪些挑戰呢？</p>
+<h1 id="heap-記憶體管理的挑戰">Heap 記憶體管理的挑戰</h1>
 <ul>
-<li>Memory allocation requires system calls. Frequent memory allocation leads to lower system performance.</li>
-<li>When multiple threads share the same memory space and allocate memory simultaneously, locking is needed. Otherwise, the same memory block could be accessed by multiple threads.</li>
-<li>Memory fragmentation: After continuous allocation and deallocation, memory fragmentation becomes severe, reducing memory utilization.</li>
+<li>記憶體分配需要系統調用，在頻繁記憶體分配的時候，系統性能較低。</li>
+<li>多線程共享相同的記憶體空間時，同時申請記憶體，需要加鎖，否則會產生同一塊記憶體被多個線程訪問的狀況。</li>
+<li>記憶體碎片化的問題，經過不斷的記憶體分配與回收，記憶體碎片會比較嚴重，記憶體的使用效率會降低。</li>
 </ul>
-<p>These are the potential issues that traditional languages like C/C++ face when manually allocating heap memory without proper handling.</p>
-<h1 id="heap-memory-management">Heap Memory Management</h1>
-<p>So how do modern languages solve these problems?</p>
+<p>所以這是 c / c++ 這些比較傳統的語言，假如自己去申請 heap 記憶體，如果不做處理，可能會引發的問題。</p>
+<h1 id="heap-記憶體管理">Heap 記憶體管理</h1>
+<p>那麼現在的語言要怎麼解決這種問題呢？</p>
 <p>
   <img src="/2022-02-13-golang-memory-management/2022-02-13-heap-management.jpg" alt="Heap Management">
 
 </p>
-<p>Assuming the heap is the currently available heap memory, there are three main roles and an auxiliary Header for managing this heap:</p>
+<p>假設 heap 是目前的所擁有的 heap 記憶體，針對這個 heap 的管理主要會有三個角色跟次要輔助用的 Header：</p>
 <ul>
-<li>Allocator: The memory allocator. Dynamically handles memory allocation requests. When the program starts, the Allocator pre-allocates memory from the OS during initialization and may format the memory.</li>
-<li>Mutator: The Mutator can be understood as our program. It only needs to request memory from the Allocator — it doesn&rsquo;t need to explicitly free (reclaim) memory.</li>
-<li>Collector: The garbage collector. Reclaims memory space by scanning the entire heap memory to identify active vs. inactive objects. When inactive objects are found, it reclaims their memory.</li>
-<li>Object Header: When memory is allocated, it&rsquo;s simultaneously tagged to mark the object. The Collector and Allocator synchronize object metadata through this.</li>
+<li>Allocator ： 記憶體的分配器，主要動態處理記憶體的分配請求，程式啟動時 Allocator 會在初始化的時候，預先向操作系統申請記憶體，接下來可能會先記憶體做一定的格式化。</li>
+<li>Mutator ： Mutator 可以理解為我們的程式，Mutator 只要負責跟 Allocator 申請記憶體就好，他不需要顯式的去釋放(回收)記憶體。</li>
+<li>Collector ： 垃圾回收器，回收記憶體空間，他會去掃描整的 heap 記憶體，哪些是活躍物件，那些是非活耀物件，當發現非活耀，就會回收記憶體。</li>
+<li>Object Header ： 當記憶體分配出去時，同時會對這塊記憶體做標記，用來標記物件的， Collector 和 Allocator 會來同步物件 Metadata。</li>
 </ul>
-<p>Let&rsquo;s look at how Go handles this:</p>
+<p>大家可以根據上面的敘述稍微順一下，那麼我們就來看看 golang 怎麼處理的：</p>
 <ul>
-<li>Initialize contiguous memory as the heap.</li>
-<li>When memory is requested, the Allocator cuts small memory blocks from unallocated regions of the heap.</li>
-<li>Allocated memory blocks are connected using a linked list.</li>
-<li>Metadata is needed for each memory block: size, whether it&rsquo;s in use, next memory block location, etc.</li>
+<li>初始化連續記憶體作為 heap 。</li>
+<li>有記憶體申請的時候，Allocator 從 heap 記憶體的未分配區塊切割小記憶體塊。</li>
+<li>用鏈表將以分配的記憶體連接起來。</li>
+<li>需要描述每個記憶體塊的 metadata ，大小、是否使用、下一塊記憶體位置等。</li>
 </ul>
 <p>
   <img src="/2022-02-13-golang-memory-management/2022-02-13-allocator-object-header.jpg" alt="Allocator Object Header">
 
 </p>
 <h2 id="tcmalloc">TCMalloc</h2>
-<p>Go&rsquo;s memory management is designed based on TCMalloc, so before understanding Go&rsquo;s memory management, let&rsquo;s review TCMalloc (Thread Cache Malloc) principles.</p>
+<p>golang 這門語言的記憶體管理是基於 TCMalloc 基礎上進行設計的，所以在認識 golang 記憶體管理之前，先梳理一下 TCMalloc (Thread Cache Malloc) 的原理。</p>
 <p>
   <img src="/2022-02-13-golang-memory-management/2022-02-13-tcmalloc.jpg" alt="TCMalloc">
 
 </p>
-<p>Let&rsquo;s recall the memory management challenges mentioned earlier in <a href="/post/2022-02-13-golang-memory-management/#heap-memory-management-challenges">Heap Memory Management Challenges</a>:</p>
+<p>我們先回想剛剛所講述的記憶體管理會面臨哪些挑戰，<a href="/post/2022-02-13-golang-memory-management/#heap-%e8%a8%98%e6%86%b6%e9%ab%94%e7%ae%a1%e7%90%86%e7%9a%84%e6%8c%91%e6%88%b0">Heap 記憶體管理的挑戰</a></p>
 <ul>
-<li>Memory allocation requires system calls. Frequent memory allocation leads to lower system performance.
+<li>記憶體分配需要系統調用，在頻繁記憶體分配的時候，系統性能較低。
 <ul>
-<li>TCMalloc pre-allocates and pre-partitions memory.</li>
+<li>所以 TCMalloc 會先去申請記憶體並且預分配記憶體。</li>
 </ul>
 </li>
-<li>When multiple threads share the same memory space and allocate simultaneously, locking is needed.
+<li>多線程共享相同的記憶體空間時，同時申請記憶體，需要加鎖，否則會產生同一塊記憶體被多個線程訪問的狀況。
 <ul>
-<li>Looking at the ThreadCache section: it maintains a ThreadCache for each thread, and each one is an independent memory space. When an application requests memory, it first requests from ThreadCache. Since each ThreadCache maintains its own memory, no locking is needed.</li>
-<li>What if ThreadCache runs out of memory? It requests from CentralCache, which does require locking. But as you&rsquo;ve noticed, the likelihood of needing locks is already reduced.</li>
-<li>If CentralCache also runs out, it requests from PageHeap.</li>
-<li>If PageHeap also runs out, it requests more memory from VirtualMemory.</li>
-</ul>
-</li>
-</ul>
-<p>So TCMalloc solves the memory management challenges and provides a tiered memory allocation mechanism. But consider this: if applications always request memory from ThreadCache regardless of object size, wouldn&rsquo;t memory management become chaotic?</p>
-<p>TCMalloc enhances this by dividing memory into different levels (Size Classes). It still allocates memory page by page (8KB per page), but it divides allocated memory according to different Size Classes (each corresponding to a size, e.g., 8 bytes, 16 bytes). There are 128 classes in total, and same-sized Size Classes form Span lists. When an application requests one byte, TCMalloc allocates from Size Class 0. For large objects, it bypasses ThreadCache and CentralCache to request directly from PageHeap. This is the implementation principle of TCMalloc.</p>
-<ul>
-<li>Page: A memory page, an 8KB block. Memory allocation and deallocation between Go and the OS is done in page units.</li>
-<li>Span: A memory block consisting of one or more contiguous pages.</li>
-<li>SizeClass: A space specification. Each span has a SizeClass indicating how pages in the span should be used.</li>
-<li>Object: Used to store variable data in a memory space. When a span is initialized, it&rsquo;s divided into equally-sized objects. If an object is 16B and the span is 8K, the span&rsquo;s pages are initialized as 8K / 16B = 512 objects. When an application requests memory, one object is allocated.</li>
-<li>Object size definitions:
-<ul>
-<li>Small objects: 0 ~ 256KB</li>
-<li>Medium objects: 256KB ~ 1MB</li>
-<li>Large objects: &gt; 1MB</li>
-</ul>
-</li>
-<li>Small object allocation flow: ThreadCache -&gt; CentralCache -&gt; HeapPage. Most of the time, ThreadCache has sufficient cache, eliminating the need to access CentralCache and HeapPage. No locking needed, so allocation is very efficient.</li>
-<li>Medium object allocation flow: Select an appropriate size directly from PageHeap. Spans of 128 pages hold the maximum 1MB.</li>
-<li>Large object allocation flow: Select an appropriate number of pages from the large span set to form a span for data storage.</li>
-</ul>
-<h2 id="go-memory-allocation">Go Memory Allocation</h2>
-<p>Go&rsquo;s memory allocation is essentially the same as TCMalloc — it&rsquo;s a modified and enhanced version of TCMalloc. The diagram below looks similar to TCMalloc but has some differences:</p>
-<ul>
-<li>In mcache, one span class corresponds to two span classes: one stores pointers and one stores direct references. Spans storing direct references don&rsquo;t need GC.</li>
-<li>When mcache doesn&rsquo;t have enough memory, it requests from mcentral, first checking the nonempty list (which has available pages). If still not found, it requests from mheap.
-<ul>
-<li>Note: mcache obtains and returns spans from/to mcentral.
-<ul>
-<li>Obtaining: Lock, find an available span from the nonempty list, remove it from nonempty, add it to empty, return the span to the worker thread, unlock.</li>
-<li>Returning: Lock, remove the span from the empty list, add it to the nonempty list, unlock.</li>
+<li>可以看到 ThreadCache 那個區塊，他為了每一個 thread 維護了一塊 ThreadCache ，而且每一個都是線程獨立的記憶體空間，也就是說，當 application 要申請記憶體的時候，他會優先向 ThreadCache 申請，也因為 ThreadCache 各自維護了各自的記憶體，所以 application 要申請記憶體的時候，不需要加鎖去申請。</li>
+<li>如果 ThreadCache 把記憶體用盡了怎魔辦？他會去向 CentralCache 申請記憶體，但是這個時候需要加鎖，但是聰明的你已經發現，加鎖的可能性已經變低了。</li>
+<li>如果 CentralCache 也沒有空間了，他就會向 PageHeap 申請空間。</li>
+<li>如果 PageHeap 也沒有空間了，他就會向 VirtualMemory 申請更多記憶體。</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>In mheap, a Binary Sort Tree is maintained by Span Class, with two trees:
+<p>所以 TCMalloc 解決了記憶體管理會面臨的挑戰以及記憶體的逐級申請機制，那我們在想一下，假設 application 都向 ThreadCache 申請記憶體，而且都不管物件大小，拿來就用，那這不就意味著記憶體管理是很混亂的嗎？</p>
+<p>TCMalloc 對於這種混亂的場景又做了增強，他把記憶體分為不同等級 (Size Class)，首先他申請記憶體的動作還按照一個頁一個頁去申請的，但是這個頁的大小是 8K，他會把申請的記憶體，按照不同的 Size Class (每個 Size Class 都會對應一個大小，譬如 8 byte、16 byte) 劃分，總共劃分了 128 種，而相同的大小 Size Class 會組成 Span list，假如 application 去申請一個 byte ，TCMalloc 就會從 Size Class 0 分配記憶體給 application，這是小物件的狀態，但是如果申請大物件的時候，會跳過 ThreadCache 與 CentralCache 去跟 PageHeap 申請記憶體，這就是 TCMalloc 的實現原理。</p>
 <ul>
-<li>free: Contains free spans that are not from garbage collection.</li>
-<li>scav: Contains free spans that have been garbage collected.</li>
-<li>If a span is freed by garbage collection, it goes to scav; otherwise it goes to free (e.g., memory freshly requested from Virtual Memory).</li>
+<li>page : 記憶體頁，一塊 8K 大小。 golang 與操作系統之間的記憶體申請與釋放，都是以 page 為單位。</li>
+<li>span : 記憶塊，一個或多個連續的 page 組成一個 span。</li>
+<li>sizeclass : 空間規格，每個 span 都會帶有一個 sizeclass，標記 span 中的 page 應該如何使用。</li>
+<li>object : 物件，用來存儲一個變數數據的記憶體空間，一個 span 在初始化的時候，就會被切割成一堆等大的物件。假設 object 的大小為 16B ， span 大小為 8K ，那麼 span 中的 page 就會被初始化為 8K / 16B = 512 個 object，當 application 來申請的時候，就是分配一個 object 出去。</li>
+<li>物件大小定義
+<ul>
+<li>小物件 : 0 ~ 256KB</li>
+<li>中物件 : 256KB ~ 1MB</li>
+<li>大物件 : &gt; 1MB</li>
+</ul>
+</li>
+<li>小物件分配流程 ： ThreadCache -&gt; CentralCache -&gt; HeapPage，大部分時候， ThreadCache 的緩存都是足夠的，不需要去訪問 CentralCache 和 HeapPage，無須加鎖，所以分配效率是很高的。</li>
+<li>中物件分配流程 ： 直接在 PageHeap 中挑選適當大小的即可，128 Page 的 Span 保存的就是最大的 1MB。</li>
+<li>大物件分配流程 ： 從 large span set 選擇合適數量頁面組成 span ，用來存儲數據。</li>
+</ul>
+<h2 id="golang-記憶體分配">Golang 記憶體分配</h2>
+<p>golang 記憶體分配基本上與 TCMalloc 一致，它是在 TCMalloc 在原型上修改與增強，看下面這張圖會看起來很像 TCMalloc，但是還是有一些差異的。</p>
+<ul>
+<li>在 mcache 內一個 span class 對應兩個 span class ，一個是用來存指針的，一個是用來存直接引用的，存直接引用的 span 無須 GC。</li>
+<li>當 mcache 記憶體不夠的時候，會向 mcentral 申請，會優先去 nonempty 的鏈找，因為 nonempty 保存的是這邊有可用的 page，如果還是找不到，就會去 mheap 申請。
+<ul>
+<li>補充 ： mcache 從 mcentral 獲取和歸還 span 。
+<ul>
+<li>獲取時，上鎖，從 nonempty 鏈表找到一個可用的 span，並且將其從 nonempty 鏈表刪除，將取出的 span 加入到 empty 鏈，將 span 返回給工作線程，解鎖。</li>
+<li>歸還時，上鎖，將 span 從 empty 鏈中刪除，將 span 加入到 nonempty 鏈，解鎖。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在 meap 內依照 Span Class 維護了一個 Binary Sort Tree ，但是他維護了兩棵樹。
+<ul>
+<li>free ： free 中保存的 span 是空閒的，非垃圾回收的 span。</li>
+<li>scav ： scav 中保存的是空閒的，並且已經垃圾回收的 span。</li>
+<li>如果是垃圾回收導致 span 的是放，sapn 會被加入到 scav 中，否則會被加入到 free ，比如剛從 Virtual Memory 申請的記憶體。</li>
 </ul>
 </li>
 </ul>
@@ -310,115 +311,120 @@
 
 </p>
 <ul>
-<li>mcache: Small object memory allocation.
+<li>mcache : 小物件的記憶體分配。
 <ul>
-<li>There are 67 size classes. Class 0 is a special span for objects larger than 32KB. Each class has two spans.</li>
-<li>Span size is based on 8KB, divided by span class size.</li>
+<li>size class 總共有 67 個，而 class = 0 是特殊的 span，用於大於 32 kb 的物件，每個 class 兩個 span 。</li>
+<li>span 大小是按照 8KB ，按照 span class 大小切分。</li>
 </ul>
 </li>
-<li>mcentral:
+<li>mcentral
 <ul>
-<li>When all memory blocks in mcache&rsquo;s span are occupied, mcache requests a span from mcentral. After obtaining it, mcache continues allocating objects.</li>
-<li>When mcentral provides a span to mcache and there&rsquo;s no matching span, mcentral requests from mheap.</li>
+<li>當 mcache 的 span 內所有記憶體塊都被占用的時候， mcache 會向 mcentral 申請一個 span， mache 拿到 span 後繼續分配物件。</li>
+<li>當 mcentral 向 mcache 提供 span 時，如果沒有符合的 span ， mcentral 會向 mheap 申請 span。</li>
 </ul>
 </li>
-<li>mheap:
+<li>mheap
 <ul>
-<li>When mheap doesn&rsquo;t have enough memory, it requests from the OS.</li>
-<li>mheap maintains spans using a Binary Sort Tree instead of a linked list.</li>
-<li>Heap performs span maintenance, including address mapping and metadata about whether spans contain pointers, for more efficient allocation, reclamation, and reuse.</li>
+<li>當 mheap 沒有足夠的記憶體時，mheap 會向 OS 申請記憶體。</li>
+<li>mheap 維護 span 不再是鏈表了，而是 Binary Sort Tree 。</li>
+<li>heap 會進行 span 的維護，它包含了地址 mapping 和 span 是否包含指針 metadata，目的是為了更高效的分配、回收與再利用。</li>
 </ul>
 </li>
 </ul>
-<h1 id="memory-reclamation">Memory Reclamation</h1>
-<h2 id="common-memory-reclamation-strategies">Common Memory Reclamation Strategies</h2>
-<h3 id="reference-counting">Reference Counting</h3>
+<h1 id="記憶體回收">記憶體回收</h1>
+<h2 id="常見記憶體回收策略">常見記憶體回收策略</h2>
+<h3 id="引用計數">引用計數</h3>
 <ul>
-<li>Common languages: Python, PHP, Swift</li>
-<li>Characteristics: Maintains a reference count for each object. When an object referencing it is destroyed, the count decreases by 1. When the count reaches 0, the object is reclaimed.</li>
-<li>Pros: Objects can be reclaimed quickly — no need to wait until memory is exhausted or a threshold is reached.</li>
-<li>Cons: Doesn&rsquo;t handle circular references well, and maintaining reference counts has its own overhead.</li>
+<li>常見語言 ： Python 、 PHP 、 Swift</li>
+<li>特性 ： 對每一個物件維護一個引用計數，當引用該物件的物件被銷毀時，引用計數就減 1 ，當引用計數為 0 時，就回收該物件。</li>
+<li>優點 ： 物件可以很快的被回收，不會出現記憶體耗盡或者達到某個閥值才回收。</li>
+<li>缺點 ： 不能很好的處理循環引用，而且維護引用計數，也有一定的代價。</li>
 </ul>
-<h3 id="mark-and-sweep">Mark and Sweep</h3>
+<h3 id="標記清除">標記清除</h3>
 <ul>
-<li>Common languages: Go</li>
-<li>Characteristics: Starting from root variables, traverses and checks all referenced objects. Referenced objects are marked as &ldquo;referenced.&rdquo; Unmarked objects are reclaimed.</li>
-<li>Pros: Solves the shortcomings of reference counting.</li>
-<li>Cons: Requires STW (Stop the World) — the program must be paused.</li>
+<li>常見語言 ： golang</li>
+<li>特性 ： 從根變數開始遍歷檢查所有引用物件，引用物件被標計為「被引用」，沒有被標記的就進行回收。</li>
+<li>優點 ： 解決引用技術的缺點。</li>
+<li>缺點 ： 需要 STW (Stop the world)，即要暫停程式運行。</li>
 </ul>
-<h3 id="generational-collection">Generational Collection</h3>
+<h3 id="分代收集">分代收集</h3>
 <ul>
-<li>Common languages: Java, .NET(C#), Node.js (JavaScript)</li>
-<li>Divides memory into different generation spaces based on object lifetime. Long-lived objects go to the old generation; short-lived ones go to the young generation. The young generation is collected more frequently than the old generation. Typically divided into three generations:
+<li>常見語言 ： Java 、 .Net(C#) 、 Nodejs (Javascript)</li>
+<li>按照生命週期進行劃分不同代空間，生命週期較長的放入老生代，短的放入新生代，新生代的回收頻率會高於老生代的頻率，通常會被分為三代。
 <ul>
-<li>Young: Also called &ldquo;eden.&rdquo; Stores newly created objects with very short lifetimes — they can almost be reclaimed immediately after use.</li>
-<li>Tenured: Also called &ldquo;old.&rdquo; Objects that survive multiple collections in the Young area are moved here.</li>
-<li>Perm: The permanent generation. Mainly stores loaded class information with long lifetimes — rarely collected.</li>
+<li>Young ： 或者被稱為 eden ，存放新創的物件，物件生命週期非常的短，幾乎用完就可以被回收。</li>
+<li>Tenured ：或者被稱為 old ， 在 Young 區多次回收後存活下來的物件，將被移轉到 Tenured 區。</li>
+<li>Perm ： 永久代，主要存加載類的資訊，生命周期較長，幾乎不會被回收。</li>
 </ul>
 </li>
-<li>Pros: Most objects are short-lived, so this efficiently clears disposable objects.</li>
-<li>Cons: The algorithm is more complex with more execution steps.</li>
+<li>優點 ： 大部分的物件都是朝生夕死的，所以可以更高效的清除用完即丟的物件。</li>
+<li>缺點 ： 演算法較為複雜，執行的步驟較多。</li>
 </ul>
-<h2 id="go-gc-workflow">Go GC Workflow</h2>
-<p>Most of Go&rsquo;s GC processing runs concurrently with user code. It&rsquo;s roughly divided into four steps, basically Mark and Sweep.</p>
+<h2 id="golang-gc-工作流程">Golang GC 工作流程</h2>
+<p>golang GC 的大部分處理是和用戶程式碼並行的，大致上分為四個步驟，基本上就是標記與清除 Mark 與 Sweep。</p>
 <ul>
 <li>Mark
 <ul>
-<li>Mark Prepare: Initialize GC tasks, including enabling the write barrier (WB) and mutator assist, and counting root object tasks. This requires STW (Stop the World).</li>
-<li>GC Drains: Scan all root objects, including global pointers and goroutine (G) stack pointers (the corresponding G must be stopped during scanning). Add them to the mark queue (gray queue) and process gray queue objects in a loop until it&rsquo;s empty. This process runs concurrently in the background.</li>
+<li>Mark Prepare : 初始化 GC 任務，包括開啟屏障 (WB : write barrier) 和輔助 GC (mutator assis)，和統計 root 物件的任務數量等，這時候需要 STW (stop the world)。</li>
+<li>GC Drains : 掃描所有的 root 物件，包括全局指針和 goroutine (G) stack 上的指針 (掃描對應的 G 時，需要停止該 G)，將其加入標計對列 (灰色對列)，並循環處理灰色對列的物件，直到灰色對列為空，這個過程是背景並行處理的。</li>
 </ul>
 </li>
-<li>Mark Termination: Complete marking work, rescan global pointers and stacks. Since marking runs concurrently with user code, new objects and pointer assignments may occur during marking. The write barrier records these, and rescan checks them. This process also requires STW.</li>
-<li>Sweep: Reclaim all white objects according to marking results. This process runs concurrently in the background.</li>
-<li>Sweep Termination: Clean up unswept spans. A new GC round can only begin after the previous round&rsquo;s sweeping is complete.</li>
+<li>Mark Termination : 完成標計工作，重新掃描全局指針和 stack。因為 Mark 和用戶的程式是併行的，所以在 Mark 過程中也有可能會有新的物件和指針賦值，這個時候需要通過屏障記錄下來，然後在 rescan 檢查一下，這個過程也是會 STW 的。</li>
+<li>Sweep : 按照標記結果回收所有白色對象，這個過程是背景平行處理的。</li>
+<li>Sweep Termination : 對未清理的 span 進行清理，只有上一輪的 GC 清理完畢，才會開始新一輪的 GC 。</li>
 </ul>
 <p>
   <img src="/2022-02-13-golang-memory-management/2022-02-13-golang-gc-flow-chart.jpg" alt="golang GC flow chart">
 
 </p>
-<h2 id="tri-color-marking">Tri-Color Marking</h2>
+<h2 id="三色標計法">三色標計法</h2>
 <ul>
-<li>When GC starts, all objects default to garbage (white).</li>
-<li>Starting from the root area, found objects are marked gray.</li>
-<li>For all gray objects, their internally referenced variables are marked gray, and the objects themselves are marked black.</li>
-<li>Repeat the above steps until no gray objects remain — only black and white. White objects are garbage.</li>
-<li>For black objects, if a write operation occurs during marking, the write barrier marks the object gray before the actual assignment.</li>
-<li>During marking, objects newly allocated by mallocgc are marked black before being returned.</li>
+<li>GC 開始時，默認所有的 object 都是垃圾，所以都是白色。</li>
+<li>從 root 區開始遍歷查找，被找到的物件會被標計為灰色。</li>
+<li>從所有灰色的 物件，將他們內部引用的變數標記為灰色，自己則標計為黑色。</li>
+<li>循環上面的步驟，直到沒有灰色的物件，只剩下黑白兩種，白色的都是垃圾。</li>
+<li>對於黑色的物件，如果在標記期間發生寫操作，寫屏障會在真正賦值前將物件標計為灰色。</li>
+<li>標記過程中，mallocgc 新分配的物件，會先被標計為黑色再返回。</li>
 </ul>
-<h2 id="go-garbage-collection-trigger-mechanisms">Go Garbage Collection Trigger Mechanisms</h2>
+<h2 id="golang-垃圾回收觸發機制">Golang 垃圾回收觸發機制</h2>
 <ul>
-<li>Memory allocation threshold triggers GC:
+<li>記憶體分配量達到閥值觸發 GC
 <ul>
-<li>Each memory allocation checks whether the current allocation has reached the threshold. If so, GC starts immediately.
+<li>每次記憶體分配都會檢查當前記憶體分配量，是否已經達到閥值，如果達到閥值則會立即啟動 GC。
 <ul>
-<li>Threshold = previous GC memory allocation * memory growth rate.</li>
-<li>Memory growth rate is controlled by the GOGC environment variable, defaulting to 100 (GC starts when memory doubles).</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Periodic GC trigger:
-<ul>
-<li>By default, GC is triggered every two minutes. This interval is declared in the src/runtime/proc.go:forcegcperiod variable.</li>
-</ul>
-</li>
-<li>Manual trigger:
-<ul>
-<li>In code, you can use runtime.GC() to manually trigger GC. This is mainly used for GC performance testing and statistics.</li>
+<li>閥值 = 上次 GC 記憶體分配量 * 記憶體增長量。</li>
+<li>記憶體增長量，由環境變數 GOGC 控制，默認為 100，即每當記憶體擴大一倍的時候，啟動 GC。</li>
 </ul>
 </li>
 </ul>
-<h1 id="conclusion">Conclusion</h1>
-<p>After reading such hardcore knowledge from the <a href="/post/2022-01-24-golang-goroutine/">previous article</a>, today we tackled the history of memory management all the way to Go&rsquo;s memory management. It felt a bit painful after reading, but this will become a great source of nourishment for our growth, right? What are your thoughts after reading?</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
-<h2 id="references">References</h2>
+</li>
+<li>定期觸發 GC
 <ul>
-<li><a href="http://dmitrysoshnikov.com/compilers/writing-a-memory-allocator/">Writing a Memory Allocator</a></li>
-<li><a href="http://goog-perftools.sourceforge.net/doc/tcmalloc.html">TCMalloc: Thread-Caching Malloc</a></li>
-<li><a href="http://legendtkl.com/2015/12/11/go-memory/">TCMalloc Introduction</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/29216091">TCMalloc Illustrated</a></li>
-<li><a href="https://studygolang.com/articles/30505">Go Memory Allocation Explained</a></li>
-<li><a href="https://www.gushiciku.cn/pl/arPC/zh-tw">Common Garbage Collection Algorithms</a></li>
+<li>默認情況下，每兩分鐘觸發一次 gc，這個間隔在 src/rumtime/proc.go:forcegcperiod 變數中被宣告。</li>
+</ul>
+</li>
+<li>手動觸發
+<ul>
+<li>程式代碼中，也可以使用 runtime.GC() 來手動觸發GC。這個主要用於測試 GC 性能和統計。</li>
+</ul>
+</li>
+</ul>
+<h1 id="總結">總結</h1>
+<p>從<a href="/post/2022-01-24-golang-goroutine/">上一篇</a>讀了那麼硬的知識後，今天來挑戰記憶體管理的歷史到 golang 的記憶體管理相關知識，讀完之後覺得有點痛苦，但是這將會化身成為我們成長的一大養分不是嗎？看完之後你的感想為何呢？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="參考">參考</h2>
+<ul>
+<li><a href="http://dmitrysoshnikov.com/compilers/writing-a-memory-allocator/">Writing a Memory Allocator
+</a></li>
+<li><a href="http://goog-perftools.sourceforge.net/doc/tcmalloc.html">TCMalloc : Thread-Caching Malloc
+</a></li>
+<li><a href="http://legendtkl.com/2015/12/11/go-memory/">tcmalloc 介绍
+</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/29216091">图解 TCMalloc</a></li>
+<li><a href="https://studygolang.com/articles/30505">年度最佳【golang】内存分配详解
+</a></li>
+<li><a href="https://www.gushiciku.cn/pl/arPC/zh-tw">常見的幾種垃圾回收演算法，背就完了~
+</a></li>
 </ul>
 
             
@@ -706,7 +712,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -716,7 +722,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

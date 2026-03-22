@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="10 Dockerfile Best Practices" />
+    <meta property="og:title" content="10 Dockerfile Best Practices" />
+    <meta property="twitter:title" content="10 Dockerfile Best Practices" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>10 Dockerfile Best Practices | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/en/post/2022-01-16-dockerfile-best-practices/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/en/">Alan Zhan Blog</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/en/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/en/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/en/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/">繁體中文</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <p>I was recently organizing Docker knowledge for myself and came across Dockerfile best practices. I planned to summarize them, but then I found that the official documentation already has best practices, so I decided to translate them and add my own insights.</p>
+<h1 id="containers-should-be-ephemeral">Containers Should Be Ephemeral</h1>
+<p>Containers built from a <code>Dockerfile</code> should be as ephemeral as possible. &ldquo;Ephemeral&rdquo; here means they can be started quickly and stopped quickly.</p>
+<h1 id="understand-the-build-context">Understand the Build Context</h1>
+<p>Including files that aren&rsquo;t needed to build the image results in a larger build context and larger image. This increases build time, pull/push time, and the runtime size of the container.</p>
+<ul>
+<li>Pay attention to the context directory during builds, which is typically <code>.</code> (the current directory).</li>
+<li>Make good use of .dockerignore, which we&rsquo;ll cover in more detail below.</li>
+</ul>
+<h1 id="use-dockerignore-files">Use .dockerignore Files</h1>
+<p>The usage is similar to .gitignore in Git. For Git, .gitignore prevents unnecessary files from being committed to the repository. Similarly, .dockerignore ensures the build context is as small as possible.</p>
+<h1 id="pipe-dockerfile-through-stdin">Pipe Dockerfile Through stdin</h1>
+<p>If your image is temporary and you don&rsquo;t want to bother writing a Dockerfile, you can build images through stdin piping.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> -e <span style="color:#f1fa8c">&#39;FROM busybox\nRUN echo &#34;hello world&#34;&#39;</span> | docker build -
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker build -<span style="color:#f1fa8c">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">FROM busybox
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">RUN echo &#34;hello world&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EOF</span>
+</span></span></code></pre></div><h1 id="use-multi-stage-builds">Use Multi-Stage Builds</h1>
+<p>Using multi-stage builds can dramatically reduce your final image size, and you won&rsquo;t need to worry about optimizing the Dockerfile statements in non-final images.</p>
+<p>Here&rsquo;s a Go example: during the build process, we need the SDK image to compile the binary. After compilation, we only need to place the binary in an extremely lightweight image, ensuring the final image stays lean.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#6272a4"># build stage</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">FROM</span> <span style="color:#f1fa8c">golang:alpine</span> <span style="color:#ff79c6">AS</span> <span style="color:#f1fa8c">build</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> apk --no-cache add build-base git bzr mercurial gcc
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">ADD</span> . /src
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> /src <span style="color:#ff79c6">&amp;&amp;</span> go build -o main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># final stage</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">FROM</span> <span style="color:#f1fa8c">alpine</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">WORKDIR</span> <span style="color:#f1fa8c">/app</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">COPY</span> --from<span style="color:#ff79c6">=</span>build /src/main /app/
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">ENTRYPOINT</span> ./main
+</span></span></code></pre></div><h1 id="minimize-installing-unnecessary-packages">Minimize Installing Unnecessary Packages</h1>
+<p>To reduce complexity, dependencies, file size, and build time, avoid installing unnecessary software packages whenever possible.</p>
+<h1 id="run-only-one-process-per-container">Run Only One Process Per Container</h1>
+<p>Each container should have only one concern, so ideally only one process should run per container. Decouple other applications into separate containers as much as possible.</p>
+<p>However, things aren&rsquo;t always that simple — sometimes multiple processes do run in a single container. In that case, here are some recommended process management tools:</p>
+<ul>
+<li>supervisord: An easy-to-use process management tool</li>
+<li>tini: Docker&rsquo;s default process manager</li>
+<li>systemd: A comprehensive solution, but relatively heavyweight</li>
+<li>s6: A well-known process management tool</li>
+</ul>
+<h1 id="minimize-the-number-of-image-layers">Minimize the Number of Image Layers</h1>
+<p>In older versions of Docker, minimizing the number of layers in an image was crucial for performance:</p>
+<ul>
+<li>Only the <code>RUN</code>, <code>COPY</code>, and <code>ADD</code> instructions create layers. Other instructions create temporary intermediate images and don&rsquo;t increase the build size.</li>
+<li>When possible, leverage multi-stage builds (see the <code>Use Multi-Stage Builds</code> section above).</li>
+</ul>
+<h1 id="sort-multi-line-arguments">Sort Multi-Line Arguments</h1>
+<p>Sort multi-line arguments alphabetically — for example, when installing multiple packages. This avoids installing duplicate packages and makes the package list easier to maintain when updating.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  bzr <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  cvs <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  git <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  mercurial <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  subversion <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+</span></span></code></pre></div><h1 id="leverage-build-cache">Leverage Build Cache</h1>
+<p>During the image build process, Docker iterates through the instructions in the Dockerfile and executes them sequentially. Before each instruction is executed, Docker checks the cache for a reusable duplicate image. If one exists, it uses the cached image instead of creating a duplicate.</p>
+<blockquote>
+<p>You can disable caching by using the <code>--no-cache=true</code> option in the <code>docker build</code> command.</p>
+</blockquote>
+<ul>
+<li>Starting from the cached parent image, the next instruction is compared against all child images of that parent to check whether any of them were created using the exact same instruction. If not, the cache is invalidated.
+<ul>
+<li>Note: Instructions and files that are least likely to change should be executed first to maximize cache reuse.</li>
+</ul>
+</li>
+<li>In most cases, simply comparing the instruction in the <code>Dockerfile</code> with the child image is sufficient.</li>
+<li>For <code>ADD</code> and <code>COPY</code> instructions, the contents of the corresponding files in the image are also checked. A checksum is calculated for each file (though last modified time and last access time are not included in the checksum). During cache lookup, these checksums are compared with checksums of files in existing images. If files have changed, the cache is invalidated.</li>
+<li>Apart from <code>ADD</code> and <code>COPY</code> instructions, the cache matching process does not examine files in temporary containers to determine cache matches. For example, when running <code>RUN apt-get -y update</code>, some files in the container are updated, but Docker does not check these files — it records the instruction string to match the cache.</li>
+</ul>
+<h1 id="references">References</h1>
+<p><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile Best Practices</a></p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/en/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/en/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan Blog 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

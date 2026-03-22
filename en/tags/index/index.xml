@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Index on Alan Zhan Blog</title>
+    <link>https://alanzhan.dev/en/tags/index/</link>
+    <description>Recent content in Index on Alan Zhan Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 Apr 2022 16:19:10 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/en/tags/index/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MongoDB Index Best Practices</title>
+      <link>https://alanzhan.dev/en/post/2022-04-10-mongodb-index-best-practice/</link>
+      <pubDate>Sun, 10 Apr 2022 16:19:10 +0800</pubDate>
+      <guid>https://alanzhan.dev/en/post/2022-04-10-mongodb-index-best-practice/</guid>
+      <description>&lt;p&gt;After the sorted operation OOM incident in production from the previous post, I realized my understanding of MongoDB indexes wasn&amp;rsquo;t as deep as it should be. I started searching extensively and finally organized some key points. Some were covered in the previous post — feel free to review &lt;a href=&#34;https://alanzhan.dev/en/post/2022-03-20-mongodb-sorted-operation-oom/&#34;&gt;MongoDB Sorted Operation OOM&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h1 id=&#34;when-to-use-indexes&#34;&gt;When to Use Indexes&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;When you have sorting scenarios and in-memory sorting exceeds 32 MB.&lt;/li&gt;&#xA;&lt;li&gt;When a specific field has a uniqueness requirement.&lt;/li&gt;&#xA;&lt;li&gt;When the document count is large.&lt;/li&gt;&#xA;&lt;li&gt;Build indexes on high-cardinality fields.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;when-not-to-use-indexes&#34;&gt;When NOT to Use Indexes&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;When an index cannot effectively filter data.&lt;/li&gt;&#xA;&lt;li&gt;Don&amp;rsquo;t set indexes on frequently updated fields.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;how-to-design-and-use-indexes&#34;&gt;How to Design and Use Indexes&lt;/h1&gt;&#xA;&lt;h2 id=&#34;use-compound-indexes-instead-of-single-field-indexes&#34;&gt;Use Compound Indexes Instead of Single Field Indexes&lt;/h2&gt;&#xA;&lt;p&gt;In MongoDB, a find query can only use one index at a time (in most scenarios). So if your use case frequently filters on multiple fields, use a Compound Index composed of multiple fields to match your query conditions.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MongoDB Sorted Operation OOM</title>
+      <link>https://alanzhan.dev/en/post/2022-03-20-mongodb-sorted-operation-oom/</link>
+      <pubDate>Sun, 20 Mar 2022 15:11:15 +0800</pubDate>
+      <guid>https://alanzhan.dev/en/post/2022-03-20-mongodb-sorted-operation-oom/</guid>
+      <description>&lt;p&gt;This is a rare case where I learned by working backward from a problem — I&amp;rsquo;d better document it well. Recently, our production environment hit a MongoDB sort operation limit with this specific error:&lt;/p&gt;&#xA;&lt;p&gt;MongoDB.Driver.MongoCommandException: Command find failed: Encountered non-retryable error during query :: caused by :: Executor error during find command :: caused by :: Sort operation used more than the maximum 33554432 bytes of RAM.&lt;/p&gt;&#xA;&lt;p&gt;Well, the problem has occurred. Let&amp;rsquo;s solve it first — so we added an index as an immediate fix. But what exactly is a MongoDB index?&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

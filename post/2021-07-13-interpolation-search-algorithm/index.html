@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Interpolation Search Algorithm" />
-    <meta property="og:title" content="Interpolation Search Algorithm" />
-    <meta property="twitter:title" content="Interpolation Search Algorithm" />
+    <meta name="title" content="Interpolation Search Algorithm - 插補搜尋法" />
+    <meta property="og:title" content="Interpolation Search Algorithm - 插補搜尋法" />
+    <meta property="twitter:title" content="Interpolation Search Algorithm - 插補搜尋法" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Interpolation Search Algorithm | Alan Zhan Blog</title>
+    <title>Interpolation Search Algorithm - 插補搜尋法 | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2021-07-13-interpolation-search-algorithm/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2021-07-13-interpolation-search-algorithm/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2021-07-13-interpolation-search-algorithm/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -203,21 +203,21 @@
             col-xs-12
             post-container">
             
-                <p>Continuing with the number guessing game — for numbers 1 to 100, if you already know the result, using binary search might not be the most efficient approach. So what method should we use instead?</p>
-<h1 id="concept">Concept</h1>
-<p>Interpolation Search: This is an algorithm based on binary search. <code>The list being searched must be sorted beforehand</code>, and the data distribution should ideally be <code>linear</code>. If the data is not linearly distributed, the search may result in O(n) performance, which could be even slower than binary search.</p>
-<p>Formula: lowIndex + (target - array[lowIndex]) * (highIndex - lowIndex) / (array[highIndex] - array[lowIndex])</p>
+                <p>繼續使用猜數字當範例， 1 ~ 100 的數字，但是這次你已經知道結果了，你如果還是繼續使用二元搜尋法，那麼效率不會那麼好，那我們該用甚麼方式解決呢？</p>
+<h1 id="概念">概念</h1>
+<p>插補搜尋法 (Interpolation Search)：是一個基於二元搜尋法的演算法，<code>被搜尋的清單是需要事先先被排序過的</code>，而且資料的分布狀態最好是呈現<code>線性</code>的，如果不是呈現線性分布，那麼在搜尋的過程中，將有可能會得到 O(n) 的結果，可能會比二元搜尋法還更耗時。</p>
+<p>公式： lowIndex + (target - array[lowIndex]) * (highIndex-lowIndex) / (array[highIndex] - array[lowIndex])</p>
 <ul>
-<li>lowIndex: Lower bound index</li>
-<li>highIndex: Upper bound index</li>
-<li>target: The target value to search for</li>
+<li>lowIndex: 低位索引</li>
+<li>highIndex: 高位索引</li>
+<li>target: 要查找的目標數值</li>
 </ul>
-<h1 id="complexity">Complexity</h1>
+<h1 id="複雜度">複雜度</h1>
 <ul>
-<li>Time complexity: O(n)</li>
-<li>Space complexity: O(1)</li>
+<li>時間複雜度： O(n)</li>
+<li>空間複雜度： O(1)</li>
 </ul>
-<h1 id="examples">Examples</h1>
+<h1 id="範例">範例</h1>
 <h2 id="go">Go</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#ff79c6">package</span> main
 </span></span><span style="display:flex;"><span>
@@ -270,11 +270,11 @@
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (target == list[i])
 </span></span><span style="display:flex;"><span>            {
 </span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">return</span> i;
-</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            } 
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (target &gt; list[i])
 </span></span><span style="display:flex;"><span>            {
 </span></span><span style="display:flex;"><span>                low = i + <span style="color:#bd93f9">1</span>;
-</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            } 
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span>
 </span></span><span style="display:flex;"><span>            {
 </span></span><span style="display:flex;"><span>                high = i - <span style="color:#bd93f9">1</span>;
@@ -290,7 +290,7 @@
 </span></span><span style="display:flex;"><span>        Console.WriteLine(interpolationSearch(<span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span>[] {<span style="color:#bd93f9">1</span>, <span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">3</span>, <span style="color:#bd93f9">4</span>, <span style="color:#bd93f9">5</span>}, <span style="color:#bd93f9">6</span>)); <span style="color:#6272a4">// -1</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+</span></span></code></pre></div><p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -577,7 +577,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -587,7 +587,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Terraform on Alan Zhan Blog</title>
+    <link>https://alanzhan.dev/en/tags/terraform/</link>
+    <description>Recent content in Terraform on Alan Zhan Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 12 Mar 2023 18:04:41 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/en/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a Private GKE Cluster with Terraform</title>
+      <link>https://alanzhan.dev/en/post/2023-03-12-terraform-private-gke/</link>
+      <pubDate>Sun, 12 Mar 2023 18:04:41 +0800</pubDate>
+      <guid>https://alanzhan.dev/en/post/2023-03-12-terraform-private-gke/</guid>
+      <description>&lt;p&gt;Let&amp;rsquo;s spend about ten minutes together — I&amp;rsquo;ll walk you through using Terraform to build a private GKE Cluster step by step!&lt;/p&gt;&#xA;&lt;h2 id=&#34;setting-up-gcp&#34;&gt;Setting Up GCP&lt;/h2&gt;&#xA;&lt;p&gt;&#xA;  &lt;img src=&#34;https://alanzhan.dev/2023-03-12-terraform-private-gke/create-service-account.jpg&#34; alt=&#34;Create Service Account and Key&#34;&gt;&#xA;&#xA;&lt;/p&gt;&#xA;&lt;h3 id=&#34;create-a-service-account&#34;&gt;Create a Service Account&lt;/h3&gt;&#xA;&lt;p&gt;First, go to the Google Cloud console and create a Service Account for Terraform to use. Follow steps 1, 2, and 3 in the diagram above. If you already have a Service Account, you can skip this step.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

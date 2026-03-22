@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Dockerfile on Alan Zhan Blog</title>
+    <title>Dockerfile on Alan Zhan 部落格</title>
     <link>https://alanzhan.dev/tags/dockerfile/</link>
-    <description>Recent content in Dockerfile on Alan Zhan Blog</description>
+    <description>Recent content in Dockerfile on Alan Zhan 部落格</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
+    <language>zh-tw</language>
     <lastBuildDate>Sun, 16 Jan 2022 16:55:15 +0800</lastBuildDate>
     <atom:link href="https://alanzhan.dev/tags/dockerfile/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>10 Dockerfile Best Practices</title>
+      <title>10 個 Dockerfile 的最佳實踐</title>
       <link>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</link>
       <pubDate>Sun, 16 Jan 2022 16:55:15 +0800</pubDate>
       <guid>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</guid>
-      <description>&lt;p&gt;I was recently organizing Docker knowledge for myself and came across Dockerfile best practices. I planned to summarize them, but then I found that the official documentation already has best practices, so I decided to translate them and add my own insights.&lt;/p&gt;&#xA;&lt;h1 id=&#34;containers-should-be-ephemeral&#34;&gt;Containers Should Be Ephemeral&lt;/h1&gt;&#xA;&lt;p&gt;Containers built from a &lt;code&gt;Dockerfile&lt;/code&gt; should be as ephemeral as possible. &amp;ldquo;Ephemeral&amp;rdquo; here means they can be started quickly and stopped quickly.&lt;/p&gt;&#xA;&lt;h1 id=&#34;understand-the-build-context&#34;&gt;Understand the Build Context&lt;/h1&gt;&#xA;&lt;p&gt;Including files that aren&amp;rsquo;t needed to build the image results in a larger build context and larger image. This increases build time, pull/push time, and the runtime size of the container.&lt;/p&gt;</description>
+      <description>&lt;p&gt;最近剛好在整理 docker 的技術給自己，剛好看到 dockerfile 的最佳實踐，想順手整理上來，不料看到官方已經有最佳實踐了，那我就順手做做翻譯的工作與添增自己的見解。&lt;/p&gt;&#xA;&lt;h1 id=&#34;容器應該是短暫的&#34;&gt;容器應該是短暫的&lt;/h1&gt;&#xA;&lt;p&gt;通過 &lt;code&gt;Dockerfile&lt;/code&gt; 構建的鏡像所啟動的容器，應該盡可能的短暫，這邊的短暫意思是：很快速的啟動，並且很快速的終止。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

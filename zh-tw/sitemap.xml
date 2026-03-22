@@ -2,797 +2,797 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://alanzhan.dev/zh-tw/</loc>
+    <loc>https://alanzhan.dev/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/categories/</loc>
+    <loc>https://alanzhan.dev/categories/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/categories/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/categories/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/kubernetes/</loc>
+    <loc>https://alanzhan.dev/tags/kubernetes/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/kubernetes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/kubernetes/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/kubernetes/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/</loc>
+    <loc>https://alanzhan.dev/post/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/</loc>
+    <loc>https://alanzhan.dev/tags/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/categories/tech/</loc>
+    <loc>https://alanzhan.dev/categories/tech/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/categories/tech/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/categories/tech/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/categories/tech/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/tech/</loc>
+    <loc>https://alanzhan.dev/tags/tech/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/tech/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/tech/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/tech/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/terraform/</loc>
+    <loc>https://alanzhan.dev/tags/terraform/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/terraform/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/terraform/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/terraform/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2023-03-12-terraform-private-gke/</loc>
+    <loc>https://alanzhan.dev/post/2023-03-12-terraform-private-gke/</loc>
     <lastmod>2023-03-12T18:04:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2023-03-12-terraform-private-gke/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2023-03-12-terraform-private-gke/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2023-03-12-terraform-private-gke/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/categories/reading/</loc>
+    <loc>https://alanzhan.dev/categories/reading/</loc>
     <lastmod>2022-10-02T20:20:53+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/categories/reading/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/categories/reading/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/categories/reading/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/reading/</loc>
+    <loc>https://alanzhan.dev/tags/reading/</loc>
     <lastmod>2022-10-02T20:20:53+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/reading/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/reading/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/reading/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-10-02-lifelong-growth/</loc>
+    <loc>https://alanzhan.dev/post/2022-10-02-lifelong-growth/</loc>
     <lastmod>2022-10-02T20:20:53+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-10-02-lifelong-growth/"
+                href="https://alanzhan.dev/en/post/2022-10-02-lifelong-growth/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-10-02-lifelong-growth/"
+                href="https://alanzhan.dev/post/2022-10-02-lifelong-growth/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-08-30-kubernetes-kubelet/</loc>
+    <loc>https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/</loc>
     <lastmod>2022-08-30T20:56:08+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2022-08-30-kubernetes-kubelet/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2022-08-30-kubernetes-kubelet/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-08-30-kubernetes-kubelet/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/categories/algorithm/</loc>
+    <loc>https://alanzhan.dev/categories/algorithm/</loc>
     <lastmod>2022-08-28T14:22:55+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/categories/algorithm/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/categories/algorithm/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/categories/algorithm/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/algorithm/</loc>
+    <loc>https://alanzhan.dev/tags/algorithm/</loc>
     <lastmod>2022-08-28T14:22:55+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/algorithm/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/algorithm/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/algorithm/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/leetcode/</loc>
+    <loc>https://alanzhan.dev/tags/leetcode/</loc>
     <lastmod>2022-08-28T14:22:55+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/leetcode/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/leetcode/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/leetcode/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/leetcode-hard/</loc>
+    <loc>https://alanzhan.dev/tags/leetcode-hard/</loc>
     <lastmod>2022-08-28T14:22:55+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/leetcode-hard/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/leetcode-hard/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/leetcode-hard/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-08-28-leetcode-25/</loc>
+    <loc>https://alanzhan.dev/post/2022-08-28-leetcode-25/</loc>
     <lastmod>2022-08-28T14:22:55+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2022-08-28-leetcode-25/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2022-08-28-leetcode-25/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-08-28-leetcode-25/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/invest/</loc>
+    <loc>https://alanzhan.dev/tags/invest/</loc>
     <lastmod>2022-08-14T14:41:06+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/invest/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/invest/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/invest/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-08-14-forrest-gump-invest/</loc>
+    <loc>https://alanzhan.dev/post/2022-08-14-forrest-gump-invest/</loc>
     <lastmod>2022-08-14T14:41:06+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-08-14-forrest-gump-invest/"
+                href="https://alanzhan.dev/en/post/2022-08-14-forrest-gump-invest/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-08-14-forrest-gump-invest/"
+                href="https://alanzhan.dev/post/2022-08-14-forrest-gump-invest/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-07-30-kubenetes-controller-manager/</loc>
+    <loc>https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/</loc>
     <lastmod>2022-07-30T20:07:01+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2022-07-30-kubenetes-controller-manager/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2022-07-30-kubenetes-controller-manager/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-07-30-kubenetes-controller-manager/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/dynamic-programing/</loc>
+    <loc>https://alanzhan.dev/tags/dynamic-programing/</loc>
     <lastmod>2022-07-13T22:22:58+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/dynamic-programing/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/dynamic-programing/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/dynamic-programing/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/leetcode-easy/</loc>
+    <loc>https://alanzhan.dev/tags/leetcode-easy/</loc>
     <lastmod>2022-07-13T22:22:58+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/leetcode-easy/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/leetcode-easy/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/leetcode-easy/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-07-13-leetcode-70/</loc>
+    <loc>https://alanzhan.dev/post/2022-07-13-leetcode-70/</loc>
     <lastmod>2022-07-13T22:22:58+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-07-13-leetcode-70/"
+                href="https://alanzhan.dev/en/post/2022-07-13-leetcode-70/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-07-13-leetcode-70/"
+                href="https://alanzhan.dev/post/2022-07-13-leetcode-70/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-07-10-kubernetes-cordon-drain/</loc>
+    <loc>https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/</loc>
     <lastmod>2022-07-10T18:19:11+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/"
+                href="https://alanzhan.dev/en/post/2022-07-10-kubernetes-cordon-drain/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-07-10-kubernetes-cordon-drain/"
+                href="https://alanzhan.dev/post/2022-07-10-kubernetes-cordon-drain/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-30-leetcode-69/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-30-leetcode-69/</loc>
     <lastmod>2022-06-30T23:37:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2022-06-30-leetcode-69/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2022-06-30-leetcode-69/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-30-leetcode-69/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/leetcode-medium/</loc>
+    <loc>https://alanzhan.dev/tags/leetcode-medium/</loc>
     <lastmod>2022-06-28T23:55:43+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/leetcode-medium/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/leetcode-medium/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/leetcode-medium/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-28-leetcode-433/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-28-leetcode-433/</loc>
     <lastmod>2022-06-28T23:55:43+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-06-28-leetcode-433/"
+                href="https://alanzhan.dev/en/post/2022-06-28-leetcode-433/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-28-leetcode-433/"
+                href="https://alanzhan.dev/post/2022-06-28-leetcode-433/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-25-leetcode-23/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-25-leetcode-23/</loc>
     <lastmod>2022-06-25T23:29:46+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-06-25-leetcode-23/"
+                href="https://alanzhan.dev/en/post/2022-06-25-leetcode-23/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-25-leetcode-23/"
+                href="https://alanzhan.dev/post/2022-06-25-leetcode-23/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-23-leetcode-200/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-23-leetcode-200/</loc>
     <lastmod>2022-06-23T23:50:13+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-06-23-leetcode-200/"
+                href="https://alanzhan.dev/en/post/2022-06-23-leetcode-200/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-23-leetcode-200/"
+                href="https://alanzhan.dev/post/2022-06-23-leetcode-200/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-20-leetcode-78/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-20-leetcode-78/</loc>
     <lastmod>2022-06-20T18:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-06-20-leetcode-78/"
+                href="https://alanzhan.dev/en/post/2022-06-20-leetcode-78/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-20-leetcode-78/"
+                href="https://alanzhan.dev/post/2022-06-20-leetcode-78/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-16-leetcode-111/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-16-leetcode-111/</loc>
     <lastmod>2022-06-16T18:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-06-16-leetcode-111/"
+                href="https://alanzhan.dev/en/post/2022-06-16-leetcode-111/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-16-leetcode-111/"
+                href="https://alanzhan.dev/post/2022-06-16-leetcode-111/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-14-leetcode-104/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-14-leetcode-104/</loc>
     <lastmod>2022-06-14T18:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-06-14-leetcode-104/"
+                href="https://alanzhan.dev/en/post/2022-06-14-leetcode-104/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-14-leetcode-104/"
+                href="https://alanzhan.dev/post/2022-06-14-leetcode-104/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-13-winners-take-all/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-13-winners-take-all/</loc>
     <lastmod>2022-06-13T18:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-06-13-winners-take-all/"
+                href="https://alanzhan.dev/en/post/2022-06-13-winners-take-all/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-13-winners-take-all/"
+                href="https://alanzhan.dev/post/2022-06-13-winners-take-all/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-06-12-leetcode-226/</loc>
+    <loc>https://alanzhan.dev/post/2022-06-12-leetcode-226/</loc>
     <lastmod>2022-06-12T13:01:44+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-06-12-leetcode-226/"
+                href="https://alanzhan.dev/en/post/2022-06-12-leetcode-226/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-06-12-leetcode-226/"
+                href="https://alanzhan.dev/post/2022-06-12-leetcode-226/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-05-16-kubernetes-scheduler/</loc>
+    <loc>https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/</loc>
     <lastmod>2022-05-16T22:40:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/"
+                href="https://alanzhan.dev/en/post/2022-05-16-kubernetes-scheduler/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-05-16-kubernetes-scheduler/"
+                href="https://alanzhan.dev/post/2022-05-16-kubernetes-scheduler/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-04-24-kubernetes-api-server/</loc>
+    <loc>https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/</loc>
     <lastmod>2022-04-24T19:07:12+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2022-04-24-kubernetes-api-server/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-04-24-kubernetes-api-server/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/index/</loc>
+    <loc>https://alanzhan.dev/tags/index/</loc>
     <lastmod>2022-04-10T16:19:10+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/index/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/index/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/index/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/mongodb/</loc>
+    <loc>https://alanzhan.dev/tags/mongodb/</loc>
     <lastmod>2022-04-10T16:19:10+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/mongodb/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/mongodb/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/mongodb/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-04-10-mongodb-index-best-practice/</loc>
+    <loc>https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/</loc>
     <lastmod>2022-04-10T16:19:10+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/"
+                href="https://alanzhan.dev/en/post/2022-04-10-mongodb-index-best-practice/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-04-10-mongodb-index-best-practice/"
+                href="https://alanzhan.dev/post/2022-04-10-mongodb-index-best-practice/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-03-20-mongodb-sorted-operation-oom/</loc>
+    <loc>https://alanzhan.dev/post/2022-03-20-mongodb-sorted-operation-oom/</loc>
     <lastmod>2022-03-20T15:11:15+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-03-20-mongodb-sorted-operation-oom/"
+                href="https://alanzhan.dev/en/post/2022-03-20-mongodb-sorted-operation-oom/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-03-20-mongodb-sorted-operation-oom/"
+                href="https://alanzhan.dev/post/2022-03-20-mongodb-sorted-operation-oom/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-02-28-kubetnetes-etcd/</loc>
+    <loc>https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/</loc>
     <lastmod>2022-02-28T15:58:47+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/"
+                href="https://alanzhan.dev/en/post/2022-02-28-kubetnetes-etcd/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-02-28-kubetnetes-etcd/"
+                href="https://alanzhan.dev/post/2022-02-28-kubetnetes-etcd/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-02-20-reinstall-kubernetes-kubeadm/</loc>
+    <loc>https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/</loc>
     <lastmod>2022-02-20T15:04:19+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/"
+                href="https://alanzhan.dev/en/post/2022-02-20-reinstall-kubernetes-kubeadm/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-02-20-reinstall-kubernetes-kubeadm/"
+                href="https://alanzhan.dev/post/2022-02-20-reinstall-kubernetes-kubeadm/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-02-14-kubernetes-introduction/</loc>
+    <loc>https://alanzhan.dev/post/2022-02-14-kubernetes-introduction/</loc>
     <lastmod>2022-02-14T21:48:40+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2022-02-14-kubernetes-introduction/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2022-02-14-kubernetes-introduction/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-02-14-kubernetes-introduction/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/gc/</loc>
+    <loc>https://alanzhan.dev/tags/gc/</loc>
     <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/gc/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/gc/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/gc/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/golang/</loc>
+    <loc>https://alanzhan.dev/tags/golang/</loc>
     <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/golang/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/golang/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/golang/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-02-13-golang-memory-management/</loc>
+    <loc>https://alanzhan.dev/post/2022-02-13-golang-memory-management/</loc>
     <lastmod>2022-02-13T14:42:09+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-02-13-golang-memory-management/"
+                href="https://alanzhan.dev/en/post/2022-02-13-golang-memory-management/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-02-13-golang-memory-management/"
+                href="https://alanzhan.dev/post/2022-02-13-golang-memory-management/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-01-24-golang-goroutine/</loc>
+    <loc>https://alanzhan.dev/post/2022-01-24-golang-goroutine/</loc>
     <lastmod>2022-01-24T20:24:58+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2022-01-24-golang-goroutine/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2022-01-24-golang-goroutine/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-01-24-golang-goroutine/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-01-16-dockerfile-best-practices/</loc>
+    <loc>https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/</loc>
     <lastmod>2022-01-16T16:55:15+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/post/2022-01-16-dockerfile-best-practices/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/post/2022-01-16-dockerfile-best-practices/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-01-16-dockerfile-best-practices/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/docker/</loc>
+    <loc>https://alanzhan.dev/tags/docker/</loc>
     <lastmod>2022-01-16T16:55:15+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
+                href="https://alanzhan.dev/en/tags/docker/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
                 href="https://alanzhan.dev/tags/docker/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/docker/"
-                />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/tags/dockerfile/</loc>
+    <loc>https://alanzhan.dev/tags/dockerfile/</loc>
     <lastmod>2022-01-16T16:55:15+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/tags/dockerfile/"
+                href="https://alanzhan.dev/en/tags/dockerfile/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/tags/dockerfile/"
+                href="https://alanzhan.dev/tags/dockerfile/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2022-01-09-github-pages-custom-domain/</loc>
+    <loc>https://alanzhan.dev/post/2022-01-09-github-pages-custom-domain/</loc>
     <lastmod>2022-01-09T14:58:58+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2022-01-09-github-pages-custom-domain/"
+                href="https://alanzhan.dev/en/post/2022-01-09-github-pages-custom-domain/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2022-01-09-github-pages-custom-domain/"
+                href="https://alanzhan.dev/post/2022-01-09-github-pages-custom-domain/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2021-07-13-interpolation-search-algorithm/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/</loc>
     <lastmod>2021-07-13T21:51:30+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/"
+                href="https://alanzhan.dev/en/post/2021-07-13-interpolation-search-algorithm/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2021-07-13-interpolation-search-algorithm/"
+                href="https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2021-07-11-jump-search-alogrithm/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/</loc>
     <lastmod>2021-07-11T14:48:35+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/"
+                href="https://alanzhan.dev/en/post/2021-07-11-jump-search-alogrithm/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2021-07-11-jump-search-alogrithm/"
+                href="https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2021-07-10-binary-search-algorithm/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/</loc>
     <lastmod>2021-07-10T22:57:37+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/"
+                href="https://alanzhan.dev/en/post/2021-07-10-binary-search-algorithm/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2021-07-10-binary-search-algorithm/"
+                href="https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2021-07-10-linear-search-algorithm/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/</loc>
     <lastmod>2021-07-10T18:50:40+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/"
+                href="https://alanzhan.dev/en/post/2021-07-10-linear-search-algorithm/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2021-07-10-linear-search-algorithm/"
+                href="https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2021-07-07-divide-and-conquer/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-07-divide-and-conquer/</loc>
     <lastmod>2021-07-07T23:56:34+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2021-07-07-divide-and-conquer/"
+                href="https://alanzhan.dev/en/post/2021-07-07-divide-and-conquer/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2021-07-07-divide-and-conquer/"
+                href="https://alanzhan.dev/post/2021-07-07-divide-and-conquer/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2021-07-06-big-o-notation/</loc>
+    <loc>https://alanzhan.dev/post/2021-07-06-big-o-notation/</loc>
     <lastmod>2021-07-06T23:56:58+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2021-07-06-big-o-notation/"
+                href="https://alanzhan.dev/en/post/2021-07-06-big-o-notation/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2021-07-06-big-o-notation/"
+                href="https://alanzhan.dev/post/2021-07-06-big-o-notation/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2021-06-26-emotional-blackmail/</loc>
+    <loc>https://alanzhan.dev/post/2021-06-26-emotional-blackmail/</loc>
     <lastmod>2021-06-26T18:46:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2021-06-26-emotional-blackmail/"
+                href="https://alanzhan.dev/en/post/2021-06-26-emotional-blackmail/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2021-06-26-emotional-blackmail/"
+                href="https://alanzhan.dev/post/2021-06-26-emotional-blackmail/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/post/2021-06-13-atomic-habits/</loc>
+    <loc>https://alanzhan.dev/post/2021-06-13-atomic-habits/</loc>
     <lastmod>2021-06-13T23:45:21+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/post/2021-06-13-atomic-habits/"
+                href="https://alanzhan.dev/en/post/2021-06-13-atomic-habits/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/post/2021-06-13-atomic-habits/"
+                href="https://alanzhan.dev/post/2021-06-13-atomic-habits/"
                 />
   </url><url>
-    <loc>https://alanzhan.dev/zh-tw/about/</loc>
+    <loc>https://alanzhan.dev/about/</loc>
     <lastmod>1993-05-13T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://alanzhan.dev/about/"
+                href="https://alanzhan.dev/en/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://alanzhan.dev/zh-tw/about/"
+                href="https://alanzhan.dev/about/"
                 />
   </url>
 </urlset>

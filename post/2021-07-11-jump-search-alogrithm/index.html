@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Jump Search Algorithm" />
-    <meta property="og:title" content="Jump Search Algorithm" />
-    <meta property="twitter:title" content="Jump Search Algorithm" />
+    <meta name="title" content="Jump Search Algorithm - 跳躍搜尋法" />
+    <meta property="og:title" content="Jump Search Algorithm - 跳躍搜尋法" />
+    <meta property="twitter:title" content="Jump Search Algorithm - 跳躍搜尋法" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Jump Search Algorithm | Alan Zhan Blog</title>
+    <title>Jump Search Algorithm - 跳躍搜尋法 | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2021-07-11-jump-search-alogrithm/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2021-07-11-jump-search-alogrithm/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2021-07-11-jump-search-alogrithm/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -203,24 +203,24 @@
             col-xs-12
             post-container">
             
-                <p>Continuing with the number guessing game — can we try a different approach for numbers 1 to 100?</p>
-<p>If we start from the beginning and jump forward by 10 each time we don&rsquo;t guess correctly, we keep going until the maximum value in our range becomes less than or equal to our guess, then we search backward to find the exact value. This approach can be more efficient when the target value is relatively small.</p>
-<h1 id="concept">Concept</h1>
-<p>Jump Search: This algorithm is similar to binary search — <code>the list being searched must also be sorted beforehand</code>. During each search step, if the value isn&rsquo;t found, it quickly jumps to the next segment using a fixed block size. Once the maximum boundary shrinks, it searches backward to find the value. If found, it returns the element&rsquo;s index; otherwise, it returns -1.</p>
-<p>The description above might be a bit complex, so let&rsquo;s use the number guessing game as an example. Suppose we&rsquo;re looking for the value 30:</p>
+                <p>延續猜數字遊戲，1 ~ 100 我們是不是可以換個猜法呢？</p>
+<p>如果我們從一開始，只要每次沒猜中，我們就往後面 +10 繼續猜，直到最大值範圍值變成我們所猜的數值後，往回開始找值，這樣做，在數值較小的時候，將會更有效率。</p>
+<h1 id="概念">概念</h1>
+<p>跳躍搜尋 (Jump Search)： 這個演算法很像二元搜尋法，<code>被搜尋的清單也是需要事先，先被排序過的</code>，但是在每次查找的過程，如果找不到值，就用一個基值快速地跳到下一個區段查找，直到最大值被變小，再往回開始找值，如果有找到就會回傳元素索引值，否則就會回傳 -1。</p>
+<p>上面的敘述可能會有點複雜，以數猜數字為例，假設現在要查找的數值是 30：</p>
 <ul>
-<li>Step 1: index = 1, the target value is not 1, increment the index by 10.</li>
-<li>Step 2: index = 11, the target value is not 11, increment the index by 10.</li>
-<li>Step 3: index = 21, the target value is not 21, increment the index by 10.</li>
-<li>Step 4: index = 31, the target value is not 31, but we notice the target is smaller than 31, so we start searching backward, decrementing by 1.</li>
-<li>Step 5: index = 30, found the target! Return the index.</li>
+<li>Step 1: index = 1 ，目標數值並不等於 1 ，先將索引 +10。</li>
+<li>Step 2: index = 11，目標數值並不等於 11，再將索引 +10。</li>
+<li>Step 3: index = 21，目標數值並不等於 21，再將索引 +10。</li>
+<li>Step 4: index = 31，目標數值並不等於 31，但是發現要找數值比 31 還小，所以要開始往回找，將索引 -1。</li>
+<li>Step 5: index = 30，發現目標索引為 30，回傳索引值。</li>
 </ul>
-<h1 id="complexity">Complexity</h1>
+<h1 id="複雜度">複雜度</h1>
 <ul>
-<li>Time complexity: O(√n)</li>
-<li>Space complexity: O(1)</li>
+<li>時間複雜度： O(√n)</li>
+<li>空間複雜度： O(1)</li>
 </ul>
-<h1 id="examples">Examples</h1>
+<h1 id="範例">範例</h1>
 <h2 id="go">Go</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#ff79c6">package</span> main
 </span></span><span style="display:flex;"><span>
@@ -281,7 +281,7 @@
 </span></span><span style="display:flex;"><span>            i += blockSize;
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd">var</span> j = i; j &gt; <span style="color:#bd93f9">0</span>; j--)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd">var</span> j = i; j &gt; <span style="color:#bd93f9">0</span>; j--) 
 </span></span><span style="display:flex;"><span>        {
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (list[j] == target)
 </span></span><span style="display:flex;"><span>            {
@@ -298,7 +298,7 @@
 </span></span><span style="display:flex;"><span>        Console.WriteLine(jumpSearch(<span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span>[] {<span style="color:#bd93f9">1</span>, <span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">3</span>, <span style="color:#bd93f9">4</span>, <span style="color:#bd93f9">5</span>}, <span style="color:#bd93f9">6</span>)); <span style="color:#6272a4">// -1</span>
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+</span></span></code></pre></div><p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -585,7 +585,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -595,7 +595,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

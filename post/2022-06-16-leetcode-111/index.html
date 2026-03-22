@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Plain English Leetcode - 111 Minimum Depth of Binary Tree" />
-    <meta property="og:title" content="Plain English Leetcode - 111 Minimum Depth of Binary Tree" />
-    <meta property="twitter:title" content="Plain English Leetcode - 111 Minimum Depth of Binary Tree" />
+    <meta name="title" content="白話解 Leetcode - 111 Minimum Depth of Binary Tree" />
+    <meta property="og:title" content="白話解 Leetcode - 111 Minimum Depth of Binary Tree" />
+    <meta property="twitter:title" content="白話解 Leetcode - 111 Minimum Depth of Binary Tree" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Plain English Leetcode - 111 Minimum Depth of Binary Tree | Alan Zhan Blog</title>
+    <title>白話解 Leetcode - 111 Minimum Depth of Binary Tree | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-06-16-leetcode-111/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-06-16-leetcode-111/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-06-16-leetcode-111/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -226,18 +226,18 @@
 </ul>
 </div>
 <hr>
-<h2 id="problem">Problem</h2>
-<p>Find the shallowest leaf node in the tree — what is its depth?</p>
-<h2 id="approach">Approach</h2>
-<p>This problem is similar to <a href="/2022-06-14-leetcode-104">104 Maximum Depth of Binary Tree</a>. This time, let&rsquo;s use a different approach — solving it with an iterative (loop-based) method.</p>
-<p>In each iteration, we check whether any node at the current level i has both Left and Right children as nil. If so, that&rsquo;s the minimum depth — return it. If not, push the nodes of that level into a queue and check the next level.</p>
+<h2 id="題意">題意</h2>
+<p>尋找這棵樹最小的節點，他的深度為何？</p>
+<h2 id="解題思路">解題思路</h2>
+<p>這次的題目與 <a href="/2022-06-14-leetcode-104">104 Maximum Depth of Binary Tree</a> 相似，這次當然也要使用不同的思路解題，這次就使用迴圈的方式解題吧。</p>
+<p>我們每一次迴圈，就搜尋一次當前 i 層是不是有 Left 與 Right 節點為空的節點，如果有就當作是最小深度回傳，如果沒有就將該層丟入 queue 內，在下一層再取出檢查。</p>
 <ol>
-<li>Declare a queue and push the root into it.</li>
-<li>Declare a depth variable to track the current depth.</li>
-<li>Start a while loop — continue as long as the queue length is not 0.</li>
-<li>Pop a node from the queue. Check if both left and right children are nil — if so, return the current depth. If not, push the left and right children into the queue and continue the loop from step 3.</li>
+<li>宣告一個 queue ，並且把 root 塞入。</li>
+<li>宣告一個 深度 變數，用於記錄目前深度為多少。</li>
+<li>開始 while 循環，只要 queue 的長度不為 0 ，就一直循環。</li>
+<li>從 queue 取出一個 node ，並且檢查是否左右節點都為空，如果是就返回當前深度，如果不是就將左右兩個節點塞入 queue 中，讓第三步循環下去。</li>
 </ol>
-<h2 id="source-code">Source Code</h2>
+<h2 id="原始碼">原始碼</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#6272a4">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * Definition for a binary tree node.
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * type TreeNode struct {
@@ -250,10 +250,10 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> root <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> <span style="color:#bd93f9">0</span>
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    depth <span style="color:#ff79c6">:=</span> <span style="color:#bd93f9">0</span>
 </span></span><span style="display:flex;"><span>    queue <span style="color:#ff79c6">:=</span> []<span style="color:#ff79c6">*</span>TreeNode{root}
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span> <span style="color:#8be9fd;font-style:italic">len</span>(queue) &gt; <span style="color:#bd93f9">0</span> {
 </span></span><span style="display:flex;"><span>        depth<span style="color:#ff79c6">++</span>
 </span></span><span style="display:flex;"><span>        length <span style="color:#ff79c6">:=</span> <span style="color:#8be9fd;font-style:italic">len</span>(queue)
@@ -262,23 +262,23 @@
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> node.Left <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> <span style="color:#ff79c6">&amp;&amp;</span> node.Right <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
 </span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">return</span> depth
 </span></span><span style="display:flex;"><span>            }
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> node.Left <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">nil</span> {
 </span></span><span style="display:flex;"><span>                queue = <span style="color:#8be9fd;font-style:italic">append</span>(queue, node.Left)
 </span></span><span style="display:flex;"><span>            }
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            
 </span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> node.Right <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">nil</span> {
 </span></span><span style="display:flex;"><span>                queue = <span style="color:#8be9fd;font-style:italic">append</span>(queue, node.Right)
 </span></span><span style="display:flex;"><span>            }
 </span></span><span style="display:flex;"><span>            queue = queue[<span style="color:#bd93f9">1</span>:]
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> depth
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="closing">Closing</h1>
-<p>Do you have a better or simpler solution?</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+</span></span></code></pre></div><h1 id="結尾">結尾</h1>
+<p>你有更好或更簡單的解決方案嗎？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -565,7 +565,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -575,7 +575,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

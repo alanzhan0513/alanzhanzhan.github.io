@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="Kubernetes Core Component: API Server" />
+    <meta property="og:title" content="Kubernetes Core Component: API Server" />
+    <meta property="twitter:title" content="Kubernetes Core Component: API Server" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Kubernetes Core Component: API Server | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/en/post/2022-04-24-kubernetes-api-server/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/en/">Alan Zhan Blog</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/en/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/en/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/en/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-04-24-kubernetes-api-server/">繁體中文</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <h1 id="api-server">API Server</h1>
+<p>kube-apiserver is one of the most important core components of Kubernetes, providing the following key features:</p>
+<ul>
+<li>Cluster management REST API, including authentication, authorization, data validation, and cluster state changes
+<ul>
+<li>Authentication</li>
+<li>Authorization</li>
+<li>Admission (Mutating &amp; Validating)</li>
+</ul>
+</li>
+<li>Acts as the data exchange and communication hub between other modules. Other modules can only query or modify data through the API Server — only the API Server can directly operate on etcd.</li>
+</ul>
+<p>kube-apiserver supports HTTPS (default port 6443) and HTTP API (default listening on 127.0.0.1:8080). The HTTP API is insecure with no authentication or authorization mechanism — it&rsquo;s not recommended for production environments.</p>
+<h2 id="authentication">Authentication</h2>
+<p>When TLS is enabled, all requests must first be authenticated. Kubernetes supports multiple authentication mechanisms and allows enabling multiple authentication plugins simultaneously (passing any one is sufficient). If authentication succeeds, the user&rsquo;s username is passed to the authorization module for further verification. Failed authentication requests return 401. Recent versions default to TLS for authentication.</p>
+<h3 id="common-authentication-methods">Common Authentication Methods</h3>
+<ul>
+<li>X.509
+<ul>
+<li>Uses X509 client certificates. Simply configure &ndash;client-ca-file=SOMEFILE when starting the API Server. During certificate authentication, the CN field serves as the username and the organization field serves as the group name.</li>
+</ul>
+</li>
+<li>Static Token File
+<ul>
+<li>Configure &ndash;token-auth-file=SOMEFILE when starting the API Server.</li>
+<li>The file is in CSV format, with each row containing at least three columns: token,username,userid,&ldquo;group1,group2,group3&rdquo;</li>
+</ul>
+</li>
+<li>Bootstrap Token
+<ul>
+<li>To support smooth bootstrapping of new clusters, Kubernetes includes a dynamically managed token type called Bootstrap Token.</li>
+<li>These tokens are stored as Secrets in the kube-system namespace and can be dynamically managed and created.</li>
+<li>The TokenCleaner controller in the controller manager can delete bootstrap tokens when they expire.</li>
+<li>When deploying Kubernetes with kubeadm, you can query tokens with the <code>kubeadm token list</code> command.</li>
+</ul>
+</li>
+<li>Static Password File
+<ul>
+<li>Configure &ndash;basic-auth-file=SOMEFILE when starting the API Server. File format is CSV with at least three columns per row: password,user,uid,&ldquo;group1,group2,group3&rdquo;.</li>
+</ul>
+</li>
+<li>ServiceAccount
+<ul>
+<li>ServiceAccounts are automatically generated by Kubernetes and automatically mounted to the container&rsquo;s /run/secrets/kubernetes.io/serviceaccount directory.</li>
+</ul>
+</li>
+<li>OpenID
+<ul>
+<li>OAuth 2.0 authentication mechanism.</li>
+</ul>
+</li>
+<li>Webhook Token Authentication
+<ul>
+<li>&ndash;authentication-token-webhook-config-file points to a config file describing the remote Webhook service.</li>
+<li>&ndash;authentication-token-webhook-cache-ttl sets the cache duration for authentication decisions. Default is two minutes.</li>
+</ul>
+</li>
+<li>Anonymous Requests
+<ul>
+<li>If using an authentication mode other than AlwaysAllow, anonymous requests are enabled by default but can be disabled with &ndash;anonymous-auth=false.</li>
+</ul>
+</li>
+</ul>
+<h2 id="authorization">Authorization</h2>
+<p>Authorization provides access control for cluster resources by checking request attributes against corresponding access policies. API requests must satisfy certain policies to be processed.</p>
+<p>Similar to authentication, Kubernetes supports multiple authorization mechanisms and allows enabling multiple authorization plugins simultaneously (passing any one is sufficient).</p>
+<p>If authorization succeeds, the request is sent to the admission control module for further validation. Failed authorization requests return HTTP 403.</p>
+<p>Kubernetes authorization handles the following request attributes:</p>
+<ul>
+<li>user, group, extra</li>
+<li>API, request method (e.g., get, post, update), and request path (e.g., /api)</li>
+<li>Request resource and sub-resource</li>
+<li>namespace</li>
+<li>API Group</li>
+</ul>
+<p>Currently supported authorization plugins:</p>
+<ul>
+<li>ABAC</li>
+<li>RBAC</li>
+<li>Webhook</li>
+<li>Node</li>
+</ul>
+<h2 id="admission-control">Admission Control</h2>
+<p>Admission Control performs further validation or adds default parameters to requests after authorization. Unlike authorization and authentication, which only concern the requesting user and operation, admission control also handles request content. It&rsquo;s effective only for create, update, delete, or connect (proxy) operations — not for read operations.</p>
+<p>Admission control supports enabling multiple plugins called in sequence. A request is only admitted if ALL plugins approve it.</p>
+<h3 id="admission-control-plugins">Admission Control Plugins</h3>
+<ul>
+<li>AlwaysAdmit: Accepts all requests.</li>
+<li>AlwaysPullImages: Always pulls the latest image — very useful in multi-tenant scenarios.</li>
+<li>DenyEscalatingExec: Denies exec and attach operations on privileged containers.</li>
+<li>ImagePolicyWebhook: Determines image policy via Webhook, requires configuring &ndash;admission-control-config-file.</li>
+<li>ServiceAccount: Automatically creates default ServiceAccounts and ensures that ServiceAccounts referenced by Pods exist.</li>
+<li>SecurityContextDeny: Rejects containers with illegal SecurityContext configurations.</li>
+<li>ResourceQuota: Ensures Pod requests don&rsquo;t exceed quotas. Requires creating a ResourceQuota object in the namespace.</li>
+<li>LimitRanger: Sets default resource requests and limits for Pods. Requires creating a LimitRange object in the namespace.</li>
+<li>InitialResource: Sets default resource requests and limits for containers based on image usage history.</li>
+<li>NamespaceLifecycle: Ensures namespaces in termination state no longer accept new object creation requests, and rejects requests to non-existent namespaces.</li>
+<li>DefaultStorageClass: Sets a default StorageClass for PVCs.</li>
+<li>DefaultTolerationSeconds: Sets the default forgiveness toleration for Pods to five minutes.</li>
+<li>PodSecurityPolicy: Must be enabled when using Pod Security Policies.</li>
+<li>NodeRestriction: Restricts kubelet to only access node, endpoint, pod, service, and related secret, configmap, PV, and PVC resources.</li>
+</ul>
+<p>Beyond default admission control plugins, Kubernetes provides extension points for user-defined admission control plugins:</p>
+<ul>
+<li>MutatingWebhookConfiguration: Mutating plugin that supports modifying admission objects.</li>
+<li>ValidatingWebhookConfiguration: Validating plugin that can only validate admission object legality, not modify them.</li>
+</ul>
+<h2 id="api-server-access-control-flow">API Server Access Control Flow</h2>
+<p>
+  <img src="/2022-04-24-kubernetes-api-server/kube-apiserver-flow.jpg" alt="kube-apiserver work flow">
+
+</p>
+<h1 id="rate-limiting">Rate Limiting</h1>
+<p>To prevent burst traffic from affecting kube-apiserver availability, Kubernetes supports multiple rate limiting methods:</p>
+<ul>
+<li>MaxInFlightLimit</li>
+<li>Client Rate Limiting</li>
+<li>EventRateLimit</li>
+<li>APF (API Priority and Fairness)</li>
+</ul>
+<h2 id="maxinflightlimit">MaxInFlightLimit</h2>
+<p>You can set maximum concurrency for kube-apiserver via parameters:</p>
+<ul>
+<li>max-requests-inflight: Maximum number of requests within a given time period.</li>
+<li>max-mutating-requests-inflight: Maximum number of mutating requests within a given time period, adjusting the apiserver&rsquo;s flow control QoS.</li>
+</ul>
+<h2 id="client-rate-limiting">Client Rate Limiting</h2>
+<p>Only supports client-side rate limiting. The cluster cannot control user behavior — for example, client-go&rsquo;s default QPS is 5.</p>
+<h2 id="eventratelimit">EventRateLimit</h2>
+<p>Only limits event requests. Integrated as an internal webhook in kube-apiserver, it can configure event operation limits for specific users, namespaces, servers, etc.</p>
+<ul>
+<li>Pros
+<ul>
+<li>Simple implementation, allows a certain number of concurrent requests.</li>
+<li>Supports server/namespace/user level rate limiting.</li>
+</ul>
+</li>
+<li>Cons
+<ul>
+<li>Only supports events; webhook implementation can only intercept mutating requests.</li>
+<li>All namespaces have the same rate limits with no priority concept.</li>
+</ul>
+</li>
+</ul>
+<h2 id="api-priority-and-fairness">API Priority and Fairness</h2>
+<p>kube-apiserver&rsquo;s default rate limiting is too simplistic — a single misbehaving client sending massive requests could disrupt other clients. APF is an alternative to MaxInFlightLimit. See <a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/1040-priority-and-fairness">KEP-1040: Priority and Fairness for API Server Requests</a>.</p>
+<ul>
+<li>APF classifies and isolates requests at a finer granularity.</li>
+<li>It introduces a bounded queuing mechanism, so the API server won&rsquo;t reject any requests during very brief bursts.</li>
+<li>Using fair queuing techniques to distribute requests from queues, a misbehaving controller won&rsquo;t starve other controllers (even at the same priority level).</li>
+<li>APF&rsquo;s core concepts:
+<ul>
+<li>Multiple priority levels</li>
+<li>Multiple queues</li>
+</ul>
+</li>
+</ul>
+<p>
+  <img src="/2022-04-24-kubernetes-api-server/APF.jpg" alt="kube-apiserver work flow">
+
+</p>
+<h3 id="concepts">Concepts</h3>
+<ul>
+<li>Incoming requests are classified by FlowSchema based on their attributes and assigned priorities.</li>
+<li>Each priority level maintains custom concurrency limits, enhancing isolation so requests at different priorities don&rsquo;t starve each other.</li>
+<li>Within the same priority level, fair queuing algorithms prevent different flows from starving each other.</li>
+<li>The algorithm queues requests, preventing traffic bursts from causing request failures when average load is low.</li>
+</ul>
+<h3 id="priority">Priority</h3>
+<ul>
+<li>Without APF enabled, overall API server concurrency is limited by kube-apiserver&rsquo;s &ndash;max-requests-inflight and &ndash;max-mutating-requests-inflight parameters.</li>
+<li>With APF enabled, the concurrency limits defined by these parameters are summed, then the total is distributed across a set of configurable priority levels. Each incoming request is assigned a priority level.</li>
+<li>Each priority level has its own configuration setting the allowed number of concurrent requests.</li>
+</ul>
+<h3 id="queuing">Queuing</h3>
+<ul>
+<li>Even within the same priority level, there may be many different traffic sources.</li>
+<li>Under overload conditions, preventing one request flow from starving others is valuable (especially in common scenarios where a faulty client floods kube-apiserver with requests — ideally, that faulty client shouldn&rsquo;t significantly impact others).</li>
+<li>Fair queuing algorithms handle the above scenario for requests with the same priority.</li>
+<li>Each request is assigned to a Flow, identified by the corresponding FlowSchema name plus a flow distinguisher.</li>
+<li>The flow distinguisher can be the requesting user, the target resource&rsquo;s namespace, or nothing at all.</li>
+<li>The system attempts to give equal weight to requests from different flows with the same priority.</li>
+<li>After dividing requests into flows, APF assigns requests to queues.</li>
+<li>Assignment uses a technique called Shuffle-Sharding, which relatively effectively isolates low-intensity and high-intensity flows using queues.</li>
+<li>Queuing algorithm details can be tuned per priority level, allowing administrators to balance memory usage, fairness (when total traffic exceeds limits, each independent flow makes progress), burst traffic tolerance, and additional latency from queuing.</li>
+</ul>
+<h3 id="exempt-requests">Exempt Requests</h3>
+<p>Certain non-critical requests are not subject to any limits imposed by this feature. These exemptions prevent improper traffic configuration from completely disabling the API server.</p>
+<h3 id="prioritylevelconfiguration">PriorityLevelConfiguration</h3>
+<p>A PriorityLevelConfiguration represents a single isolation type.
+Each PriorityLevelConfiguration has its own limit on outstanding requests and queued requests.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff79c6">apiVersion</span>: flowcontrol.apiserver.k8s.io/v1alpha1
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">kind</span>: PriorityLevelConfiguration
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">name</span>: restrict-pod-lister
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">type</span>: Limited
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">limited</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">assuredConcurrencyShares</span>: <span style="color:#bd93f9">5</span> <span style="color:#6272a4"># Allowed concurrent requests</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">limitResponse</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">queuing</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">handSize: 4 # Shuffle sharding config</span>: number of queues each flowschema + distinguisher request is enqueued to
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">queueLengthLimit</span>: <span style="color:#bd93f9">20</span> <span style="color:#6272a4"># Object count per queue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">queues</span>: <span style="color:#bd93f9">10</span> <span style="color:#6272a4"># Total queues for this PriorityLevel</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">type</span>: Queue
+</span></span></code></pre></div><h3 id="flowschema">FlowSchema</h3>
+<p>FlowSchema matches certain inbound requests and assigns them to a priority level.</p>
+<p>Each inbound request is tested against all FlowSchemas, starting with the lowest matchingPrecedence value, proceeding in order until a match is found.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ff79c6">apiVersion</span>: flowcontrol.apiserver.k8s.io/v1alpha1
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">kind</span>: FlowSchema
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">name</span>: restrict-pod-lister
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">matchingPriority</span>: <span style="color:#bd93f9">800</span> <span style="color:#6272a4"># Rule priority</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">priorityLevelConfiguration</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">name</span>: restrict-pod-lister <span style="color:#6272a4"># Corresponding queue priority</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">distinguisherMethod</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">type</span>: ByUser <span style="color:#6272a4"># Distinguisher</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">rules</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ff79c6">resourceRules</span>: <span style="color:#6272a4"># Corresponding resources and request types</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ff79c6">apiGroups</span>: [<span style="color:#f1fa8c">&#34;&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">namespaces</span>: [<span style="color:#f1fa8c">&#34;demo&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">resources</span>: [<span style="color:#f1fa8c">&#34;pods&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">verbs</span>: [<span style="color:#f1fa8c">&#34;list&#34;</span>, <span style="color:#f1fa8c">&#34;get&#34;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">subjects</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ff79c6">kind</span>: ServiceAccount
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">serviceAccount</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">name</span>: podlister-0
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">namespace</span>: demo
+</span></span><span style="display:flex;"><span>    - <span style="color:#ff79c6">kind</span>: ServiceAccount
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">serviceAccount</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">name</span>: podlister-1
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">namespace</span>: demo
+</span></span><span style="display:flex;"><span>    - <span style="color:#ff79c6">kind</span>: ServiceAccount
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">serviceAccount</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">name</span>: podlister-2
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">namespace</span>: demo
+</span></span></code></pre></div><h1 id="conclusion">Conclusion</h1>
+<p>I didn&rsquo;t expect kube-apiserver, as the cluster&rsquo;s most important API component, to do so much. I also gained a deeper understanding of the APF mechanism. Looking forward to this feature being fully released!</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://kubernetes.io/zh/docs/concepts/cluster-administration/flow-control/">API Priority and Fairness</a></li>
+<li><a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/1040-priority-and-fairness">KEP-1040: Priority and Fairness for API Server Requests</a></li>
+<li><a href="https://cloud.redhat.com/blog/surviving-the-api-storm-with-api-priority-fairness">Surviving The API Storm With API Priority &amp; Fairness</a></li>
+</ul>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/en/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/en/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan Blog 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

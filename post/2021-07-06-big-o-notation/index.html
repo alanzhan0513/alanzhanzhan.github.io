@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Big O Notation" />
-    <meta property="og:title" content="Big O Notation" />
-    <meta property="twitter:title" content="Big O Notation" />
+    <meta name="title" content="Big O Notation - Big O 符號" />
+    <meta property="og:title" content="Big O Notation - Big O 符號" />
+    <meta property="twitter:title" content="Big O Notation - Big O 符號" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Big O Notation | Alan Zhan Blog</title>
+    <title>Big O Notation - Big O 符號 | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2021-07-06-big-o-notation/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2021-07-06-big-o-notation/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2021-07-06-big-o-notation/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -203,37 +203,37 @@
             col-xs-12
             post-container">
             
-                <h1 id="how-to-choose-an-algorithm-to-solve-a-problem">How to Choose an Algorithm to Solve a Problem</h1>
-<p>The same problem can be solved using different algorithms, but which one is the best? There are two metrics for evaluating an algorithm:</p>
+                <h1 id="如何選擇演算法來解決問題">如何選擇演算法來解決問題</h1>
+<p>同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞：</p>
 <ul>
-<li>Time complexity (time consumed)</li>
-<li>Space complexity (memory consumed)</li>
+<li>時間複雜度 (花的時間)</li>
+<li>空間複雜度 (花的記憶體)</li>
 </ul>
-<p>Generally, the less time and memory an algorithm uses, the better it is. Time complexity analysis can be further broken down into three cases:</p>
+<p>所以花費的時間越少、花費的記憶體越少，通常就是越好的演算法，但是演算法的時間複雜度分析又可以細分為以下三種：</p>
 <ul>
-<li>Best case: Considers the <code>minimum</code> number of steps the algorithm needs to execute.</li>
-<li>Worst case: Considers the <code>maximum</code> number of steps the algorithm needs to execute.</li>
-<li>Average case: Considers the <code>average</code> number of steps the algorithm needs to execute.</li>
+<li>最佳情況：考慮演算法所需要執行得<code>最少</code>執行步數。</li>
+<li>最差情況：考慮演算法所需要執行得<code>最多</code>執行步數。</li>
+<li>平均情況：考慮演算法所需要執行的<code>平均</code>執行步數。</li>
 </ul>
-<h1 id="big-o-notation-as-a-measurement-standard">Big O Notation as a Measurement Standard</h1>
-<p>Typically, we focus on finding the worst case, and we usually use <code>Big O notation</code> — a method for evaluating algorithm efficiency that represents execution speed and typically indicates the worst-case execution time.</p>
-<p>So how do we express it?</p>
+<h1 id="big-o-notation-當作衡量標準">Big O Notation 當作衡量標準</h1>
+<p>但是通常我們只會專注找出最差情況，而且也通常會使用 <code>Big O notation</code> (大 O 符號) ，他是一種評估演算法效益的方法，通常是用來表示演算法的執行速度，通常也會代表是最差的執行時間。</p>
+<p>那麼我們要怎樣表示呢？</p>
 <ul>
-<li>O(n): Assuming n is the number of elements, if each element is visited once, we write it as O(n).</li>
-<li>O(n^2): If a nested loop visits every element once, it&rsquo;s O(n^2).</li>
-<li>O(log n): Like binary search, we only need to visit elements log2(n) times, so it&rsquo;s written as O(log n).</li>
+<li>O(n)：假設 n 為元素的數量，每個元素都被訪問過一次，則我們會記為 O(n)。</li>
+<li>O(n^2)：若是雙迴圈把每個元素都訪問過一次，則為 O(n ^ 2)。</li>
+<li>O(log n)：像是二分搜尋法，我們訪問元素的次數只需 log2(n) ，所以會寫成 O(log n)。</li>
 </ul>
-<p>Note: &ldquo;log&rdquo; stands for &ldquo;logarithmic.&rdquo;</p>
+<p>補充：log 代表 logarithmic 的意思。</p>
 <p>
-  <img src="/2021-07-06-big-o-notation/2021-07-06-big-o-notation_01.png" alt="Big O Complexity">
+  <img src="/2021-07-06-big-o-notation/2021-07-06-big-o-notation_01.png" alt="Big O 複雜度">
 
 </p>
-<p>As shown in the chart above, good algorithms don&rsquo;t grow exponentially as the number of elements increases. As developers, Big O Notation serves as a tool for measuring code efficiency, and we should aim to minimize unnecessary steps whenever possible.</p>
+<p>以上圖為例，通常好的演算法並不會隨著元素的增加，而非呈現指數成長，作為開發者的我們，Big O Notation 只能拿來當作衡量代碼的效率手段，並且盡可能減少不必要的步數。</p>
 <p>Resources:</p>
 <ul>
 <li><a href="https://dev.to/madisonstankevich/big-o-notation-a-brief-overview-for-the-beginner-1o13">https://dev.to/madisonstankevich/big-o-notation-a-brief-overview-for-the-beginner-1o13</a></li>
 </ul>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -520,7 +520,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -530,7 +530,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

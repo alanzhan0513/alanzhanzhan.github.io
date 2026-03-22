@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="Golang Memory Management and GC In-Depth Analysis" />
+    <meta property="og:title" content="Golang Memory Management and GC In-Depth Analysis" />
+    <meta property="twitter:title" content="Golang Memory Management and GC In-Depth Analysis" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Golang Memory Management and GC In-Depth Analysis | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/en/post/2022-02-13-golang-memory-management/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/en/">Alan Zhan Blog</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/en/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/en/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/en/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-02-13-golang-memory-management/">繁體中文</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <p>A new year has arrived! After completing the analysis of <a href="/en/post/2022-01-24-golang-goroutine/">Golang Goroutine and GMP Model In-Depth Analysis</a>, I gained a much more comprehensive understanding of the Go language. But after learning about GMP, aren&rsquo;t we still missing the memory management aspect? So today, let&rsquo;s dive deep into how Go manages its memory.</p>
+<h1 id="the-memory-management-debate">The Memory Management Debate</h1>
+<p>When it comes to memory management, there&rsquo;s been a long-standing debate: who should manage memory — the machine or the developer? Whether it&rsquo;s machine-managed or human-managed, everyone agrees that memory management is critically important, but opinions diverge:</p>
+<ul>
+<li>C/C++: &ldquo;Memory management is so important that we should give engineers full control. We trust that they&rsquo;re skilled enough to know when to allocate and when to free memory.&rdquo;</li>
+<li>Java / .NET(C#) / Go / etc.: They take the opposite stance — while memory management is equally important, &ldquo;we can&rsquo;t trust humans. We prefer to manage memory automatically.&rdquo;</li>
+</ul>
+<p>Let&rsquo;s consider the differences. C/C++ memory allocation and deallocation is indeed very efficient because engineers know exactly when memory is no longer needed and can free it immediately. However, humans make mistakes — if someone forgets to free memory, it leads to memory leaks and eventually program crashes.</p>
+<p>In newer languages, the pursuit is developer productivity. They aim to manage memory automatically, reducing human error and increasing development efficiency. This makes memory management even more critical. So what challenges does memory management face?</p>
+<h1 id="heap-memory-management-challenges">Heap Memory Management Challenges</h1>
+<ul>
+<li>Memory allocation requires system calls. Frequent memory allocation leads to lower system performance.</li>
+<li>When multiple threads share the same memory space and allocate memory simultaneously, locking is needed. Otherwise, the same memory block could be accessed by multiple threads.</li>
+<li>Memory fragmentation: After continuous allocation and deallocation, memory fragmentation becomes severe, reducing memory utilization.</li>
+</ul>
+<p>These are the potential issues that traditional languages like C/C++ face when manually allocating heap memory without proper handling.</p>
+<h1 id="heap-memory-management">Heap Memory Management</h1>
+<p>So how do modern languages solve these problems?</p>
+<p>
+  <img src="/2022-02-13-golang-memory-management/2022-02-13-heap-management.jpg" alt="Heap Management">
+
+</p>
+<p>Assuming the heap is the currently available heap memory, there are three main roles and an auxiliary Header for managing this heap:</p>
+<ul>
+<li>Allocator: The memory allocator. Dynamically handles memory allocation requests. When the program starts, the Allocator pre-allocates memory from the OS during initialization and may format the memory.</li>
+<li>Mutator: The Mutator can be understood as our program. It only needs to request memory from the Allocator — it doesn&rsquo;t need to explicitly free (reclaim) memory.</li>
+<li>Collector: The garbage collector. Reclaims memory space by scanning the entire heap memory to identify active vs. inactive objects. When inactive objects are found, it reclaims their memory.</li>
+<li>Object Header: When memory is allocated, it&rsquo;s simultaneously tagged to mark the object. The Collector and Allocator synchronize object metadata through this.</li>
+</ul>
+<p>Let&rsquo;s look at how Go handles this:</p>
+<ul>
+<li>Initialize contiguous memory as the heap.</li>
+<li>When memory is requested, the Allocator cuts small memory blocks from unallocated regions of the heap.</li>
+<li>Allocated memory blocks are connected using a linked list.</li>
+<li>Metadata is needed for each memory block: size, whether it&rsquo;s in use, next memory block location, etc.</li>
+</ul>
+<p>
+  <img src="/2022-02-13-golang-memory-management/2022-02-13-allocator-object-header.jpg" alt="Allocator Object Header">
+
+</p>
+<h2 id="tcmalloc">TCMalloc</h2>
+<p>Go&rsquo;s memory management is designed based on TCMalloc, so before understanding Go&rsquo;s memory management, let&rsquo;s review TCMalloc (Thread Cache Malloc) principles.</p>
+<p>
+  <img src="/2022-02-13-golang-memory-management/2022-02-13-tcmalloc.jpg" alt="TCMalloc">
+
+</p>
+<p>Let&rsquo;s recall the memory management challenges mentioned earlier in <a href="/en/post/2022-02-13-golang-memory-management/#heap-memory-management-challenges">Heap Memory Management Challenges</a>:</p>
+<ul>
+<li>Memory allocation requires system calls. Frequent memory allocation leads to lower system performance.
+<ul>
+<li>TCMalloc pre-allocates and pre-partitions memory.</li>
+</ul>
+</li>
+<li>When multiple threads share the same memory space and allocate simultaneously, locking is needed.
+<ul>
+<li>Looking at the ThreadCache section: it maintains a ThreadCache for each thread, and each one is an independent memory space. When an application requests memory, it first requests from ThreadCache. Since each ThreadCache maintains its own memory, no locking is needed.</li>
+<li>What if ThreadCache runs out of memory? It requests from CentralCache, which does require locking. But as you&rsquo;ve noticed, the likelihood of needing locks is already reduced.</li>
+<li>If CentralCache also runs out, it requests from PageHeap.</li>
+<li>If PageHeap also runs out, it requests more memory from VirtualMemory.</li>
+</ul>
+</li>
+</ul>
+<p>So TCMalloc solves the memory management challenges and provides a tiered memory allocation mechanism. But consider this: if applications always request memory from ThreadCache regardless of object size, wouldn&rsquo;t memory management become chaotic?</p>
+<p>TCMalloc enhances this by dividing memory into different levels (Size Classes). It still allocates memory page by page (8KB per page), but it divides allocated memory according to different Size Classes (each corresponding to a size, e.g., 8 bytes, 16 bytes). There are 128 classes in total, and same-sized Size Classes form Span lists. When an application requests one byte, TCMalloc allocates from Size Class 0. For large objects, it bypasses ThreadCache and CentralCache to request directly from PageHeap. This is the implementation principle of TCMalloc.</p>
+<ul>
+<li>Page: A memory page, an 8KB block. Memory allocation and deallocation between Go and the OS is done in page units.</li>
+<li>Span: A memory block consisting of one or more contiguous pages.</li>
+<li>SizeClass: A space specification. Each span has a SizeClass indicating how pages in the span should be used.</li>
+<li>Object: Used to store variable data in a memory space. When a span is initialized, it&rsquo;s divided into equally-sized objects. If an object is 16B and the span is 8K, the span&rsquo;s pages are initialized as 8K / 16B = 512 objects. When an application requests memory, one object is allocated.</li>
+<li>Object size definitions:
+<ul>
+<li>Small objects: 0 ~ 256KB</li>
+<li>Medium objects: 256KB ~ 1MB</li>
+<li>Large objects: &gt; 1MB</li>
+</ul>
+</li>
+<li>Small object allocation flow: ThreadCache -&gt; CentralCache -&gt; HeapPage. Most of the time, ThreadCache has sufficient cache, eliminating the need to access CentralCache and HeapPage. No locking needed, so allocation is very efficient.</li>
+<li>Medium object allocation flow: Select an appropriate size directly from PageHeap. Spans of 128 pages hold the maximum 1MB.</li>
+<li>Large object allocation flow: Select an appropriate number of pages from the large span set to form a span for data storage.</li>
+</ul>
+<h2 id="go-memory-allocation">Go Memory Allocation</h2>
+<p>Go&rsquo;s memory allocation is essentially the same as TCMalloc — it&rsquo;s a modified and enhanced version of TCMalloc. The diagram below looks similar to TCMalloc but has some differences:</p>
+<ul>
+<li>In mcache, one span class corresponds to two span classes: one stores pointers and one stores direct references. Spans storing direct references don&rsquo;t need GC.</li>
+<li>When mcache doesn&rsquo;t have enough memory, it requests from mcentral, first checking the nonempty list (which has available pages). If still not found, it requests from mheap.
+<ul>
+<li>Note: mcache obtains and returns spans from/to mcentral.
+<ul>
+<li>Obtaining: Lock, find an available span from the nonempty list, remove it from nonempty, add it to empty, return the span to the worker thread, unlock.</li>
+<li>Returning: Lock, remove the span from the empty list, add it to the nonempty list, unlock.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>In mheap, a Binary Sort Tree is maintained by Span Class, with two trees:
+<ul>
+<li>free: Contains free spans that are not from garbage collection.</li>
+<li>scav: Contains free spans that have been garbage collected.</li>
+<li>If a span is freed by garbage collection, it goes to scav; otherwise it goes to free (e.g., memory freshly requested from Virtual Memory).</li>
+</ul>
+</li>
+</ul>
+<p>
+  <img src="/2022-02-13-golang-memory-management/2022-02-13-golang-memory-management.jpg" alt="Golang Memory Management">
+
+</p>
+<ul>
+<li>mcache: Small object memory allocation.
+<ul>
+<li>There are 67 size classes. Class 0 is a special span for objects larger than 32KB. Each class has two spans.</li>
+<li>Span size is based on 8KB, divided by span class size.</li>
+</ul>
+</li>
+<li>mcentral:
+<ul>
+<li>When all memory blocks in mcache&rsquo;s span are occupied, mcache requests a span from mcentral. After obtaining it, mcache continues allocating objects.</li>
+<li>When mcentral provides a span to mcache and there&rsquo;s no matching span, mcentral requests from mheap.</li>
+</ul>
+</li>
+<li>mheap:
+<ul>
+<li>When mheap doesn&rsquo;t have enough memory, it requests from the OS.</li>
+<li>mheap maintains spans using a Binary Sort Tree instead of a linked list.</li>
+<li>Heap performs span maintenance, including address mapping and metadata about whether spans contain pointers, for more efficient allocation, reclamation, and reuse.</li>
+</ul>
+</li>
+</ul>
+<h1 id="memory-reclamation">Memory Reclamation</h1>
+<h2 id="common-memory-reclamation-strategies">Common Memory Reclamation Strategies</h2>
+<h3 id="reference-counting">Reference Counting</h3>
+<ul>
+<li>Common languages: Python, PHP, Swift</li>
+<li>Characteristics: Maintains a reference count for each object. When an object referencing it is destroyed, the count decreases by 1. When the count reaches 0, the object is reclaimed.</li>
+<li>Pros: Objects can be reclaimed quickly — no need to wait until memory is exhausted or a threshold is reached.</li>
+<li>Cons: Doesn&rsquo;t handle circular references well, and maintaining reference counts has its own overhead.</li>
+</ul>
+<h3 id="mark-and-sweep">Mark and Sweep</h3>
+<ul>
+<li>Common languages: Go</li>
+<li>Characteristics: Starting from root variables, traverses and checks all referenced objects. Referenced objects are marked as &ldquo;referenced.&rdquo; Unmarked objects are reclaimed.</li>
+<li>Pros: Solves the shortcomings of reference counting.</li>
+<li>Cons: Requires STW (Stop the World) — the program must be paused.</li>
+</ul>
+<h3 id="generational-collection">Generational Collection</h3>
+<ul>
+<li>Common languages: Java, .NET(C#), Node.js (JavaScript)</li>
+<li>Divides memory into different generation spaces based on object lifetime. Long-lived objects go to the old generation; short-lived ones go to the young generation. The young generation is collected more frequently than the old generation. Typically divided into three generations:
+<ul>
+<li>Young: Also called &ldquo;eden.&rdquo; Stores newly created objects with very short lifetimes — they can almost be reclaimed immediately after use.</li>
+<li>Tenured: Also called &ldquo;old.&rdquo; Objects that survive multiple collections in the Young area are moved here.</li>
+<li>Perm: The permanent generation. Mainly stores loaded class information with long lifetimes — rarely collected.</li>
+</ul>
+</li>
+<li>Pros: Most objects are short-lived, so this efficiently clears disposable objects.</li>
+<li>Cons: The algorithm is more complex with more execution steps.</li>
+</ul>
+<h2 id="go-gc-workflow">Go GC Workflow</h2>
+<p>Most of Go&rsquo;s GC processing runs concurrently with user code. It&rsquo;s roughly divided into four steps, basically Mark and Sweep.</p>
+<ul>
+<li>Mark
+<ul>
+<li>Mark Prepare: Initialize GC tasks, including enabling the write barrier (WB) and mutator assist, and counting root object tasks. This requires STW (Stop the World).</li>
+<li>GC Drains: Scan all root objects, including global pointers and goroutine (G) stack pointers (the corresponding G must be stopped during scanning). Add them to the mark queue (gray queue) and process gray queue objects in a loop until it&rsquo;s empty. This process runs concurrently in the background.</li>
+</ul>
+</li>
+<li>Mark Termination: Complete marking work, rescan global pointers and stacks. Since marking runs concurrently with user code, new objects and pointer assignments may occur during marking. The write barrier records these, and rescan checks them. This process also requires STW.</li>
+<li>Sweep: Reclaim all white objects according to marking results. This process runs concurrently in the background.</li>
+<li>Sweep Termination: Clean up unswept spans. A new GC round can only begin after the previous round&rsquo;s sweeping is complete.</li>
+</ul>
+<p>
+  <img src="/2022-02-13-golang-memory-management/2022-02-13-golang-gc-flow-chart.jpg" alt="golang GC flow chart">
+
+</p>
+<h2 id="tri-color-marking">Tri-Color Marking</h2>
+<ul>
+<li>When GC starts, all objects default to garbage (white).</li>
+<li>Starting from the root area, found objects are marked gray.</li>
+<li>For all gray objects, their internally referenced variables are marked gray, and the objects themselves are marked black.</li>
+<li>Repeat the above steps until no gray objects remain — only black and white. White objects are garbage.</li>
+<li>For black objects, if a write operation occurs during marking, the write barrier marks the object gray before the actual assignment.</li>
+<li>During marking, objects newly allocated by mallocgc are marked black before being returned.</li>
+</ul>
+<h2 id="go-garbage-collection-trigger-mechanisms">Go Garbage Collection Trigger Mechanisms</h2>
+<ul>
+<li>Memory allocation threshold triggers GC:
+<ul>
+<li>Each memory allocation checks whether the current allocation has reached the threshold. If so, GC starts immediately.
+<ul>
+<li>Threshold = previous GC memory allocation * memory growth rate.</li>
+<li>Memory growth rate is controlled by the GOGC environment variable, defaulting to 100 (GC starts when memory doubles).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Periodic GC trigger:
+<ul>
+<li>By default, GC is triggered every two minutes. This interval is declared in the src/runtime/proc.go:forcegcperiod variable.</li>
+</ul>
+</li>
+<li>Manual trigger:
+<ul>
+<li>In code, you can use runtime.GC() to manually trigger GC. This is mainly used for GC performance testing and statistics.</li>
+</ul>
+</li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>After reading such hardcore knowledge from the <a href="/en/post/2022-01-24-golang-goroutine/">previous article</a>, today we tackled the history of memory management all the way to Go&rsquo;s memory management. It felt a bit painful after reading, but this will become a great source of nourishment for our growth, right? What are your thoughts after reading?</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="http://dmitrysoshnikov.com/compilers/writing-a-memory-allocator/">Writing a Memory Allocator</a></li>
+<li><a href="http://goog-perftools.sourceforge.net/doc/tcmalloc.html">TCMalloc: Thread-Caching Malloc</a></li>
+<li><a href="http://legendtkl.com/2015/12/11/go-memory/">TCMalloc Introduction</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/29216091">TCMalloc Illustrated</a></li>
+<li><a href="https://studygolang.com/articles/30505">Go Memory Allocation Explained</a></li>
+<li><a href="https://www.gushiciku.cn/pl/arPC/zh-tw">Common Garbage Collection Algorithms</a></li>
+</ul>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/en/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/en/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan Blog 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

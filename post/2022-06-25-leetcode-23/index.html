@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Plain English Leetcode - 23 Merge k Sorted Lists" />
-    <meta property="og:title" content="Plain English Leetcode - 23 Merge k Sorted Lists" />
-    <meta property="twitter:title" content="Plain English Leetcode - 23 Merge k Sorted Lists" />
+    <meta name="title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
+    <meta property="og:title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
+    <meta property="twitter:title" content="白話解 Leetcode - 23  Merge k Sorted Lists" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Plain English Leetcode - 23 Merge k Sorted Lists | Alan Zhan Blog</title>
+    <title>白話解 Leetcode - 23  Merge k Sorted Lists | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-06-25-leetcode-23/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-06-25-leetcode-23/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-06-25-leetcode-23/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -239,17 +239,18 @@ merging them into one sorted list:
 	<li>The sum of <code>lists[i].length</code> will not exceed <code>10<sup>4</sup></code>.</li>
 </ul>
 </div>
-<h2 id="problem">Problem</h2>
-<p>Merge k already-sorted linked lists into one sorted list.</p>
-<h2 id="approach">Approach</h2>
-<p>Brute-force merging one by one would be very inefficient. Instead, we merge two lists at a time and recursively combine the results — divide and conquer!</p>
+<h2 id="題意">題意</h2>
+<p>將 k 個已經排好順序的 linked list 合併成為一個排好序的 list。</p>
+<h2 id="解題思路">解題思路</h2>
+<p>如果一個一個合併匯總成一個 list ，這樣暴力破解，相當的的沒效率，所以我們來換個思路來解這一題。</p>
+<p>如果我一次合併兩個 list ，然後再將每兩個 list 得出的 list 再次合併呢？速度是不是快多了！</p>
 <ol>
-<li>Write a method to merge two lists.</li>
-<li>Write a method that merges the low-to-mid range and the (mid+1)-to-high range.</li>
-<li>Recursively call itself, repeating the process.</li>
-<li>Merge the results — and we have our answer!</li>
+<li>我們先將兩個 list 合併的方法撰寫出來。</li>
+<li>我們來撰寫一個方法，每次合併會將低位與中位的 list 合併，並且還會將 中位 + 1 與高位的 list 合併。</li>
+<li>然後在呼叫自己遞歸，重複上述得動作。</li>
+<li>然後再將第二步與第三部得到的 list 合併起來，結果就出來了啦。</li>
 </ol>
-<h2 id="source-code">Source Code</h2>
+<h2 id="原始碼">原始碼</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#6272a4">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * Definition for singly-linked list.
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * type ListNode struct {
@@ -299,9 +300,9 @@ merging them into one sorted list:
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> sentinel.Next
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="closing">Closing</h1>
-<p>Do you have a better or simpler solution?</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+</span></span></code></pre></div><h1 id="結尾">結尾</h1>
+<p>你有更好或更簡單的解決方案嗎？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -588,7 +589,7 @@ merging them into one sorted list:
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -598,7 +599,7 @@ merging them into one sorted list:
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

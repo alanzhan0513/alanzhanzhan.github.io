@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Kubernetes Core Component: etcd" />
-    <meta property="og:title" content="Kubernetes Core Component: etcd" />
-    <meta property="twitter:title" content="Kubernetes Core Component: etcd" />
+    <meta name="title" content="Kubernetes 核心介紹 Etcd" />
+    <meta property="og:title" content="Kubernetes 核心介紹 Etcd" />
+    <meta property="twitter:title" content="Kubernetes 核心介紹 Etcd" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Kubernetes Core Component: etcd | Alan Zhan Blog</title>
+    <title>Kubernetes 核心介紹 Etcd | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-02-28-kubetnetes-etcd/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-02-28-kubetnetes-etcd/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-02-28-kubetnetes-etcd/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -203,117 +203,117 @@
             col-xs-12
             post-container">
             
-                <p>In any system, what is the most important thing? The answer is simple: data. So I&rsquo;m starting my deep dive with Kubernetes&rsquo; database — etcd!</p>
-<h1 id="what-is-etcd">What is etcd?</h1>
-<p>etcd is a distributed key-value store developed by CoreOS based on the Raft algorithm. It can be used for service discovery, shared configuration, and consistency guarantees (such as database leader election, distributed locks, etc.).</p>
-<p>In distributed systems, managing state across nodes has always been challenging. etcd is designed specifically for service discovery and registration in cluster environments. It provides features like data TTL expiration, data change monitoring, multi-value operations, directory watching, distributed lock atomic operations, and more — making it easy to track and manage cluster node states.</p>
-<h2 id="etcd-characteristics">etcd Characteristics</h2>
+                <p>在任何一個系統中，甚麼東西會是最重要的東西呢？答案其實很簡單 : 資料，所以我就從 Kubernetes 的資料庫 etcd 開始學習起！</p>
+<h1 id="什麼是-etcd-呢">什麼是 etcd 呢</h1>
+<p>etcd 是 CoreOs 基於 Raft 算法開發的分散式 key-value 儲存，可用於服務發現、共享配置以及一致性保障 (如資料庫選主、分散式鎖等)。</p>
+<p>在分散式系統中，如何管理節點間的狀態一直是個難題， etcd 像是專門為集群環境的服務發現和註冊而設計，它提供了資料 TTL 失效、資料改變監控、多值、目錄監聽、分散式鎖原子操作等功能，可以方便的跟蹤並管理集群節點的狀態。</p>
+<h2 id="etcd-特點">etcd 特點</h2>
 <ul>
-<li>Simple: User-facing API accessible via curl.</li>
-<li>Secure: Optional SSL client certificate authentication.</li>
-<li>Fast: 1,000 writes per second and 2,000+ reads per second on a single instance.</li>
-<li>Reliable: Uses the Raft algorithm to ensure consistency.</li>
+<li>簡單 : curl 可訪問的用戶 API 。</li>
+<li>安全 : 可選的 SSL 客戶端證書認證。</li>
+<li>快速 : 單個實例每秒 1000 次寫操作， 2000+ 次讀操作。</li>
+<li>可靠 : 使用 Raft 算法保證一致性。</li>
 </ul>
-<h2 id="etcd-terminology">etcd Terminology</h2>
+<h2 id="etcd-名詞">etcd 名詞</h2>
 <ul>
-<li>Raft: A strong consistency algorithm.</li>
-<li>Node: An instance of a Raft State Machine.</li>
-<li>Member: An etcd instance that manages a Node and can serve client requests.</li>
-<li>Peer: A reference to another Member in the same etcd cluster.</li>
-<li>WAL: Write-Ahead Log, the log format etcd uses for persistent storage.</li>
-<li>Snapshot: A snapshot etcd uses to prevent excessive WAL files, storing the etcd data state.</li>
-<li>Proxy: An etcd mode that provides reverse proxy services for the etcd cluster.</li>
-<li>Leader: The node elected through Raft consensus that handles all data submissions.</li>
-<li>Follower: Nodes that lost the election serve as subordinate nodes in Raft, providing strong consistency guarantees.</li>
-<li>Candidate: When a Follower doesn&rsquo;t receive the Leader&rsquo;s heartbeat for a certain period, it transitions to Candidate and initiates a new election.</li>
-<li>Term: The period from when a node becomes Leader to the next election, similar to a term of office.</li>
-<li>Index: A data sequence number. Raft uses Term and Index to locate data.</li>
+<li>Raft : 強一致性的算法。</li>
+<li>Node : 一個 Raft State Machine 實例。</li>
+<li>Member : 一個 etcd 實例。它管理著一個 Node，並且可以為客戶端請求提供服務。</li>
+<li>Peer : 對同一個 etcd 集群中另外一個 Member 的稱呼。</li>
+<li>WAL : 預寫式日誌，etcd 用於持久化儲存的日誌格式。</li>
+<li>snapshot : etcd防止WAL文件過多而設置的快照，儲存 etcd 資料狀態。</li>
+<li>Proxy : etcd 的一種模式，為 etcd 集群提供反向代理服務。</li>
+<li>Leader : Raft 算法中通過競選而產生的處理所有資料提交的節點。</li>
+<li>Follower : 競選失敗的節點作為 Raft 中的附屬節點，為算法提供強一致性保證。</li>
+<li>Candidate : 當 Follower 超過一定時間接收不到 Leader 的心跳時轉變為 Candidate 並且開始競選 Leader。</li>
+<li>Term : 某個節點成為 Leader 到下一次競選時間，稱為一個 Term，可以理解為一個任期。</li>
+<li>Index : 資料編號。 Raft 中通過 Term 和 Index 來定位資料。</li>
 </ul>
-<h1 id="etcd-use-cases">etcd Use Cases</h1>
-<h2 id="key-value-storage">Key-Value Storage</h2>
-<p>etcd is a key-value based data store. All other applications are extensions built on top of the key-value functionality.</p>
+<h1 id="etcd-應用場景">etcd 應用場景</h1>
+<h2 id="key-value-存儲">Key Value 存儲</h2>
+<p>etcd 是一個基於 key value 儲存的資料庫，其他的應用都是基於 key value 的功能延展開來的。</p>
 <ul>
-<li>Key-value format storage is generally much faster than relational databases.</li>
-<li>Supports both dynamic storage (RAM) and static storage (Disk).</li>
-<li>Distributed storage that can form multi-node clusters.</li>
-<li>Storage structure is similar to a directory tree (B+ tree).</li>
+<li>採用 key value 的形式存儲，一般情況下會比關聯是資料庫來的快許多。</li>
+<li>支援動態儲存 (RAM) 以及靜態儲存 (Disk)。</li>
+<li>分散式儲存，可以集結成為多個 Nodes 的 Cluster。</li>
+<li>儲存的方式類似於結構目錄 (B+tree)。</li>
 </ul>
-<h2 id="service-registration-and-discovery">Service Registration and Discovery</h2>
+<h2 id="服務註冊與發現">服務註冊與發現</h2>
 <ul>
-<li>A strongly consistent, highly available service storage directory.
+<li>強一致性、高可用的服務存儲目錄。
 <ul>
-<li>etcd, based on the Raft algorithm, is inherently a strongly consistent, highly available service storage directory.</li>
-</ul>
-</li>
-<li>A mechanism for registering services and monitoring service health.
-<ul>
-<li>Users can register services in etcd and configure key TTLs for registered services, maintaining service heartbeats to monitor health status.</li>
+<li>基於 Raft 算法的 etcd 天生就是這樣一個強一致性、高可用的服務存儲目錄。</li>
 </ul>
 </li>
-</ul>
-<h2 id="message-publishing-and-subscription">Message Publishing and Subscription</h2>
+<li>一種註冊服務和服務健康狀況的機制。
 <ul>
-<li>In distributed systems, message publishing and subscription is one of the most suitable communication methods between components.</li>
-<li>Build a shared configuration center where data providers publish messages and consumers subscribe to topics of interest. Once a topic has new messages, subscribers are notified immediately.</li>
-<li>This approach enables centralized management and dynamic updates of distributed system configurations.</li>
-<li>Application configuration information is stored in etcd for centralized management.</li>
-<li>Applications actively fetch configuration once at startup, register a Watcher on the etcd node, and wait. Whenever configuration is updated, etcd immediately notifies subscribers, ensuring they always have the latest configuration.</li>
+<li>用戶可以在 etcd 中註冊服務，並對註冊的服務配置 key TTL，定時保持服務的心跳以達到監控健康狀態的效果。</li>
 </ul>
-<h1 id="etcd-architecture">etcd Architecture</h1>
+</li>
+</ul>
+<h2 id="消息發布與訂閱">消息發布與訂閱</h2>
+<ul>
+<li>在分散式系統中，最適用的一種原件間通信方式就是消息發布與訂閱。</li>
+<li>構建一個配置共享中心，資料提供者在這個配置中心發布消息，而消息使用者則訂閱他們關心的主題，一旦主題有消息發布，就會即時通知訂閱者。</li>
+<li>通過這種方式可以做到分散式系統配置的集中式管理與動態更新。</li>
+<li>應用中用到的一些配置信息放到 etcd 上進行集中管理。</li>
+<li>應用在啟動的時候主動從 etcd 獲取一次配置信息，同時在etcd節點上註冊一個 Watcher 並等待，以後每次配置有更新的時候，etcd 都會即時通知訂閱者，以此達到獲取最新配置信息的目的。</li>
+</ul>
+<h1 id="etcd-架構">etcd 架構</h1>
 <p>
   <img src="/2022-02-28-kubetnetes-etcd/2022-02-28-etcd-architecture.jpg" alt="etcd architecture">
 
 </p>
 <ul>
-<li>HTTP Server: Provides the API and data read/write functionality, enabling communication between nodes.</li>
-<li>Raft: Implementation of the Raft strong consistency algorithm.</li>
-<li>Store: Handles various etcd-supported transactional operations, including data indexing, node state changes, monitoring and feedback, event processing and execution. This is the concrete implementation of most API functionality that etcd provides to users.</li>
-<li>WAL: Write Ahead Log — etcd&rsquo;s data storage method. In addition to keeping all data state and node indexes in memory, etcd uses WAL for persistent storage. All data is logged before being committed.</li>
-<li>Snapshot: State snapshots taken to prevent excessive data accumulation.</li>
-<li>Entry: The specific log content being stored.</li>
+<li>HTTP Server : 提供 API ，並且提供資料讀寫功能，完成節點之間的通信。</li>
+<li>Raft : Raft 強一致性算法實現。</li>
+<li>Sotre : 用於處理 etcd 支持的各類功能的事務，包括資料索引、節點狀態變更、監控與反饋、事件處理與執行等等，是 etcd 對用戶提供的大多數 API 功能的具體實現。</li>
+<li>WAL : Write Ahead Log（預寫式日誌），是 etcd 的資料存儲方式。除了在內存中存有所有資料的狀態以及節點的索引以外，etcd 就通過 WAL 進行持久化存儲。 WAL 中，所有的資料提交前都會事先記錄日誌。</li>
+<li>Snapshot :  是為了防止資料過多而進行的狀態快照；</li>
+<li>Entry : 表示存儲的具體日誌內容。</li>
 </ul>
-<h1 id="etcd-consistency-based-on-raft">etcd Consistency Based on Raft</h1>
-<p>The Raft protocol is based on the quorum mechanism — the majority-agreement principle. Any change requires confirmation from more than half of the members.</p>
-<p>If you&rsquo;re unfamiliar with Raft, check out <a href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a>.</p>
-<h2 id="election-process">Election Process</h2>
+<h1 id="etcd-基於-raft-的一致性">etcd 基於 Raft 的一致性</h1>
+<p>Raft 協議是基於 quorum 機制，即大多數同意原則，任何得更變都需要超過半數的成員確認。</p>
+<p>如果對於 Raft 不了解的話 ，可以參考一下 <a href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a> 。</p>
+<h2 id="選舉方法">選舉方法</h2>
 <ul>
-<li>At initial startup, nodes are in Follower state with an election timeout. If no Leader heartbeat is received within this period, the node initiates an election, switches to Candidate, and sends vote requests to other Follower nodes in the cluster.</li>
-<li>After receiving acceptance votes from more than half the cluster nodes, the node becomes Leader and starts accepting and saving client data while syncing logs to other Follower nodes. If consensus isn&rsquo;t reached, the Candidate randomly waits (150ms ~ 300ms) before initiating another vote. The Candidate receiving acceptance from more than half the Followers becomes Leader.</li>
-<li>The Leader maintains its position by periodically sending heartbeats to Followers.</li>
-<li>If any Follower doesn&rsquo;t receive a Leader heartbeat during the election timeout, it also switches to Candidate and initiates an election. Each successful election increments the new Leader&rsquo;s Term by 1 compared to the previous Leader.</li>
+<li>初始啟動時，節點處於 Follower 狀態並且會被設定一個 election timeout ，如果在這一個時間周期內妹有收到 Leader 的 heartbeat ，節點將會發起選舉，將自己切換為 candidate 之後，並向集群中其他 Follower 節點發送，詢問其是否選舉自己為 Leader 。</li>
+<li>當收到來自集群中超過半數節點的接受頭票後，節點成為 Leader ，開始接收保存 client 的數據，並向其他的 Follower 節點同步日誌。如果沒有達成一致，則 candidate 隨機選擇等待間隔 (150ms ~ 300ms) 再次發起投票，得到集群中的半數以上 Follower 接受的 candidate 將成為 Leader 。</li>
+<li>Leader 節點依靠定時向 Follower 發送 heartbeat 來保持其地位。</li>
+<li>任何時候如果其他 Follower 在 election timeout 期間都沒有收到來自 Leader 的 heartbeat，同樣會將自己的狀態切換為 candidate 並發起選舉。每成功選舉一次，新 Leader 的任期 (Term) 都會比之前 Leader 的任期大 1。</li>
 </ul>
-<h2 id="log-replication">Log Replication</h2>
-<p>When the Leader receives a log entry (transaction request) from a client, it first appends the log to its local Log, then synchronizes the Entry to other Followers via heartbeat. Followers receive and record the log, then send an ACK to the Leader. When the Leader receives ACKs from a majority (n/2+1) of Followers, the log is marked as committed, appended to local disk, and the client is notified. In the next heartbeat, the Leader notifies all Followers to store the log on their own disks.</p>
-<h2 id="safety">Safety</h2>
+<h2 id="日誌複製">日誌複製</h2>
+<p>當 Leader 接收到客戶端的日誌 (事務請求) 後，先把該日誌追加到本地的 Log 中，然後通過 heartbeat 把該 Entry 同步給其他的 Follower， Follower 接收到日誌後記錄日誌，然後向 Leader 發送 ACK ， 當 Leader 收到大多數 (n/2+1) 的 Follower ACK 後，將日誌設為已提交，並追加到本地瓷盤中，通知客戶端並在下一個 heartbeat 中 Leader 將通知所以的 Follower 將該日誌存儲在自己的硬碟中。</p>
+<h2 id="安全性">安全性</h2>
 <ul>
-<li>Safety: A mechanism ensuring every node executes the same sequence.
-If a Follower becomes unavailable while the current Leader is committing a Log, and later that Follower is elected Leader, the new Leader might overwrite previously committed Logs with new ones, causing nodes to execute different sequences. Safety ensures that the elected Leader always contains previously committed Logs.</li>
-<li>Election Safety: Only one Leader is elected per Term.</li>
-<li>Leader Completeness: Refers to the completeness of the Leader&rsquo;s log. After a Log is committed in Term1, Leaders in all subsequent Terms must contain that Log. Raft uses Term comparison during the election phase to ensure completeness — a vote is cast if the requesting Candidate&rsquo;s Term is larger, or if Terms are equal but the Index is larger; otherwise the request is rejected.</li>
+<li>安全性 ： 是用於保證每個節點都執行相同序列的安全機制。
+如果當某個 Follower 在當前 Leader commit Log 時，變得不可用了，稍後可能該 Follower 又會被選舉為 Leader，這時新 Leader 可能會用新的 Log 覆蓋先前已 committed 的 Log，這就會導致節點執行不同序列。Safety 就是用於保證選舉出來的 Leader 一定會包含先前 commited Log 的機制。</li>
+<li>選舉安全性 (Election Safety) ： 每個任期 (Term) 只選出一個 Leader。</li>
+<li>Leader 完整性 (Leader Completeness) ： 指 Leader 日誌的完整性，當 Log 在任期 Term1 被 commit 後，那麼以後的任期，Leader 都必須包含該 Log ，Raft 在選舉階段就使用 Term 的判斷用於保證完整性，當請求投票的該 Candidate 的 Term 較大或 Term 相同 Index 較大則投票，否則拒絕該請求。</li>
 </ul>
-<h2 id="wal-write-ahead-log">WAL (Write Ahead Log)</h2>
+<h2 id="wal-日誌-write-ahead-log">wal 日誌 (write ahead log)</h2>
 <p>
   <img src="/2022-02-28-kubetnetes-etcd/2022-02-28-etcd-wal.jpg" alt="etcd wal log">
 
 </p>
 <ul>
-<li>WAL logs are binary. When parsed, they have the LogEntry data structure shown above.
+<li>wal 日誌是二進位，解析出來後是以上數據結構 LogEntry。
 <ul>
-<li>The first field is type: 0 means Normal, 1 means ConfChange (etcd configuration change sync, e.g., when a new node joins).</li>
-<li>Term: Each term represents a Leader&rsquo;s tenure. The term increments by one with each Leader change.</li>
-<li>Index: This strictly ordered incrementing sequence number represents the change sequence.</li>
-<li>Binary data: The entire Raft request object&rsquo;s protobuf structure is saved.</li>
+<li>第一個 field 是 type ， 0 表示Ｎormal ， 1 表示 ConfChange，意思是 etcd 本身的配置變更同步，譬如有新的節點加入。</li>
+<li>term ， 每個 term 代表一個 Leader 的任期，每次 Leader 變更， term 就會加一。</li>
+<li>index，這個序號是嚴格有序的遞增的，代表變更序號。</li>
+<li>二進位 data，將 raft request 對象 pb 結構整個保存下來。</li>
 </ul>
 </li>
-<li>Under the etcd source code, there&rsquo;s a tools/etcd-dump-logs utility that can dump WAL logs to text for viewing, helpful for analyzing the Raft protocol.</li>
-<li>The Raft protocol itself doesn&rsquo;t care about application data (the data part). Consistency is achieved by syncing WAL logs. Each node applies data received from the Leader to local storage. Raft only cares about log sync status — if local storage has a bug, it could lead to data inconsistency.</li>
+<li>etcd 原始碼下面有個 tools/etcd-dump-logs ，可以將 wal 日誌 dump 成文本查看，可以協助分析 Raft 協議。</li>
+<li>Raft 協議本身並不關心應用數據，也就是 data 的部分，一致性都通過同步 wal 日誌來實現，每個節點將從 Leader 收到的 data apply 到本地的存儲， Raft 只關心日誌同步的狀況，如果本地存儲有 bug，有可能會導致數據不一致。</li>
 </ul>
-<h1 id="conclusion">Conclusion</h1>
-<p>I&rsquo;ve finally gained a foundational understanding of one of Kubernetes&rsquo; core components. I&rsquo;ll continue sharing more core components in upcoming posts.</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
-<h2 id="references">References</h2>
-<p><a href="https://raft.github.io/raft.pdf">Understanding Raft</a>
-<a href="http://thesecretlivesofdata.com/raft/">Animated Raft Algorithm</a></p>
+<h1 id="總結">總結</h1>
+<p>終於對 kubernetes 核心之一的原件有了初步的認識，接下來會陸陸續續分享核心的原件給大家的。</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
+<h2 id="參考">參考</h2>
+<p><a href="https://raft.github.io/raft.pdf">了解 Raft</a>
+<a href="http://thesecretlivesofdata.com/raft/">動畫了解 Raft 算法</a></p>
 
             
              
@@ -600,7 +600,7 @@ If a Follower becomes unavailable while the current Leader is committing a Log, 
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -610,7 +610,7 @@ If a Follower becomes unavailable while the current Leader is committing a Log, 
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

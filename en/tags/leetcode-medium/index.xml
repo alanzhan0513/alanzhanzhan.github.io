@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Leetcode-Medium on Alan Zhan Blog</title>
+    <link>https://alanzhan.dev/en/tags/leetcode-medium/</link>
+    <description>Recent content in Leetcode-Medium on Alan Zhan Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 28 Jun 2022 23:55:43 +0800</lastBuildDate>
+    <atom:link href="https://alanzhan.dev/en/tags/leetcode-medium/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Plain English Leetcode - 433 Minimum Genetic Mutation</title>
+      <link>https://alanzhan.dev/en/post/2022-06-28-leetcode-433/</link>
+      <pubDate>Tue, 28 Jun 2022 23:55:43 +0800</pubDate>
+      <guid>https://alanzhan.dev/en/post/2022-06-28-leetcode-433/</guid>
+      <description>&lt;h1 id=&#34;433-minimum-genetic-mutation&#34;&gt;433. Minimum Genetic Mutation&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/minimum-genetic-mutation/&#34;&gt;https://leetcode.com/problems/minimum-genetic-mutation/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Medium&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;A gene string can be represented by an 8-character long string, with choices from &lt;code&gt;&#39;A&#39;&lt;/code&gt;, &lt;code&gt;&#39;C&#39;&lt;/code&gt;, &lt;code&gt;&#39;G&#39;&lt;/code&gt;, and &lt;code&gt;&#39;T&#39;&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Suppose we need to investigate a mutation from a gene string &lt;code&gt;start&lt;/code&gt; to a gene string &lt;code&gt;end&lt;/code&gt; where one mutation is defined as one single character changed in the gene string.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&#x9;&lt;li&gt;For example, &lt;code&gt;&#34;AACCGGTT&#34; --&amp;gt; &#34;AACCGGTA&#34;&lt;/code&gt; is one mutation.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;There is also a gene bank &lt;code&gt;bank&lt;/code&gt; that records all the valid gene mutations. A gene must be in &lt;code&gt;bank&lt;/code&gt; to make it a valid gene string.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Plain English Leetcode - 200 Number of Islands</title>
+      <link>https://alanzhan.dev/en/post/2022-06-23-leetcode-200/</link>
+      <pubDate>Thu, 23 Jun 2022 23:50:13 +0800</pubDate>
+      <guid>https://alanzhan.dev/en/post/2022-06-23-leetcode-200/</guid>
+      <description>&lt;h1 id=&#34;200-number-of-islands&#34;&gt;200. Number of Islands&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/number-of-islands/&#34;&gt;https://leetcode.com/problems/number-of-islands/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Medium&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given an &lt;code&gt;m x n&lt;/code&gt; 2D binary grid &lt;code&gt;grid&lt;/code&gt; which represents a map of &lt;code&gt;&#39;1&#39;&lt;/code&gt;s (land) and &lt;code&gt;&#39;0&#39;&lt;/code&gt;s (water), return &lt;em&gt;the number of islands&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;An &lt;strong&gt;island&lt;/strong&gt; is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; grid = [&#xA;  [&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;1&#34;,&#34;0&#34;],&#xA;  [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;1&#34;,&#34;0&#34;],&#xA;  [&#34;1&#34;,&#34;1&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;],&#xA;  [&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;,&#34;0&#34;]&#xA;]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; 1&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Plain English Leetcode - 78 Subsets</title>
+      <link>https://alanzhan.dev/en/post/2022-06-20-leetcode-78/</link>
+      <pubDate>Mon, 20 Jun 2022 18:00:00 +0800</pubDate>
+      <guid>https://alanzhan.dev/en/post/2022-06-20-leetcode-78/</guid>
+      <description>&lt;h1 id=&#34;78-subsets&#34;&gt;78. Subsets&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/subsets/&#34;&gt;https://leetcode.com/problems/subsets/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3&gt;Medium&lt;/h3&gt;&lt;hr&gt;&lt;div&gt;&lt;p&gt;Given an integer array &lt;code&gt;nums&lt;/code&gt; of &lt;strong&gt;unique&lt;/strong&gt; elements, return &lt;em&gt;all possible subsets (the power set)&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;The solution set &lt;strong&gt;must not&lt;/strong&gt; contain duplicate subsets. Return the solution in &lt;strong&gt;any order&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; nums = [1,2,3]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;strong&gt;Input:&lt;/strong&gt; nums = [0]&#xA;&lt;strong&gt;Output:&lt;/strong&gt; [[],[0]]&#xA;&lt;/pre&gt;&#xA;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Constraints:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&#x9;&lt;li&gt;&lt;code&gt;1 &amp;lt;= nums.length &amp;lt;= 10&lt;/code&gt;&lt;/li&gt;&#xA;&#x9;&lt;li&gt;&lt;code&gt;-10 &amp;lt;= nums[i] &amp;lt;= 10&lt;/code&gt;&lt;/li&gt;&#xA;&#x9;&lt;li&gt;All the numbers of&amp;nbsp;&lt;code&gt;nums&lt;/code&gt; are &lt;strong&gt;unique&lt;/strong&gt;.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/div&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;problem&#34;&gt;Problem&lt;/h2&gt;&#xA;&lt;p&gt;Given a numeric array, return all possible combinations of its elements.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

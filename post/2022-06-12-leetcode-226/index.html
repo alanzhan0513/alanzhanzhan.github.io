@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Plain English Leetcode - 226 Invert Binary Tree" />
-    <meta property="og:title" content="Plain English Leetcode - 226 Invert Binary Tree" />
-    <meta property="twitter:title" content="Plain English Leetcode - 226 Invert Binary Tree" />
+    <meta name="title" content="白話解 Leetcode - 226 Invert Binary Tree" />
+    <meta property="og:title" content="白話解 Leetcode - 226 Invert Binary Tree" />
+    <meta property="twitter:title" content="白話解 Leetcode - 226 Invert Binary Tree" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="[Zhan Alan Blog]">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Plain English Leetcode - 226 Invert Binary Tree | Alan Zhan Blog</title>
+    <title>白話解 Leetcode - 226 Invert Binary Tree | Alan Zhan Blog</title>
 
     <link rel="canonical" href="/post/2022-06-12-leetcode-226/">
 
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/post/2022-06-12-leetcode-226/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/post/2022-06-12-leetcode-226/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -229,16 +229,16 @@
 </ul>
 </div>
 <hr>
-<h2 id="problem">Problem</h2>
-<p>Swap all left and right nodes of the entire tree.</p>
-<h2 id="approach">Approach</h2>
-<p>We can treat every node as a root node, traverse all root nodes, and swap each root&rsquo;s left and right children.</p>
+<h2 id="題意">題意</h2>
+<p>將整棵樹的所有左右節點互相對調。</p>
+<h2 id="解題思路">解題思路</h2>
+<p>我們可以把每個節點都視為是一個 root 節後，然後遍例所有的 root 節點，並且將每個 root 節點的左右節點互換即可。</p>
 <ol>
-<li>Check if root is nil — if so, end the traversal for this root node.</li>
-<li>Swap the current root&rsquo;s left and right children.</li>
-<li>Treat the left and right children as roots and recursively call invertTree until step 1 terminates the traversal.</li>
+<li>判斷 root 是不是為 nil ，如果是結束該 root 節點的遍例。</li>
+<li>將該 root 的左右節點對調。</li>
+<li>將左節點和右節點當作 root，繼續遞歸調用 invertTree 方法，直到第一步被觸發結束遍例。</li>
 </ol>
-<h2 id="source-code">Source Code</h2>
+<h2 id="原始碼">原始碼</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#6272a4">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * Definition for a binary tree node.
 </span></span></span><span style="display:flex;"><span><span style="color:#6272a4"> * type TreeNode struct {
@@ -251,15 +251,15 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> root <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> root
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    root.Left, root.Right = root.Right, root.Left
 </span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">invertTree</span>(root.Left)
 </span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">invertTree</span>(root.Right)
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> root
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="closing">Closing</h1>
-<p>Do you have a better or simpler solution?</p>
-<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+</span></span></code></pre></div><h1 id="結尾">結尾</h1>
+<p>你有更好或更簡單的解決方案嗎？</p>
+<p>歡迎到我的 Facebook <a href="https://www.facebook.com/alanzhan0513">Alan 的筆記本</a> 留言，順手給我個讚吧！你的讚將成為我持續更新的動力，感謝你的閱讀，讓我們一起學習成為更好的自己。</p>
 
             
              
@@ -546,7 +546,7 @@
            
            
                    <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -556,7 +556,7 @@
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

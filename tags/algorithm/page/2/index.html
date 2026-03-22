@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-tw">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:site_name" content="Alan Zhan 部落格">
     <meta property="og:type" content="article">
 
     
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Alan Zhan Blog</a>
+            <a class="navbar-brand" href="/">Alan Zhan 部落格</a>
         </div>
 
         
@@ -140,7 +140,7 @@
                     
                       
                       <li>
-                          <a href="https://alanzhan.dev/zh-tw/tags/algorithm/">繁體中文</a>
+                          <a href="https://alanzhan.dev/en/tags/algorithm/">English</a>
                       </li>
                       
                     
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Alan Zhan Blog </h1>
+                    <h1>Alan Zhan 部落格 </h1>
                     
 		    <span class="subheading">Live for nothing, or die for something</span>
                 </div>
@@ -209,12 +209,13 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2021-07-13-interpolation-search-algorithm/">
         <h2 class="post-title">
-            Interpolation Search Algorithm
+            Interpolation Search Algorithm - 插補搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            Continuing with the number guessing game — for numbers 1 to 100, if you already know the result, using binary search might not be the most efficient approach. So what method should we use instead? …
+            繼續使用猜數字當範例， 1 ~ 100 的數字，但是這次你已經知道結果了，你如果還是繼續使用二元搜尋法，那麼效率不會那麼好，那我們該用甚麼方式解決呢？
+概念 插補搜尋法 (Interpolation Search)：是一個基於二元搜尋法的演算法，被搜尋的清單是需要事先先被排序過的，而且資料的分布狀態最好是呈現線性的，如果不是呈現線性分布，那麼在搜尋的過程中，將有可能會得到 O(n) 的結果，可能會 …
        
         </div>
     </a>
@@ -232,13 +233,14 @@
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2021-07-11-jump-search-alogrithm/">
         <h2 class="post-title">
-            Jump Search Algorithm
+            Jump Search Algorithm - 跳躍搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            Continuing with the number guessing game — can we try a different approach for numbers 1 to 100?
-If we start from the beginning and jump forward by 10 each time we don&rsquo;t guess correctly, we keep …
+            延續猜數字遊戲，1 ~ 100 我們是不是可以換個猜法呢？
+如果我們從一開始，只要每次沒猜中，我們就往後面 +10 繼續猜，直到最大值範圍值變成我們所猜的數值後，往回開始找值，這樣做，在數值較小的時候，將會更有效率。
+
        
         </div>
     </a>
@@ -256,13 +258,14 @@ If we start from the beginning and jump forward by 10 each time we don&rsquo;t g
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2021-07-10-binary-search-algorithm/">
         <h2 class="post-title">
-            Binary Search Algorithm
+            Binary Search Algorithm - 二元搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            Let&rsquo;s play a number guessing game. Pick an integer between 1 and 100 — you have to guess the number in my head, and you must do it in the fewest guesses possible. How would you approach it?
-The …
+            我們來玩猜數字遊戲，1 ~ 100 中的整數，你必須猜中我腦海中的數字，而且我們必須在最少的布數內猜到答案，那麼你會怎麼猜呢？
+答案很簡單，你一定會從 50 開始猜，如果沒猜中的話，太高你就會從 25 開始猜，太低你就會從 75 開始猜，以此類推，你每次操作的過程，你都會從中剖一半來猜測，其實你所使用的就是 Binary Search。
+
        
         </div>
     </a>
@@ -280,13 +283,14 @@ The …
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2021-07-10-linear-search-algorithm/">
         <h2 class="post-title">
-            Linear Search Algorithm
+            Linear Search Algorithm - 線性搜尋法
         </h2>
 	
         <div class="post-content-preview">
 	
-            When checking whether an element exists, what is the most common approach? The answer is a for or while loop. Congratulations — you&rsquo;ve already learned Linear Search!
-Concept Linear Search: This …
+            在查找一個元素是否存在的時候，我們最常使用的方式是甚麼呢？答案是 for 或者是 while 迴圈，恭喜你！已經學習完 Linear Search 了！
+概念 線性搜尋 (Linear Search)：這個演算法會訪問每個元素，確認元素在陣列中的哪個位置，如果找不到元素則會回傳 -1。
+
        
         </div>
     </a>
@@ -304,12 +308,13 @@ Concept Linear Search: This …
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2021-07-07-divide-and-conquer/">
         <h2 class="post-title">
-            Divide and Conquer
+            Divide and Conquer - 分而治之
         </h2>
 	
         <div class="post-content-preview">
 	
-            Divide and Conquer As the name suggests, this approach breaks a complex problem into two or more identical or similar subproblems, solves the smaller problems, and then combines the results to produce …
+            分而治之 從字面上看起來，就是把一個複雜的問題分解成兩個或者很多個相同或者相似的問題，讓小問題可以被解決，再將最終結果合併求出問題的答案。
+優點 解決問題的難度降低。 可以提升執行效率。 有些時候能夠平行處理，增進性能。 使用步驟 分解：將一個問題分解成若干個較小的問題，相對獨立，與原先問題形式相同的子問題。 解決：若子問題規模較小並且容易解決時，就直接解決。否則，就遞迴的方式解決子問題。 合併： …
        
         </div>
     </a>
@@ -327,13 +332,14 @@ Concept Linear Search: This …
 <div class="post-preview">
     <a href="https://alanzhan.dev/post/2021-07-06-big-o-notation/">
         <h2 class="post-title">
-            Big O Notation
+            Big O Notation - Big O 符號
         </h2>
 	
         <div class="post-content-preview">
 	
-            How to Choose an Algorithm to Solve a Problem The same problem can be solved using different algorithms, but which one is the best? There are two metrics for evaluating an algorithm:
-Time complexity …
+            如何選擇演算法來解決問題 同一個問題可以用不同的演算法來解決問題，但是選擇哪一個最好？有兩個指標可以評估一個算法的好壞：
+時間複雜度 (花的時間) 空間複雜度 (花的記憶體) 所以花費的時間越少、花費的記憶體越少，通常就是越好的演算法，但是演算法的時間複雜度分析又可以細分為以下三種：
+
        
         </div>
     </a>
@@ -640,7 +646,7 @@ Time complexity …
            
            
                    <li>
-                       <a href='/tags/algorithm/index.xml' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                       <a href='/tags/algorithm/index.xml' rel="alternate" type="application/rss+xml" title="Alan Zhan 部落格" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
@@ -650,7 +656,7 @@ Time complexity …
             
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Alan Zhan Blog 2026
+                    Copyright &copy; Alan Zhan 部落格 2026
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

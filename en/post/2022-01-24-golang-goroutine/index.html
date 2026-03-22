@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Alan Zhan Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://alanzhan.dev/img/header.jpg">
+    <meta property="twitter:image" content="https://alanzhan.dev/img/header.jpg" />
+    
+
+    
+    <meta name="title" content="Golang Goroutine and GMP Model In-Depth Analysis" />
+    <meta property="og:title" content="Golang Goroutine and GMP Model In-Depth Analysis" />
+    <meta property="twitter:title" content="Golang Goroutine and GMP Model In-Depth Analysis" />
+    
+
+    
+    <meta name="description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！">
+    <meta property="og:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    <meta property="twitter:description" content="Alan 的筆記本，專注於軟體領域以及豐富人生的部落格，讓我們一起成長成為更棒的自己！" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="[Zhan Alan Blog]">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Golang Goroutine and GMP Model In-Depth Analysis | Alan Zhan Blog</title>
+
+    <link rel="canonical" href="/en/post/2022-01-24-golang-goroutine/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BENK03VM06"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-BENK03VM06');
+        }
+      </script>
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/en/">Alan Zhan Blog</a>
+        </div>
+
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/en/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/en/categories/algorithm/">algorithm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/reading/">reading</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/en/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+
+		    
+                        <li><a href="/en/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                    
+                    
+                      
+                      <li>
+                          <a href="https://alanzhan.dev/post/2022-01-24-golang-goroutine/">繁體中文</a>
+                      </li>
+                      
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            $navbar.className = " ";
+            setTimeout(function(){
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+<header class="intro-header" style="background-image: url('/img/header.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Alan Zhan Blog </h1>
+                    
+		    <span class="subheading">Live for nothing, or die for something</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+            
+            <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
+                <p>I&rsquo;ve been studying Kubernetes recently, so I need to become good friends with the Go language. While reading, I came across goroutines, but couldn&rsquo;t fully understand where they came from and why they exist. So before we dive deep into goroutines, we should first learn some history — this will give us a more comprehensive understanding of the principles and design philosophy behind goroutines.</p>
+<h1 id="the-origin-of-golangs-scheduler">The Origin of Golang&rsquo;s Scheduler</h1>
+<h2 id="the-single-process-era">The Single-Process Era</h2>
+<p>We know that software runs on top of the operating system, and the CPU does the actual computation. In early operating systems, each program was a process, and the next process could only run after the current one finished.</p>
+<p>Suppose there are three processes: A, B, and C. The CPU would schedule them sequentially in order of execution.</p>
+<p><code>Example: A -&gt; B -&gt; C</code></p>
+<p>However, the single-process operating system era faced these problems:</p>
+<ol>
+<li>Only one process could run at a time — the computer could only execute tasks one by one.</li>
+<li>If a process encountered a blocking I/O operation, it caused CPU resource waste.</li>
+</ol>
+<p>This gave rise to multi-process / multi-thread operating systems.</p>
+<h2 id="the-multi-process--multi-thread-era">The Multi-Process / Multi-Thread Era</h2>
+<p>In multi-process / multi-thread operating systems, the blocking problem was solved because the CPU could immediately switch to another process when one was blocked. The CPU scheduling algorithm ensured that running processes were allocated CPU time slices. From a macroscopic perspective, multiple processes appeared to run simultaneously. If you&rsquo;re unfamiliar with CPU scheduling principles, check out <a href="https://bbs.huaweicloud.com/blogs/288296">CPU Scheduling Principles</a>.</p>
+<p>When multiple processes share CPU time slices, everything seems fine. But engineers discovered new problems: creating, switching, and destroying processes all take considerable time. While CPU utilization improved, when there were too many processes, a large portion of CPU time was spent on context switching.</p>
+<p>So what overhead does process switching incur?</p>
+<h3 id="process-switching-overhead">Process Switching Overhead</h3>
+<ul>
+<li>Direct costs
+<ul>
+<li>Switching the Page Global Directory (PGD)</li>
+<li>Switching the kernel stack</li>
+<li>Switching hardware context (data that must be loaded into registers before a process can resume, collectively called hardware context)</li>
+<li>Flushing the TLB</li>
+<li>Executing the system scheduler code</li>
+</ul>
+</li>
+<li>Indirect costs
+<ul>
+<li>CPU cache invalidation leads to more memory I/O operations for direct access</li>
+</ul>
+</li>
+</ul>
+<p>So how can we improve CPU utilization?</p>
+<h2 id="coroutines-to-improve-cpu-utilization">Coroutines to Improve CPU Utilization</h2>
+<p>Clever engineers discovered that threads are divided into kernel threads (Kernel Thread) and user threads (User Thread). A &ldquo;user thread&rdquo; must be bound to a &ldquo;kernel thread,&rdquo; but the CPU doesn&rsquo;t know about &ldquo;user threads&rdquo; — it only knows it&rsquo;s running a &ldquo;kernel thread&rdquo; (Linux PCB process control block).</p>
+<p>So can we create and maintain lightweight coroutines in user space, binding multiple lightweight threads to the same kernel thread? If a kernel thread gets a time slice, couldn&rsquo;t we execute all the user-space coroutines within that time? Then hand the CPU back. Wouldn&rsquo;t this significantly improve overall execution efficiency?</p>
+<p>This is the principle behind Go&rsquo;s thread scheduling. Let&rsquo;s take a look at Goroutines.</p>
+<h2 id="goroutine">Goroutine</h2>
+<p>Goroutine is Go&rsquo;s implementation of coroutines. Go implements user-space threads based on the GMP model:</p>
+<ul>
+<li>Goroutine (G): Represents a goroutine. Each goroutine has its own stack space and timer. The initial stack size is around 2KB and grows as needed.</li>
+<li>Machine (M): An abstraction representing a kernel thread. Records kernel thread stack information. When a goroutine is scheduled to a thread, it uses the goroutine&rsquo;s own stack information.</li>
+<li>Processor (P): Represents the scheduler. Responsible for scheduling goroutines, maintaining a local goroutine queue, and binding the queue to an M. M retrieves goroutines from P and executes them. P is also responsible for some memory management.</li>
+</ul>
+<p>
+  <img src="/2022-01-24-golang-goroutine/2022-01-24-gmp.jpg" alt="golang GMP">
+
+</p>
+<h3 id="mpg-relationships">MPG Relationships</h3>
+<ul>
+<li>KSE: Kernel Scheduling Entity</li>
+<li>M has a one-to-one correspondence with Kernel Tasks.</li>
+<li>A single P can have multiple Gs. P determines which M to bind to based on the current state. For example, if an M has entered kernel mode, P may switch to find another idle M to execute on.</li>
+</ul>
+<p>
+  <img src="/2022-01-24-golang-goroutine/2022-01-24-mpg.jpg" alt="golang MPG">
+
+</p>
+<h3 id="gmp-model-details">GMP Model Details</h3>
+<p>
+  <img src="/2022-01-24-golang-goroutine/2022-01-24-gmp-detail.jpg" alt="golang GMP Model">
+
+</p>
+<ul>
+<li>LRQ: Local Run Queue</li>
+<li>GRQ: Global Run Queue</li>
+<li>sudog: Blocking queue</li>
+<li>gFree: Global free G list</li>
+<li>pidle: Global idle P list</li>
+</ul>
+<p>Here are some details about the diagram above:</p>
+<ul>
+<li>When a Go program starts and spawns multiple goroutines, there&rsquo;s a configurable parameter for how many concurrent threads Go can run. Typically, this matches the number of CPUs on your machine. During initialization, P instances are created according to this setting.</li>
+<li>When Go starts executing, the main function itself is also a goroutine, so it gets placed on a P. If the main function spawns many goroutines, they queue up on the current P. At this point, the multi-core advantage isn&rsquo;t fully utilized because all Gs are mounted on the same P. But other Ps won&rsquo;t just sit idle — that would waste CPU!</li>
+<li>If a P has no work, it checks the GRQ. If there&rsquo;s still nothing, it looks at other Ps to see if they have Gs to execute. If it finds the first P has queued Gs, it steals half. Since all Ps have this mechanism, the backlog of Gs is quickly consumed.</li>
+<li>What if we create more Gs than the LRQ can hold (default 256)? The overflow goes to the GRQ.</li>
+<li>If an M enters kernel mode, P unbinds from it and looks for another idle M to bind with.</li>
+<li>If a G becomes blocked, the waiting G gets placed in the sudog blocking queue with no P binding.</li>
+<li>After a G finishes running, it places itself in gFree for reuse, reducing overhead.</li>
+</ul>
+<h4 id="p-states">P States</h4>
+<p>
+  <img src="/2022-01-24-golang-goroutine/2022-01-24-p-state-machine.jpg" alt="golang GMP P state machine">
+
+</p>
+<ul>
+<li>_Pidle: The processor is not running user code or the scheduler. Held by the idle queue or a structure changing its state. The run queue is empty.</li>
+<li>_Prunning: Held by thread M, currently executing user code or the scheduler.</li>
+<li>_Psyscall: Not executing user code. The current thread is trapped in a system call.</li>
+<li>_Pgcstop: Held by thread M. The current processor is stopped for garbage collection.</li>
+<li>_Pdead: The current processor is no longer in use.</li>
+</ul>
+<h4 id="g-states">G States</h4>
+<p>
+  <img src="/2022-01-24-golang-goroutine/2022-01-24-g-state-machine.jpg" alt="golang GMP G state machine">
+
+</p>
+<ul>
+<li>_Gidle: Just allocated and not yet initialized. Value is 0, the default after creating a goroutine.</li>
+<li>_Grunnable: Not executing code, no stack ownership. Stored in a run queue — possibly in a P&rsquo;s local queue or the global queue.</li>
+<li>_Grunning: Currently executing code. Owns the stack.</li>
+<li>_Gsyscall: Executing a system call. Owns the stack, detached from P but bound to a specific M. Will be assigned to a run queue after the call ends.</li>
+<li>_Gwaiting: A blocked goroutine, blocked on a channel send or receive queue.</li>
+<li>_Gdead: Currently unused, not executing code. May have an allocated stack. Found in the free list — could be a freshly initialized goroutine or one that exited via goexit.</li>
+<li>_Gcopystack: Stack is being copied. Not executing code, not in a run queue.</li>
+<li>_Gscan: GC is scanning the stack space. Not executing code. Can coexist with other states.</li>
+</ul>
+<h3 id="scheduler-behavior">Scheduler Behavior</h3>
+<ul>
+<li>To ensure fairness, when there are pending Gs in the GRQ, schedtick ensures a certain probability (1/61) of fetching G from the GRQ.</li>
+<li>Look for pending G in P&rsquo;s LRQ.</li>
+<li>If neither of the above finds a G, runtime.findrunnable performs a blocking search:
+<ul>
+<li>Search the LRQ and GRQ.</li>
+<li>Check the network poller for Gs waiting to run.</li>
+<li>Use runtime.runqsteal to try stealing half the Gs from another random P.</li>
+</ul>
+</li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>It&rsquo;s been a while since I studied such hardcore knowledge. I feel like I might not fully digest it today — I&rsquo;ll need to review it several more times. What are your thoughts after reading this?</p>
+<p>Feel free to leave a comment on my blog. Your feedback motivates me to keep writing. Thank you for reading, and let&rsquo;s grow together to become better versions of ourselves.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://github.com/aceld/golang/blob/main/2%E3%80%81Golang%E7%9A%84%E5%8D%8F%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8%E5%8E%9F%E7%90%86%E5%8F%8AGMP%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%EF%BC%9F.md">Golang&rsquo;s Goroutine Scheduler Principles and GMP Design</a></li>
+</ul>
+<h2 id="errata">Errata</h2>
+<p>Thanks to Wang Zhi for finding some errors in this article. The corrections have been made.</p>
+
+            
+             
+            
+
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/en/about">
+               <img src="/img/alan-zhan.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Senior Software Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:rsesst60313@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/alanzhan0513">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+                    <a href="/en/tags/algorithm" title="algorithm">
+                        algorithm
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/docker" title="docker">
+                        docker
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dockerfile" title="dockerfile">
+                        dockerfile
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/dynamic-programing" title="dynamic-programing">
+                        dynamic-programing
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/gc" title="gc">
+                        gc
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/golang" title="golang">
+                        golang
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/index" title="index">
+                        index
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/invest" title="invest">
+                        invest
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/kubernetes" title="kubernetes">
+                        kubernetes
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode" title="leetcode">
+                        leetcode
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-easy" title="leetcode-easy">
+                        leetcode-easy
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-hard" title="leetcode-hard">
+                        leetcode-hard
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/leetcode-medium" title="leetcode-medium">
+                        leetcode-medium
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/mongodb" title="mongodb">
+                        mongodb
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/reading" title="reading">
+                        reading
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/tech" title="tech">
+                        tech
+                    </a>
+               
+            
+               
+                    <a href="/en/tags/terraform" title="terraform">
+                        terraform
+                    </a>
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:rsesst60313@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/alanzhan0513">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/alanzhan0513/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Alan Zhan Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Alan Zhan Blog 2026
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>
